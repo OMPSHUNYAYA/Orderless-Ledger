@@ -2,6 +2,8 @@
 
 **Deterministic • Order-Free • Time-Independent • Structure-Based Resolution • Open Reference Implementation**
 
+[![ORL Verify](https://github.com/OMPSHUNYAYA/Orderless-Ledger/actions/workflows/verify.yml/badge.svg)](https://github.com/OMPSHUNYAYA/Orderless-Ledger/actions/workflows/verify.yml)
+
 ![ORL](https://img.shields.io/badge/ORL-Orderless%20Ledger-black)
 ![Deterministic](https://img.shields.io/badge/Deterministic-Convergence-green)
 ![Structure-Based](https://img.shields.io/badge/Correctness-Structure%20Based-purple)
