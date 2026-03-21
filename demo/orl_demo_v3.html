@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orderless Ledger (ORL) v3 Demo</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #111a2d;
+      --panel-2: #18243a;
+      --text: #e9eefb;
+      --muted: #9fb0d1;
+      --accent: #6ea8ff;
+      --good: #2ac282;
+      --warn: #ffb020;
+      --bad: #ff6b81;
+      --border: #24314d;
+      --shadow: 0 12px 30px rgba(0,0,0,.28);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: linear-gradient(180deg, #08101d 0%, #0b1220 100%);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .wrap {
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding: 14px 16px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .formula {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow-x: auto;
+      color: #dfe8ff;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 12px;
+      margin-bottom: 12px;
+      align-items: start;
+    }
+
+    .panel { padding: 18px; }
+    .panel h1, .panel h2, .panel h3 { margin: 0 0 8px; }
+    .panel h1 { font-size: 30px; }
+    .lead { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .badge {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #0f1728;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .metric, .flow-box, .legend, .footer-note, .control-box, .node-card, .tx-card, .event-card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .metric, .flow-box, .legend, .footer-note, .control-box, .event-card { padding: 14px; }
+
+    .title {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .big {
+      font-size: 26px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .small {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 12px;
+      margin-bottom: 12px;
+      align-items: start;
+      scroll-margin-top: 18px;
+    }
+
+    .live-stage {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(110,168,255,.35);
+      background: linear-gradient(180deg, rgba(110,168,255,.10) 0%, rgba(110,168,255,.05) 100%);
+    }
+
+    .live-stage .stage-kicker {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .live-stage .stage-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .live-stage .stage-body {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .node-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+    }
+
+    .node-card {
+      padding: 14px;
+      min-height: 470px;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+      overflow: hidden;
+    }
+
+    .node-card.active {
+      border-color: #4f87d6;
+      box-shadow: 0 0 0 1px rgba(110,168,255,.2), 0 16px 36px rgba(0,0,0,.35);
+      transform: translateY(-2px);
+    }
+
+    .node-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .node-name {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .state-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 13px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .tx-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .tx-card {
+      padding: 12px;
+      background: rgba(255,255,255,.025);
+      overflow: hidden;
+    }
+
+    .tx-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .tx-id {
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: .02em;
+    }
+
+    .tx-status {
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      border: 1px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .status-resolved { color: #c9f8e5; background: rgba(42,194,130,.14); border-color: rgba(42,194,130,.35); }
+    .status-incomplete { color: #ffe0ad; background: rgba(255,176,32,.12); border-color: rgba(255,176,32,.35); }
+    .status-abstain { color: #ffd1d8; background: rgba(255,107,129,.12); border-color: rgba(255,107,129,.35); }
+    .status-local { color: #d9e6ff; background: rgba(110,168,255,.12); border-color: rgba(110,168,255,.35); }
+
+    .entry-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .entry {
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0f1728;
+      font-size: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #dfe8ff;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .entry.highlight {
+      border-color: rgba(110,168,255,.42);
+      box-shadow: 0 0 0 1px rgba(110,168,255,.14);
+    }
+
+    .balance-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .balance-box {
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #0f1728;
+    }
+
+    .balance-value {
+      font-size: 18px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .control-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid #2d4a73;
+      background: linear-gradient(180deg, #16304e 0%, #112742 100%);
+      color: var(--text);
+      padding: 11px 12px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .06s ease, opacity .2s ease;
+    }
+
+    button.secondary { background: #10192b; border-color: var(--border); }
+    button.good { background: linear-gradient(180deg, #126543 0%, #0f5338 100%); border-color: #1f8c62; }
+    button.warn { background: linear-gradient(180deg, #694a10 0%, #593e0f 100%); border-color: #a97818; }
+    button:active { transform: translateY(1px); }
+
+    .timeline {
+      display: grid;
+      gap: 10px;
+      max-height: 420px;
+      overflow: auto;
+      margin-top: 10px;
+    }
+
+    .event-card.active {
+      border-color: rgba(110,168,255,.45);
+      box-shadow: 0 0 0 1px rgba(110,168,255,.16);
+    }
+
+    .event-step {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .event-title {
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .event-body {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .legend-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    .helper {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .sticky-hud {
+      position: sticky;
+      top: 10px;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      margin: 0 0 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(110,168,255,.28);
+      background: rgba(8,16,29,.92);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 24px rgba(0,0,0,.24);
+    }
+
+    .sticky-hud .hud-left {
+      display: grid;
+      gap: 4px;
+    }
+
+    .sticky-hud .hud-kicker {
+      color: var(--accent);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .sticky-hud .hud-title {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .sticky-hud .hud-body {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .sticky-hud .hud-summary {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      color: #dfe8ff;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-variant-numeric: tabular-nums;
+    }
+
+    @media (max-width: 1220px) {
+      .hero, .main-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 900px) {
+      .node-grid, .hero-grid, .balance-grid, .control-grid, .button-grid { grid-template-columns: 1fr; }
+      .panel h1 { font-size: 26px; }
+    }
+
+    @media (max-width: 700px) {
+      .wrap { padding: 12px; }
+      .topline { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card topline">
+      <div>
+        <div class="eyebrow">Orderless Ledger (ORL) v3 • Powered by Shunyaya Framework</div>
+      </div>
+      <div class="formula">correctness = structure | valid structure -> resolve | missing structure -> incomplete | conflicting structure -> abstain</div>
+    </section>
+
+    <section class="sticky-hud" id="stickyHud">
+      <div class="hud-left">
+        <div class="hud-kicker">Live Stage</div>
+        <div class="hud-title" id="hudTitle">Local Views Only</div>
+        <div class="hud-body" id="hudBody">Each node starts with only partial structural visibility.</div>
+      </div>
+      <div class="hud-summary" id="hudSummary">R:0 I:0 A:0</div>
+    </section>
+
+    <section class="hero">
+      <div class="card panel">
+        <h1>Structure-Driven Ledger Convergence Demo</h1>
+        <p class="lead">
+          Three isolated nodes begin with different partial fragments. No timestamps are used. No global ordering is used.
+          No coordinator is used. Valid structure resolves, missing structure stays incomplete, and conflicting structure
+          abstains safely. After bounded sharing, all nodes converge to the same final truth.
+        </p>
+        <div class="badges">
+          <span class="badge">No Time</span>
+          <span class="badge">No Global Order</span>
+          <span class="badge">No Coordinator</span>
+          <span class="badge">Bounded Sharing</span>
+          <span class="badge">Deterministic Convergence</span>
+        </div>
+
+        <div class="live-stage">
+          <div class="stage-kicker">What is happening now</div>
+          <div class="stage-title" id="stageTitle">Local Views Only</div>
+          <div class="stage-body" id="stageBody">
+            Each node sees only local fragments. Valid transfers cannot resolve until enough structure becomes visible.
+          </div>
+        </div>
+
+        <div class="hero-grid">
+          <div class="metric">
+            <div class="title">Phase</div>
+            <div class="big" id="phaseLabel">Local Views</div>
+            <div class="small">Isolated fragments first, shared truth later</div>
+          </div>
+          <div class="metric">
+            <div class="title">Node Equality</div>
+            <div class="big mono" id="equalityLabel">Before: Mixed</div>
+            <div class="small" id="equalityDetail">After bounded sharing, all nodes align</div>
+          </div>
+          <div class="metric">
+            <div class="title">Final State Summary</div>
+            <div class="big mono" id="summaryLabel">--</div>
+            <div class="small">Resolved / Incomplete / Abstain</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card panel">
+        <h2>Live Controls</h2>
+        <p class="helper">
+          Start at isolated local views. Step through bounded sharing, or run the full demonstration in one click.
+        </p>
+
+        <div class="control-grid">
+          <div class="control-box">
+            <div class="title">Simulation</div>
+            <div class="button-grid">
+              <button id="stepBtn">Next Step</button>
+              <button class="good" id="runBtn">Run Full Demo</button>
+              <button class="secondary" id="resetBtn">Reset</button>
+              <button class="warn" id="shareBtn">Jump to Sharing</button>
+            </div>
+            <div class="footer-note" style="margin-top:10px;">
+              Buttons now update the live stage banner above and automatically bring the node/timeline section into view.
+            </div>
+          </div>
+
+          <div class="legend">
+            <div class="title">Outcome Legend</div>
+            <div class="legend-list">
+              <div class="legend-item"><span class="swatch" style="background:#2ac282;"></span> RESOLVED — sufficient and consistent structure</div>
+              <div class="legend-item"><span class="swatch" style="background:#ffb020;"></span> INCOMPLETE — missing counterpart structure</div>
+              <div class="legend-item"><span class="swatch" style="background:#ff6b81;"></span> ABSTAIN — conflicting structure safely contained</div>
+              <div class="legend-item"><span class="swatch" style="background:#6ea8ff;"></span> LOCAL — local fragment view before sharing</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-note">
+          Key transactions: `ORL100` and `ORL200` resolve after sharing, `ORL300` remains incomplete,
+          `ORL400` abstains on mismatch, and `ORL500` abstains on conflicting double-credit structure.
+        </div>
+      </div>
+    </section>
+
+    <section class="main-grid">
+      <div class="card panel">
+        <h2>Node Views</h2>
+        <p class="helper">
+          Each node begins with only a partial structural view. After bounded sharing, every node reaches the same balances
+          and the same transaction states.
+        </p>
+        <div class="node-grid" id="nodeGrid"></div>
+      </div>
+
+      <div class="card panel">
+        <h2>Execution Timeline</h2>
+        <p class="helper">
+          The timeline highlights the structural transition from isolated local fragments to shared final truth.
+        </p>
+        <div class="timeline" id="timeline"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const localNodes = [
+      [
+        { tx: "ORL100", side: "debit",  account: "Alice", amount: 500 },
+        { tx: "ORL300", side: "credit", account: "Cara",  amount: 200 },
+        { tx: "ORL500", side: "debit",  account: "Evan",  amount: 600 }
+      ],
+      [
+        { tx: "ORL100", side: "credit", account: "Bob",   amount: 500 },
+        { tx: "ORL200", side: "debit",  account: "Bob",   amount: 300 },
+        { tx: "ORL500", side: "debit",  account: "Evan",  amount: 600 }
+      ],
+      [
+        { tx: "ORL200", side: "credit", account: "Dina",  amount: 300 },
+        { tx: "ORL400", side: "debit",  account: "Alice", amount: 700 },
+        { tx: "ORL400", side: "credit", account: "Faye",  amount: 900 },
+        { tx: "ORL500", side: "credit", account: "Gina",  amount: 600 },
+        { tx: "ORL500", side: "credit", account: "Hank",  amount: 600 },
+        { tx: "ORL100", side: "credit", account: "Bob",   amount: 500 }
+      ]
+    ];
+
+    function entryKey(entry) {
+      return `${entry.tx}|${entry.side}|${entry.account}|${entry.amount}`;
+    }
+
+    function deduplicate(entries) {
+      const map = new Map();
+      entries.forEach(entry => map.set(entryKey(entry), entry));
+      return Array.from(map.values());
+    }
+
+    function resolve(entries) {
+      const uniqueEntries = deduplicate(entries);
+      const byTx = new Map();
+
+      uniqueEntries.forEach(entry => {
+        if (!byTx.has(entry.tx)) byTx.set(entry.tx, []);
+        byTx.get(entry.tx).push(entry);
+      });
+
+      const balances = new Map();
+      const txState = new Map();
+
+      Array.from(byTx.keys()).sort().forEach(tx => {
+        const group = byTx.get(tx);
+        const debits = new Set(group.filter(e => e.side === "debit").map(e => `${e.account}|${e.amount}`));
+        const credits = new Set(group.filter(e => e.side === "credit").map(e => `${e.account}|${e.amount}`));
+
+        if (debits.size === 1 && credits.size === 1) {
+          const [debitRaw] = Array.from(debits);
+          const [creditRaw] = Array.from(credits);
+          const [fromAcct, debitAmtRaw] = debitRaw.split("|");
+          const [toAcct, creditAmtRaw] = creditRaw.split("|");
+          const debitAmt = Number(debitAmtRaw);
+          const creditAmt = Number(creditAmtRaw);
+
+          if (debitAmt === creditAmt) {
+            balances.set(fromAcct, (balances.get(fromAcct) || 0) - debitAmt);
+            balances.set(toAcct, (balances.get(toAcct) || 0) + creditAmt);
+            txState.set(tx, {
+              state: "RESOLVED",
+              from: fromAcct,
+              to: toAcct,
+              amount: debitAmt
+            });
+          } else {
+            txState.set(tx, {
+              state: "ABSTAIN",
+              reason: "debit_credit_mismatch"
+            });
+          }
+        } else if (debits.size === 0 || credits.size === 0) {
+          txState.set(tx, {
+            state: "INCOMPLETE",
+            reason: "missing_counterpart"
+          });
+        } else {
+          txState.set(tx, {
+            state: "ABSTAIN",
+            reason: "conflicting_structure"
+          });
+        }
+      });
+
+      return {
+        balances: Array.from(balances.entries()).sort((a, b) => a[0].localeCompare(b[0])),
+        txState: Array.from(txState.entries()).sort((a, b) => a[0].localeCompare(b[0]))
+      };
+    }
+
+    function boundedUnion(baseEntries, incomingEntries) {
+      return deduplicate([...baseEntries, ...incomingEntries]);
+    }
+
+    function signature(snapshot) {
+      return JSON.stringify(snapshot);
+    }
+
+    function stateSummary(txStateArray) {
+      const summary = { RESOLVED: 0, INCOMPLETE: 0, ABSTAIN: 0 };
+      txStateArray.forEach(([, info]) => {
+        summary[info.state] = (summary[info.state] || 0) + 1;
+      });
+      return summary;
+    }
+
+    const stages = [
+      {
+        id: "local",
+        title: "Local Views Only",
+        body: "Each node holds only its own fragments. Valid transfers cannot resolve until enough structure is present.",
+        nodeEntries: localNodes
+      },
+      {
+        id: "share12",
+        title: "Node-1 and Node-2 Exchange Fragments",
+        body: "The first bounded sharing step brings together parts of ORL100 and ORL500 across two nodes.",
+        nodeEntries: [
+          boundedUnion(localNodes[0], localNodes[1]),
+          boundedUnion(localNodes[1], localNodes[0]),
+          localNodes[2]
+        ]
+      },
+      {
+        id: "share23",
+        title: "Node-2 and Node-3 Exchange Fragments",
+        body: "A second bounded sharing step introduces the missing counterpart for ORL200 and exposes the ORL500 conflict more clearly.",
+        nodeEntries: [
+          boundedUnion(localNodes[0], localNodes[1]),
+          boundedUnion(boundedUnion(localNodes[1], localNodes[0]), localNodes[2]),
+          boundedUnion(localNodes[2], localNodes[1])
+        ]
+      },
+      {
+        id: "shareall",
+        title: "All Nodes Complete Bounded Sharing",
+        body: "Every node now has the same structure. The final truth becomes identical across all nodes.",
+        nodeEntries: [
+          boundedUnion(boundedUnion(localNodes[0], localNodes[1]), localNodes[2]),
+          boundedUnion(boundedUnion(localNodes[1], localNodes[0]), localNodes[2]),
+          boundedUnion(boundedUnion(localNodes[2], localNodes[0]), localNodes[1])
+        ]
+      }
+    ];
+
+    const nodeGrid = document.getElementById("nodeGrid");
+    const timeline = document.getElementById("timeline");
+    const phaseLabel = document.getElementById("phaseLabel");
+    const equalityLabel = document.getElementById("equalityLabel");
+    const equalityDetail = document.getElementById("equalityDetail");
+    const summaryLabel = document.getElementById("summaryLabel");
+    const stageTitle = document.getElementById("stageTitle");
+    const stageBody = document.getElementById("stageBody");
+    const hudTitle = document.getElementById("hudTitle");
+    const hudBody = document.getElementById("hudBody");
+    const hudSummary = document.getElementById("hudSummary");
+    const mainGrid = document.querySelector(".main-grid");
+
+    const stepBtn = document.getElementById("stepBtn");
+    const runBtn = document.getElementById("runBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const shareBtn = document.getElementById("shareBtn");
+
+    let stageIndex = 0;
+    let autoplayTimer = null;
+
+    function statusClass(state) {
+      if (state === "RESOLVED") return "status-resolved";
+      if (state === "INCOMPLETE") return "status-incomplete";
+      if (state === "ABSTAIN") return "status-abstain";
+      return "status-local";
+    }
+
+    function renderTimeline() {
+      timeline.innerHTML = "";
+      stages.forEach((stage, idx) => {
+        const card = document.createElement("div");
+        card.className = "event-card" + (idx === stageIndex ? " active" : "");
+        card.innerHTML = `
+          <div class="event-step">Step ${idx + 1}</div>
+          <div class="event-title">${stage.title}</div>
+          <div class="event-body">${stage.body}</div>
+        `;
+        timeline.appendChild(card);
+      });
+    }
+
+    function scrollToDemoBody() {
+      mainGrid.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function renderNodes() {
+      nodeGrid.innerHTML = "";
+      const stage = stages[stageIndex];
+      const snapshots = stage.nodeEntries.map(resolve);
+      const sigs = snapshots.map(signature);
+      const allMatch = new Set(sigs).size === 1;
+      const finalSummary = stateSummary(snapshots[0].txState);
+
+      phaseLabel.textContent = stage.id === "local" ? "Local Views" : (stage.id === "shareall" ? "Shared Final Truth" : "Bounded Sharing");
+      equalityLabel.textContent = stage.id === "local"
+        ? "Before: Mixed"
+        : (allMatch ? "After: Aligned" : "During: Partial");
+      equalityDetail.textContent = stage.id === "local"
+        ? "Nodes differ because structure is incomplete"
+        : (allMatch ? "All node balances and states now match" : "Convergence is progressing but not complete");
+      summaryLabel.textContent = `R:${finalSummary.RESOLVED} I:${finalSummary.INCOMPLETE} A:${finalSummary.ABSTAIN}`;
+      stageTitle.textContent = stage.title;
+      stageBody.textContent = stage.body;
+      hudTitle.textContent = stage.title;
+      hudBody.textContent = stage.body;
+      hudSummary.textContent = `R:${finalSummary.RESOLVED} I:${finalSummary.INCOMPLETE} A:${finalSummary.ABSTAIN}`;
+
+      stage.nodeEntries.forEach((entries, idx) => {
+        const snapshot = snapshots[idx];
+        const summary = stateSummary(snapshot.txState);
+        const node = document.createElement("div");
+        node.className = "node-card active";
+
+        const balancesHTML = snapshot.balances.length
+          ? snapshot.balances.map(([acct, amt]) => `
+              <div class="balance-box">
+                <div class="title">${acct}</div>
+                <div class="balance-value mono">${amt >= 0 ? "+" : ""}${amt}</div>
+              </div>
+            `).join("")
+          : `<div class="balance-box"><div class="title">Balances</div><div class="balance-value mono">none</div></div>`;
+
+        const txHTML = snapshot.txState.map(([tx, info]) => {
+          const detail = info.state === "RESOLVED"
+            ? `${info.from} -> ${info.to} | amount=${info.amount}`
+            : `reason=${info.reason}`;
+          return `
+            <div class="tx-card">
+              <div class="tx-top">
+                <div class="tx-id">${tx}</div>
+                <div class="tx-status ${statusClass(info.state)}">${info.state}</div>
+              </div>
+              <div class="subtle mono">${detail}</div>
+            </div>
+          `;
+        }).join("");
+
+        const entryHTML = deduplicate(entries).map(entry => `
+          <div class="entry ${stageIndex > 0 ? "highlight" : ""}">
+            ${entry.tx} | ${entry.side} | ${entry.account} | ${entry.amount}
+          </div>
+        `).join("");
+
+        node.innerHTML = `
+          <div class="node-head">
+            <div>
+              <div class="node-name">Node-${idx + 1}</div>
+              <div class="subtle">${deduplicate(entries).length} unique fragments visible</div>
+            </div>
+            <div class="state-pill">
+              <span class="dot"></span>
+              <span class="mono">R:${summary.RESOLVED} I:${summary.INCOMPLETE} A:${summary.ABSTAIN}</span>
+            </div>
+          </div>
+
+          <div class="title">Visible Fragments</div>
+          <div class="entry-list">${entryHTML}</div>
+
+          <div class="title" style="margin-top:12px;">Resolved Balances</div>
+          <div class="balance-grid">${balancesHTML}</div>
+
+          <div class="title" style="margin-top:12px;">Transaction Outcomes</div>
+          <div class="tx-list">${txHTML}</div>
+        `;
+        nodeGrid.appendChild(node);
+      });
+    }
+
+    function render() {
+      renderTimeline();
+      renderNodes();
+    }
+
+    function nextStep() {
+      stageIndex = Math.min(stageIndex + 1, stages.length - 1);
+      render();
+      scrollToDemoBody();
+    }
+
+    function reset() {
+      stageIndex = 0;
+      stopAutoplay();
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function jumpToSharing() {
+      stageIndex = stages.length - 1;
+      stopAutoplay();
+      render();
+      scrollToDemoBody();
+    }
+
+    function stopAutoplay() {
+      if (autoplayTimer) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+      runBtn.textContent = "Run Full Demo";
+    }
+
+    function runFullDemo() {
+      stopAutoplay();
+      stageIndex = 0;
+      render();
+      scrollToDemoBody();
+      runBtn.textContent = "Running...";
+      autoplayTimer = setInterval(() => {
+        if (stageIndex >= stages.length - 1) {
+          stopAutoplay();
+          return;
+        }
+        stageIndex += 1;
+        render();
+        scrollToDemoBody();
+      }, 1400);
+    }
+
+    stepBtn.addEventListener("click", nextStep);
+    runBtn.addEventListener("click", runFullDemo);
+    resetBtn.addEventListener("click", reset);
+    shareBtn.addEventListener("click", jumpToSharing);
+
+    render();
+  </script>
+</body>
+</html>
