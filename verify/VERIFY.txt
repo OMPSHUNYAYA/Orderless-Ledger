@@ -1,0 +1,20 @@
+ORL Verification
+
+1. Run demo:
+   python demo/orl_demo_reference.py
+
+2. Observe:
+   - identical results across runs
+   - order-independent convergence
+   - no incorrect resolution under conflict
+   - incomplete and conflicting states preserved
+
+3. Verify hashes:
+   certutil -hashfile demo\orl_demo_reference.py SHA256
+   certutil -hashfile demo\orl_demo_v3.html SHA256
+
+4. Confirm:
+   - hashes match FREEZE_DEMO_SHA256.txt
+
+Result:
+Deterministic structural convergence confirmed.
