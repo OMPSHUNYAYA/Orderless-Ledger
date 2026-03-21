@@ -1,0 +1,202 @@
+📜 Open Standard License — ORL Reference Implementation
+
+ORL — Orderless Ledger (Shunyaya Structural Ledger Model)
+
+Legal Status
+
+This license is an open permissive license for the ORL reference implementation.
+
+To the maximum extent permitted by applicable law, this license grants rights
+similar in spirit to permissive open-source licenses, while preserving truthful
+representation requirements for the ORL name and reference implementation.
+
+If any provision is found unenforceable under applicable law, the remaining
+provisions shall remain in effect.
+
+Permission is hereby granted, free of charge, to any person or organization
+to use, execute, study, reproduce, publish, distribute, modify, implement,
+or extend the ORL reference implementation, in whole or in part, without restriction,
+including for commercial and non-commercial use.
+
+No registration, fees, or approval required.
+
+
+No Restrictions on Use
+
+This Open Standard reference implementation imposes no restrictions on implementation or use, except for truthful representation and non-misleading use of the ORL name.
+
+Attribution is not required.
+No endorsement or certification is implied.
+No runtime obligations apply.
+
+Correctness and conformance are governed by deterministic structural behavior
+and reproducible resolution outcomes, not by licensing terms.
+
+Modified or extended implementations must not be represented as the canonical ORL reference implementation unless they fully preserve the normative structural behavior defined in this document.
+
+
+Recommended Attribution (Optional)
+
+Attribution is recommended but not required.
+
+Preferred form:
+
+Implements ORL — Orderless Ledger (Shunyaya Structural Ledger Model)
+
+Attribution must not imply endorsement by the authors or the Shunyaya framework.
+
+Use of the name “ORL” must not imply:
+
+• endorsement
+• certification
+• official compliance approval
+• governance authority
+• authorship by the original authors
+
+
+Scope of the Reference Implementation
+
+This reference implementation includes:
+
+ledger structures
+
+transaction models
+
+resolution logic
+
+demo scripts
+
+outputs and reference outputs
+
+validation traces
+
+supporting artifacts provided in this release
+
+ORL defines a deterministic structural ledger model in which correctness emerges from structural completeness and consistency rather than from transaction order or time.
+
+The reference implementation establishes the following conceptual model:
+
+resolve(structure) ->
+    accept if complete and consistent
+    remain incomplete if required parts are missing
+    abstain if structure is conflicting
+
+Final correctness emerges when:
+
+structural_validity = complete AND consistent
+
+
+What the Reference Implementation Demonstrates
+
+• ledger correctness from incomplete and fragmented inputs
+• independence from transaction ordering
+• independence from timestamps and synchronized clocks for correctness
+• bounded information sharing between independent nodes
+• deterministic convergence across multiple nodes
+• structural resolution with safe incompleteness
+• conflict handling through abstention
+• reproducible and verifiable resolution outcomes
+
+The reference implementation is provided to demonstrate the feasibility of structure-based ledger correctness without reliance on order, sequence, or synchronization as the primary correctness authority.
+
+
+Conformance
+
+An implementation is considered compatible with the ORL reference model if it preserves the core structural principles demonstrated by the implementation, including:
+
+• correctness derived from structural completeness and consistency
+• independence from transaction order as the primary correctness authority
+• independence from synchronized time for correctness
+• deterministic convergence across independent nodes
+• reproducibility under equivalent structural inputs
+• explicit handling of incomplete and conflicting states
+
+Independent implementations are permitted and encouraged.
+
+Conformance is determined by observable behavior of the system under equivalent
+structural inputs, not by internal implementation details.
+
+
+Relationship to Other Licenses
+
+This Open Standard license applies to the ORL reference implementation.
+
+The ORL conceptual architecture, explanatory documentation, and structural framework are released separately under the:
+
+Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+
+ORL is a ledger-domain structural resolution model developed within the broader Shunyaya framework.
+
+It draws directly on structure-first correctness principles established in STOCRS and is conceptually aligned with the structural progression that includes SSUM-Time.
+
+Reference implementations, example scripts, datasets, validation traces, and tooling may be released under separate licenses if explicitly stated.
+
+Licensing of implementations does not alter or redefine the conceptual architecture
+of ORL. The architecture remains independent of any specific implementation.
+
+Nothing in this license grants any rights to use the ORL name as a trademark or to imply official status.
+
+
+Responsibility
+
+Use of ORL in financial systems, distributed systems, infrastructure, telecommunications, or safety-critical environments is undertaken entirely at the user’s own responsibility.
+
+ORL provides:
+
+• deterministic structural ledger resolution
+• correctness based on structural completeness and consistency
+• convergence without reliance on order or synchronization
+• explicit handling of incomplete and conflicting states
+
+It does not provide:
+
+• financial guarantees
+• regulatory compliance
+• operational guarantees
+• fraud prevention guarantees
+• system-level fault tolerance assurances
+
+
+No Warranty
+
+THE ORL REFERENCE IMPLEMENTATION IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+
+IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE USE OF THIS IMPLEMENTATION.
+
+
+📜 Creative Commons License — ORL Architecture
+
+Except for the ORL reference implementation (released as an Open Standard), the conceptual architecture, theoretical framework, and specification text are licensed under:
+
+Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+
+This permits:
+
+• sharing
+• copying
+• redistribution
+• adaptation
+• academic use
+• research publication
+
+for non-commercial purposes, provided appropriate credit is given.
+
+The architecture may be studied, cited, and reproduced for research and educational purposes.
+
+Commercial deployment of the architecture text or specification itself is not permitted under this license.
+
+Independent implementations of the architecture remain permitted under the Open Standard license governing the reference implementation.
+
+Full license text:
+https://creativecommons.org/licenses/by-nc/4.0/
+
+
+Closing Statement
+
+ORL is published to explore the possibility that ledger correctness can emerge from structure rather than from time, order, or synchronization.
+
+The project is released openly to encourage independent research, validation, and implementation of structure-based ledger models.
+
+Ledger systems, long governed by sequencing and timing, may also be understood as processes of structural validation.
+
+ORL is offered as a reference model for that exploration.
