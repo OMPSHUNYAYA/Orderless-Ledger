@@ -1,20 +1,150 @@
 ORL Verification
 
-1. Run demo:
-   python demo/orl_demo_reference.py
+Purpose
 
-2. Observe:
-   - identical results across runs
-   - order-independent convergence
-   - no incorrect resolution under conflict
-   - incomplete and conflicting states preserved
+This file verifies two separate properties:
 
-3. Verify hashes:
-   certutil -hashfile demo\orl_demo_reference.py SHA256
-   certutil -hashfile demo\orl_demo_v3.html SHA256
+1. Reference-demo behavior for the supplied scenario
+2. Artifact identity of the committed demo files
 
-4. Confirm:
-   - hashes match FREEZE_DEMO_SHA256.txt
+A successful hash comparison proves file identity.
 
-Result:
-Deterministic structural convergence confirmed.
+same bytes -> same SHA-256 hash
+
+It does not by itself prove behavioral correctness, complete conformance, production safety, or universal order independence.
+
+
+1. Run the Python Reference Demo
+
+From the repository root:
+
+python demo/orl_demo_reference.py
+
+Confirm that the program completes without an exception for the supplied scenario.
+
+
+2. Confirm the Supplied Scenario Output
+
+Confirm:
+
+all_nodes_match_after_sharing = True
+
+Confirm the final state counts:
+
+RESOLVED = 2
+INCOMPLETE = 1
+ABSTAIN = 2
+
+Equivalent summary:
+
+R:2 I:1 A:2
+
+Confirm the final transaction states:
+
+ORL100 = RESOLVED
+ORL200 = RESOLVED
+ORL300 = INCOMPLETE
+ORL400 = ABSTAIN
+ORL500 = ABSTAIN
+
+Confirm the demonstrated balance projection:
+
+Alice = -500
+Bob = +200
+Dina = +300
+
+Confirm that ORL300, ORL400, and ORL500 do not affect the demonstrated balance projection.
+
+
+3. Repeat the Supplied Scenario
+
+Run the Python demo again:
+
+python demo/orl_demo_reference.py
+
+Confirm that the unchanged supplied input and resolver produce the same:
+
+- transaction states
+- balance projection
+- state counts
+- node-equality result
+
+Expected relation:
+
+same supplied input + same resolver -> same supplied output
+
+This is a repeatability check for the declared scenario.
+
+It is not a universal conformance proof.
+
+
+4. Run the Browser Demo
+
+Open:
+
+demo/orl_demo_v3.html
+
+Click:
+
+Run Full Demo
+
+Confirm:
+
+- the browser demo opens locally
+- the final state summary is R:2 I:1 A:2
+- ORL100 and ORL200 are RESOLVED
+- ORL300 is INCOMPLETE
+- ORL400 and ORL500 are ABSTAIN
+- every node shows the same final demonstrated snapshot after receiving the same merged fragment set
+
+The browser sharing sequence is a test mechanism.
+
+It is not a consensus, reliable-broadcast, or settlement protocol.
+
+
+5. Verify Demo File Hashes on Windows
+
+From the repository root:
+
+certutil -hashfile demo\orl_demo_reference.py SHA256
+certutil -hashfile demo\orl_demo_v3.html SHA256
+
+Compare the reported SHA-256 values with:
+
+verify\FREEZE_DEMO_SHA256.txt
+
+Confirm that both hashes match exactly.
+
+
+6. Verification Result
+
+The current reference verification passes when:
+
+- the Python demo completes successfully
+- the supplied scenario produces R:2 I:1 A:2
+- all nodes match after receiving the same merged fragment set
+- the demonstrated balance projection is Alice = -500, Bob = +200, Dina = +300
+- repeated runs of the unchanged supplied scenario produce the same output
+- both demo-file hashes match verify\FREEZE_DEMO_SHA256.txt
+
+Permitted conclusion:
+
+The supplied ORL reference scenario is repeatable, produces the documented bounded resolver output, and matches the frozen demo artifacts.
+
+Do not interpret this result as proof of:
+
+- universal ledger correctness
+- immutable finality
+- complete malformed-input validation
+- authorization
+- available-funds verification
+- fraud prevention
+- consensus
+- Byzantine fault tolerance
+- settlement
+- production readiness
+- universal order independence
+
+Current governing relation:
+
+same deduplicated supported fragment set + same resolver rules -> same bounded resolution
