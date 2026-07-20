@@ -4,7 +4,7 @@
 
 ### **Verify Behavior • Verify Cross-Engine Identity • Verify Artifact Identity • Review Claim Boundaries**
 
-`validation -> canonical evidence -> deterministic resolution -> projection -> receipts -> optional bounded closure`
+`validation -> canonical evidence -> deterministic resolution -> projection -> bounded closure evaluation -> receipts -> bundle`
 
 ---
 
@@ -269,7 +269,7 @@ Confirm:
 
 Correct interpretation:
 
-`same validated canonical fragment set + same ruleset -> same bounded resolution bundle`
+`same validated canonical fragment set + same ruleset + same declared boundary context -> same bounded resolution bundle`
 
 The `SEALED` state is bounded to the declared evidence boundary.
 
@@ -291,7 +291,7 @@ The committed interactive behaviors are:
 
 Expected:
 
-`canonical bundle unchanged`
+`same canonical evidence + unchanged ruleset and closure context -> same bundle`
 
 when only input order changes.
 
@@ -396,7 +396,11 @@ The bounded invariant is:
 
 `R(P(E)) = R(E)`
 
-for the committed permutation corpus under the current:
+for the committed permutation corpus under the same ruleset and unchanged declared boundary context.
+
+When complete bounded bundle identities are compared, the ruleset and boundary context are held fixed.
+
+The committed checks operate under the current:
 
 - fragment schema
 - canonicalization profile
@@ -404,6 +408,7 @@ for the committed permutation corpus under the current:
 - resolver profile
 - projection policy
 - receipt construction
+- boundary context
 
 This is not a claim of universal order independence for every ledger operation.
 
@@ -513,11 +518,15 @@ verify\FREEZE_DEMO_SHA256.txt
 
 Both values must match exactly.
 
-A successful hash comparison establishes:
+The deterministic relation is:
 
-`same bytes -> same SHA-256 identity`
+`same bytes -> same SHA-256 hash`
+
+A matching SHA-256 value confirms that the checked artifact reproduces the recorded release digest.
 
 It does not by itself establish behavioral correctness.
+
+`artifact digest agreement != behavioral proof`
 
 ---
 
@@ -577,7 +586,7 @@ This conclusion is bounded to the committed implementation, declared profiles, s
 
 # **19. Governing Reference Relation**
 
-`same validated canonical fragment set + same ruleset -> same bounded resolution bundle`
+`same validated canonical fragment set + same ruleset + same declared boundary context -> same bounded resolution bundle`
 
 The current implementation further separates:
 
@@ -589,7 +598,7 @@ The current implementation further separates:
 
 `projection != settlement`
 
-`artifact identity != behavioral proof`
+`artifact digest agreement != behavioral proof`
 
 ---
 
