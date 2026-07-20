@@ -1,270 +1,205 @@
 # ⭐ **ORL — Quickstart**
 
-**Orderless Ledger (ORL)**
+**Orderless Ledger (ORL) v2.0.0**
 
-**Deterministic Structural Reconciliation Reference Model**
+**Validated Canonical Evidence • Deterministic Structural Resolution • Resolution Receipts • Bounded Closure**
 
-**Order-Independent • Clock-Independent Resolution • Explicit Incompleteness • Demonstrated Conflict Abstention**
-
-**Powered by the Shunyaya Framework**
+**Developed within the Shunyaya Framework**
 
 ---
 
 ## ⚡ **30-Second Start**
 
-From the repository root, run:
+From the repository root, run the Python reference kernel:
 
 ```text
-python demo/orl_demo_reference.py
+python demo/ORL_Reference_Kernel_v2_0_0.py
 ```
 
-Expected final summary:
+Expected headline output:
 
 ```text
-R:2 I:1 A:2
+Validation       : ACCEPTED
+Closure          : SEALED
+State Summary    : R:2 I:1 A:2
+Node Equality    : True
 ```
 
-Equivalent Python output may appear as:
+Expected resolved-only structural projection:
 
 ```text
-{'ABSTAIN': 2, 'INCOMPLETE': 1, 'RESOLVED': 2}
+UNIT
+  Alice = -500
+  Bob   = +200
+  Dina  = +300
 ```
 
-Expected final balance projection:
+Then run the full Python audit:
 
 ```text
-Alice = -500
-Bob   = +200
-Dina  = +300
+python demo/ORL_Reference_Kernel_v2_0_0.py --audit
 ```
 
-Expected equality result:
+Expected final result:
 
 ```text
-all_nodes_match_after_sharing = True
+TOTAL 272/272 PASS
 ```
 
 ---
 
-## 👀 **What to Observe**
-
-For the supplied scenario:
-
-- three nodes begin with different local fragment collections  
-- the resolver does not read timestamps or wall-clock values  
-- the resolver does not consult fragment arrival position when classifying the supported example transactions  
-- exact duplicate entries are absorbed  
-- matching supported debit and credit fragments can resolve  
-- missing demonstrated structure remains `INCOMPLETE`  
-- demonstrated amount mismatch or same-transaction multiplicity conflict produces `ABSTAIN`  
-- only `RESOLVED` transactions affect the demonstrated balance projection  
-- after every node receives the same merged fragment set, every node produces the same demonstrated resolver output  
-
-The governing relation is:
-
-`same deduplicated supported fragment set + same resolver rules -> same bounded resolution`
-
----
-
-## ⚡ **Browser Demo**
+## 🌐 **Open the Browser Structural Laboratory**
 
 Open:
 
 ```text
-demo/orl_demo_v3.html
+demo/ORL_Structural_Lab_v2_0_0.html
 ```
 
-Then click:
+The browser application runs locally after download.
 
-**Run Full Demo**
+No server, database, external package, GPS input, NTP input, synchronized clock, or internet connection is required to execute the supplied reference implementation.
 
-The browser demonstration runs locally after download.
+The browser application contains:
 
-No internet connection, GPS signal, NTP service, synchronized clock, database, or server is required to execute the supplied reference demo.
-
-### **Browser Controls**
-
-- **Next Step** — advances one declared stage  
-- **Run Full Demo** — runs the complete local-to-shared sequence  
-- **Reset** — restores the initial local fragment views  
-- **Jump to Sharing** — moves directly to the final `All Nodes Complete Bounded Sharing` stage  
-
-The sharing sequence is a test mechanism.
-
-It is not a consensus, reliable-broadcast, network-finality, or settlement protocol.
+- a three-node reference story
+- deterministic transaction receipts
+- a resolved-only structural projection
+- canonical evidence identities
+- bounded `OPEN` / `SEALED` closure
+- interactive structural experiments
+- an embedded executable audit
 
 ---
 
-## 🧭 **Core Principle**
+## 🧭 **Core Relation**
 
-`bounded_resolution = resolve(supported_fragment_set, resolver_rules)`
+The current ORL v2.0.0 contract is:
 
-For a supported fragment collection `E`, a supported permutation `P(E)`, and a fixed resolver version `v`:
+`same validated canonical fragment set + same ruleset + same declared boundary context -> same bounded resolution bundle`
 
-`R_v(P(E)) = R_v(E)`
+The processing path is:
 
-When two nodes hold the same deduplicated supported fragment set and use the same resolver rules:
+`raw fragments -> validate -> canonicalize -> deduplicate -> resolve -> project -> evaluate declared closure boundary -> receipt -> bundle`
 
-`D(E_i) = D(E_j) -> R_v(E_i) = R_v(E_j)`
-
-Where:
-
-- `R_v` is the resolver under ruleset version `v`  
-- `D(E)` is exact-duplicate absorption  
-- `E_i` and `E_j` are the fragment collections held by two nodes  
-
-This is a bounded claim about the declared model and supplied examples.
-
-It is not a universal theorem about every ledger architecture.
+Validation, resolution, and closure remain separate.
 
 ---
 
-## 🔍 **Structural Transaction Model**
+## 🧱 **Three Separate State Lanes**
 
-The current demos represent a transaction as declared fragments associated with a transaction identifier.
+### **1. Validation**
 
-Example:
+A batch is either:
 
-`ORL100 = {debit(Alice,500), credit(Bob,500)}`
+`ACCEPTED`
 
-The resolver examines which supported fragments are present under that identifier.
+or:
 
-It does not use which fragment arrived first as the classification authority.
+`REFUSED`
 
-### **Current Demonstrated Rules**
+Malformed or unsupported fragments do not silently enter the resolver.
 
-For the supplied examples:
+The current strict batch policy is:
 
-`one debit + one credit + matching amount -> RESOLVED`
-
-`missing counterpart -> INCOMPLETE`
-
-`debit_credit_mismatch OR demonstrated_same_transaction_multiplicity_conflict -> ABSTAIN`
-
-Other malformed, unsupported, or untested conflict forms remain outside the current conformance claim.
+`any invalid fragment -> REFUSE_WHOLE_BATCH`
 
 ---
 
-## ⚖️ **Resolution States**
+### **2. Resolution**
 
-### **RESOLVED**
+Accepted transaction structure is classified as:
 
-For the supplied examples, `RESOLVED` means:
+- `RESOLVED`
+- `INCOMPLETE`
+- `ABSTAIN`
 
-- one declared debit is present  
-- one declared credit is present  
-- the declared amounts match  
+Examples:
 
-Only `RESOLVED` transactions affect the demonstrated balance projection.
+`one debit + one credit + same amount + same unit + different accounts -> RESOLVED`
 
-`RESOLVED` does not mean:
+`missing debit OR missing credit -> INCOMPLETE`
 
-- authorized  
-- funded  
-- settled  
-- immutable  
-- legally final  
-- globally complete  
+`multiplicity conflict OR self-transfer OR amount mismatch OR unit mismatch -> ABSTAIN`
+
+Only `RESOLVED` transactions contribute to the structural projection.
 
 ---
 
-### **INCOMPLETE**
+### **3. Closure**
 
-`INCOMPLETE` means that a required demonstrated counterpart is missing.
+Closure is separately classified as:
 
-The resolver does not invent the missing fragment.
+- `OPEN`
+- `SEALED`
 
----
+`SEALED` means that the current canonical fragment ID set exactly matches a declared evidence boundary under the current ruleset.
 
-### **ABSTAIN**
-
-For the conflict forms included in the supplied scenario, `ABSTAIN` means that the demonstrated declarations are incompatible and no demonstrated balance effect is applied.
-
-Within the current examples:
-
-`INCOMPLETE OR ABSTAIN -> no demonstrated balance effect`
+It does not mean that no evidence exists outside that declared boundary.
 
 ---
 
-## 🔍 **Declared Transactions**
+## 🧩 **Reference Fragment Schema**
 
-### **ORL100**
+Each supported fragment contains exactly:
 
 ```text
-debit(Alice,500)
-credit(Bob,500)
+schema
+tx
+side
+account
+amount_minor
+unit
 ```
 
-Final state:
-
-`ORL100 -> RESOLVED`
-
----
-
-### **ORL200**
+The current schema profile is:
 
 ```text
-debit(Bob,300)
-credit(Dina,300)
+ORL-FRAGMENT-2-D01
 ```
 
-Final state:
+The supported sides are:
 
-`ORL200 -> RESOLVED`
+```text
+debit
+credit
+```
 
----
+`amount_minor` is a positive decimal integer string from 1 to 78 digits.
 
-### **ORL300**
+Examples:
 
-Only one counterpart is present.
+```text
+"1"
+"500"
+"9007199254740993"
+```
 
-Final state:
+Floating-point amounts are not used by the resolver.
 
-`ORL300 -> INCOMPLETE`
-
----
-
-### **ORL400**
-
-The declared debit and credit amounts differ.
-
-Final state:
-
-`ORL400 -> ABSTAIN`
+Exact amounts are processed with arbitrary-precision integers in Python and `BigInt` in the browser.
 
 ---
 
-### **ORL500**
+## 🔍 **Reference Scenario**
 
-One debit and two incompatible credit declarations share the same transaction identifier.
+The supplied scenario contains five transactions.
 
-Final state:
-
-`ORL500 -> ABSTAIN`
-
-`ORL500` is a same-transaction multiplicity-conflict example.
-
-It is not a complete demonstration of general double-spend prevention.
-
----
-
-## 📊 **Expected Final Result**
-
-| Transaction | Expected State | Demonstrated Reason |
+| Transaction | Final State | Reason |
 |---|---|---|
-| `ORL100` | `RESOLVED` | Matching debit and credit |
-| `ORL200` | `RESOLVED` | Matching debit and credit |
-| `ORL300` | `INCOMPLETE` | Missing counterpart |
-| `ORL400` | `ABSTAIN` | Debit-credit amount mismatch |
-| `ORL500` | `ABSTAIN` | Same-transaction multiple-credit conflict |
+| `ORL100` | `RESOLVED` | `COMPATIBLE_PAIR` |
+| `ORL200` | `RESOLVED` | `COMPATIBLE_PAIR` |
+| `ORL300` | `INCOMPLETE` | `MISSING_DEBIT` |
+| `ORL400` | `ABSTAIN` | `AMOUNT_MISMATCH` |
+| `ORL500` | `ABSTAIN` | `MULTIPLE_CREDITS` |
 
-Expected state summary:
+Expected summary:
 
 ```text
 R:2 I:1 A:2
 ```
 
-Expected balance projection:
+Expected projection:
 
 ```text
 Alice = -500
@@ -272,138 +207,360 @@ Bob   = +200
 Dina  = +300
 ```
 
+`ORL300`, `ORL400`, and `ORL500` do not contribute to the projection.
+
 ---
 
-## 🔁 **Repeatability Check**
+## 🔁 **Three-Node Reference Story**
 
-Run the Python demo again:
+The browser begins with three nodes holding different valid fragment subsets.
+
+### **Stage 1 — Local Views**
+
+Different evidence may produce different local bounded snapshots.
+
+### **Stage 2 — Same Evidence, Open Closure**
+
+After every node receives the same canonical fragment set with no declared boundary:
+
+`same fragment_set_id + same ruleset_id + same no-boundary context -> same open bundle`
+
+### **Stage 3 — Same Evidence, Declared Boundary Satisfied**
+
+When that exact canonical fragment set also matches the declared boundary:
+
+`closure_state = SEALED`
+
+All nodes then reproduce the same sealed bundle under the same declared boundary.
+
+The sharing sequence is a demonstration mechanism.
+
+It is not a consensus, reliable-broadcast, authorization, settlement, or network-finality protocol.
+
+---
+
+## 🧪 **Structural Laboratory**
+
+The browser laboratory exposes eight principal experiments.
+
+### **Shuffle Evidence**
+
+Changes input order while preserving the canonical evidence set.
+
+Expected:
+
+`same canonical evidence + unchanged ruleset and closure context -> same bundle`
+
+### **Add Exact Duplicate**
+
+Adds an exact duplicate fragment.
+
+Expected:
+
+`D(E union E) = D(E)`
+
+The raw input count changes.
+
+The canonical unique set does not.
+
+### **Complete ORL300**
+
+Adds the missing compatible debit.
+
+Expected transition:
+
+`INCOMPLETE -> RESOLVED`
+
+### **Conflict ORL100**
+
+Adds a second distinct credit declaration.
+
+Expected transition:
+
+`RESOLVED -> ABSTAIN`
+
+The earlier ORL100 projection contribution is removed from the current structural projection.
+
+### **Add Evidence After Conflict**
+
+Adds another distinct valid declaration after conflict.
+
+Under the current append-only evidence model:
+
+`ABSTAIN -> ABSTAIN`
+
+### **Inject Malformed Fragment**
+
+Adds an unsupported side.
+
+Expected:
+
+`validation_state = REFUSED`
+
+The resolver does not silently ignore the fragment.
+
+### **Declare + Seal Current Set**
+
+Declares the current valid canonical fragment ID set as the evidence boundary.
+
+Expected:
+
+`OPEN -> SEALED`
+
+The evidence identity itself does not change.
+
+### **Reset Laboratory**
+
+Restores the reference union with no declared boundary.
+
+Expected:
+
+`closure_state = OPEN`
+
+---
+
+## ✅ **Run the Browser Audit**
+
+Open the browser developer console and run:
 
 ```text
-python demo/orl_demo_reference.py
+await ORL_AUDIT.runAll()
 ```
 
-For the unchanged supplied scenario, confirm the same:
+Expected final result:
 
-- transaction states  
-- balance projection  
-- state counts  
-- node-equality result  
+```text
+ORL AUDIT TOTAL 286/286 PASS
+```
 
-Expected relation:
+The current browser audit groups are:
 
-`same supplied input + same resolver -> same supplied output`
+```text
+VALIDATION                     20/20 PASS
+CANONICALIZATION               8/8 PASS
+EXACT_AMOUNTS                  5/5 PASS
+RESOLUTION                     18/18 PASS
+DEDUPLICATION                  3/3 PASS
+REFERENCE_SCENARIO             10/10 PASS
+PERMUTATION_INVARIANCE         120/120 PASS
+SET_ALGEBRA                    3/3 PASS
+EVIDENCE_GROWTH                3/3 PASS
+EVIDENCE_GROWTH_EXHAUSTIVE     65/65 PASS
+CLOSURE                        6/6 PASS
+RECEIPTS                       7/7 PASS
+KNOWN_REGRESSIONS              4/4 PASS
+INTERACTIVE_FLOWS              8/8 PASS
+CROSS_ENGINE_FROZEN            6/6 PASS
+```
 
-This is a repeatability check for the declared scenario.
+Useful console commands:
 
-It is not a universal conformance proof.
-
----
-
-## 🔀 **Order-Independence Meaning**
-
-In the current resolver, classification is based on the supported fragments present under each transaction identifier.
-
-Fragment arrival position is not read as part of the transaction-state rule.
-
-The intended invariant is:
-
-`R_v(P(E)) = R_v(E)`
-
-A stronger future release should add an automated permutation corpus that asserts this invariant across many declared vectors.
-
----
-
-## 🔎 **Precise Meaning of No Time, No Order, and No Coordinator**
-
-### **No Time as Classification Authority**
-
-The resolver does not use:
-
-- timestamps  
-- synchronized clocks  
-- wall-clock time  
-- GPS time  
-- NTP state  
-
-Time may still remain useful outside the resolver for history, monitoring, reporting, or operations.
+```text
+await ORL_AUDIT.runAll()
+ORL_AUDIT.last()
+ORLCore.referenceScenario(true)
+```
 
 ---
 
-### **No Arrival Order as Classification Authority**
+## 🐍 **Python Audit**
 
-The resolver classifies the present supported fragment set rather than asking which fragment arrived first.
+Run:
 
-Operational systems may still use:
+```text
+python demo/ORL_Reference_Kernel_v2_0_0.py --audit
+```
 
-- logs  
-- queues  
-- sequence numbers  
-- replay  
-- ordered transport  
+Expected final result:
 
----
+```text
+TOTAL 272/272 PASS
+```
 
-### **No Coordinator State as Classification Authority**
+Current Python audit groups:
 
-The resolver does not accept a coordinator's declared result as an input to transaction classification.
-
-The supplied demonstrations still use scripted code to distribute fragments.
-
-The repository does not implement coordinator-free networking or distributed consensus.
-
----
-
-## 🚫 **What ORL Does Not Implement or Prove**
-
-The current repository does not implement or prove:
-
-- universal ledger correctness  
-- immutable transaction finality  
-- complete malformed-input validation  
-- authorization  
-- identity or account ownership  
-- available-funds verification  
-- cryptographic signatures  
-- fraud prevention  
-- consensus  
-- Byzantine fault tolerance  
-- reliable broadcast  
-- payment execution  
-- account posting  
-- settlement  
-- regulatory compliance  
-- production readiness  
-- general double-spend prevention  
-- universal order independence  
-
-ORL should be evaluated as a bounded structural-reconciliation reference model.
+```text
+VALIDATION                     20/20 PASS
+CANONICALIZATION               8/8 PASS
+EXACT_AMOUNTS                  5/5 PASS
+RESOLUTION                     18/18 PASS
+DEDUPLICATION                  3/3 PASS
+REFERENCE_SCENARIO             10/10 PASS
+PERMUTATION_INVARIANCE         120/120 PASS
+SET_ALGEBRA                    3/3 PASS
+EVIDENCE_GROWTH                3/3 PASS
+EVIDENCE_GROWTH_EXHAUSTIVE     65/65 PASS
+CLOSURE                        6/6 PASS
+RECEIPTS                       7/7 PASS
+KNOWN_REGRESSIONS              4/4 PASS
+```
 
 ---
 
-## ✅ **Appropriate Current Uses**
+## 🔀 **Order Independence**
 
-The repository may be used as:
+For a validated fragment collection `E`, a permutation `P(E)`, and the same ruleset:
 
-- a deterministic reconciliation example  
-- an order-invariance research prototype  
-- a duplicate-absorption demonstration  
-- a partial-state classification example  
-- an audit-oriented evidence comparison model  
-- an educational disconnected-node demonstration  
-- a basis for later conformance work  
+`R(P(E)) = R(E)`
 
-It should not be used directly as a production financial authority.
+The current Python and browser audits each execute:
+
+```text
+PERMUTATION_INVARIANCE 120/120 PASS
+```
+
+The order-independent property is bounded to the declared ORL v2.0.0 schema, canonicalization rules, and resolver profile.
+
+It is not a universal theorem about all ledger systems or all operations.
+
+---
+
+## 🧮 **Set Algebra**
+
+The current canonical duplicate-absorption and union model tests:
+
+`D(A union B) = D(B union A)`
+
+`D(E union E) = D(E)`
+
+`D((A union B) union C) = D(A union (B union C))`
+
+The current result in both implementations is:
+
+```text
+SET_ALGEBRA 3/3 PASS
+```
+
+---
+
+## 📈 **Evidence-Growth Model**
+
+Under append-only valid evidence and the current resolver profile, the tested state transitions are:
+
+`INCOMPLETE -> INCOMPLETE | RESOLVED | ABSTAIN`
+
+`RESOLVED -> RESOLVED | ABSTAIN`
+
+`ABSTAIN -> ABSTAIN`
+
+The exhaustive current test result is:
+
+```text
+EVIDENCE_GROWTH_EXHAUSTIVE 65/65 PASS
+```
+
+These transition constraints apply only to the declared append-only evidence model and current ruleset.
+
+Removal, revocation, supersession, remediation, or ruleset migration are separate concerns.
+
+---
+
+## 🧾 **Resolution Receipts**
+
+Every transaction identifier in an accepted batch that reaches structural classification receives a deterministic receipt containing its:
+
+- transaction identifier
+- transaction evidence identity
+- ruleset identity
+- resolution state
+- reason code
+- resolved fields where applicable
+- closure state
+- closure reason
+- declared boundary identity where applicable
+- receipt identity
+
+The current audits verify:
+
+```text
+RECEIPTS 7/7 PASS
+```
+
+This includes receipt reconstruction, tamper rejection, and distinct open/sealed receipt identities.
+
+A receipt proves consistency with the declared receipt construction.
+
+It does not prove authorization, authenticity of external sources, available funds, legal validity, settlement, or global completeness.
+
+---
+
+## 🔐 **Frozen Cross-Engine Contract**
+
+The Python kernel and browser implementation independently reproduce the current frozen identities.
+
+```text
+Ruleset ID
+389eb1062a4cf7668450c475fd84c7611c3ab6c7c402f9e34ac37698fea09909
+
+Reference Fragment Set ID
+7a37a07d4a83a0235199b2846da6a68d045d7dde458520fdf91c9504943b6a6f
+
+Open Bundle ID
+046d1de963dcb4b4ab05aeb4e7e81afaca56b9a8fceb6bb50f22d8c087c2d973
+
+Boundary ID
+ba855c228a92ea9414bc3b4ad354aba92f92e62c767b9f2535a0db3d2188806b
+
+Sealed Bundle ID
+857564e4e9f24a77ef1a9550e385d203c5e41e55b8fae624f37b82ee684c39f5
+
+Projection ID
+9c714030a7a333a4018fc610a6e086e3b64a106a2cbc957b6b58a8253653c3ff
+```
+
+Expected browser result:
+
+```text
+CROSS_ENGINE_FROZEN 6/6 PASS
+```
+
+---
+
+## 🔐 **Artifact Identity**
+
+Current v2.0.0 demo file SHA-256 values:
+
+```text
+ORL_Reference_Kernel_v2_0_0.py
+c9fe03c56631d5751669c8635227f1e737e1c419add1bdc40138860210daf4c1
+
+ORL_Structural_Lab_v2_0_0.html
+1f8918e8214385f63288003c4842cf600e7e95e1fa8431afe237768b57f406e1
+```
+
+On Windows:
+
+```text
+certutil -hashfile demo\ORL_Reference_Kernel_v2_0_0.py SHA256
+certutil -hashfile demo\ORL_Structural_Lab_v2_0_0.html SHA256
+```
+
+Compare the reported values with:
+
+```text
+verify\FREEZE_DEMO_SHA256.txt
+```
+
+A matching SHA-256 value establishes byte identity for the checked artifact.
+
+`artifact identity != behavioral proof`
+
+Run the audits as well.
 
 ---
 
 ## ⚙️ **Minimum Requirements**
 
-- Python 3.9 or later  
-- Python standard library only  
-- a modern browser for the HTML demo  
-- no external Python packages  
-- no server required  
-- no internet connection required after download  
+Python reference kernel:
+
+- Python 3.9 or later
+- Python standard library only
+
+Browser Structural Laboratory:
+
+- a modern browser with `BigInt` support
+
+No external Python package or server is required for the supplied reference implementation.
 
 ---
 
@@ -415,131 +572,52 @@ ORDERLESS-LEDGER/
 ├── README.md
 ├── LICENSE
 │
-├── demo
-│   ├── orl_demo_reference.py
-│   └── orl_demo_v3.html
+├── demo/
+│   ├── ORL_Reference_Kernel_v2_0_0.py
+│   └── ORL_Structural_Lab_v2_0_0.html
 │
-├── docs
+├── docs/
 │   ├── FAQ.md
 │   ├── Quickstart.md
+│   ├── ORL_Core_Architecture.md
 │   ├── Test-Guide.md
 │   └── ORL-Structural-Overview.png
 │
-└── verify
+└── verify/
     ├── FREEZE_DEMO_SHA256.txt
-    └── VERIFY.txt
+    └── VERIFY.md
 ```
 
 ---
 
-## 🧠 **Repository Roles**
+## ⚖️ **What ORL v2.0.0 Does Not Establish**
 
-- `demo/` — Python and browser reference demonstrations  
-- `docs/` — usage, testing, boundaries, and conceptual explanation  
-- `README.md` — repository overview and claim boundary  
-- `verify/` — artifact-identity and reference-verification material  
-- `LICENSE` — repository usage terms  
+The current reference implementation does not establish or provide:
 
----
+- universal ledger correctness
+- source authenticity
+- identity verification
+- cryptographic signatures
+- authorization
+- account ownership
+- available-funds verification
+- fraud prevention
+- consensus
+- Byzantine fault tolerance
+- reliable broadcast
+- network dissemination
+- payment execution
+- account posting
+- settlement
+- immutable financial finality
+- regulatory compliance
+- production financial authority
+- universal order independence
 
-## 🔐 **Artifact Identity Check**
-
-The repository records SHA-256 values in:
-
-```text
-verify/FREEZE_DEMO_SHA256.txt
-```
-
-Follow:
-
-```text
-verify/VERIFY.txt
-```
-
-On Windows, run:
-
-```text
-certutil -hashfile demo\orl_demo_reference.py SHA256
-certutil -hashfile demo\orl_demo_v3.html SHA256
-```
-
-Then compare both values with the committed freeze file.
-
-The meaning of this check is:
-
-`same bytes -> same SHA-256 hash`
-
-A successful hash comparison establishes artifact identity.
-
-It does not by itself establish behavioral correctness, complete conformance, cross-engine equality, or production safety.
-
----
-
-## ⚠️ **Current Validation Boundary**
-
-The current demos assume well-formed example inputs.
-
-They do not yet certify behavior for:
-
-- malformed transaction identifiers  
-- unsupported side values  
-- non-integer amounts  
-- negative or zero amounts  
-- oversized amounts  
-- self-transfers  
-- adversarial delimiter content  
-- cross-language numeric limits  
-- every possible conflict shape  
-- every possible fragment permutation  
-- undisclosed external evidence  
-
-These conditions belong to the later resolver-hardening and conformance stage.
-
----
-
-## 🧪 **Future Technical Direction**
-
-A stronger technical revision should add:
-
-- a formal supported-input schema  
-- explicit invalid-input refusal  
-- assertion-based expected outputs  
-- a deterministic permutation corpus  
-- malformed-input vectors  
-- adversarial conflict vectors  
-- canonical serialization  
-- exact cross-language amount representation  
-- Python and browser conformance tests  
-- versioned resolver receipts  
-- independent reconstruction  
-
-Future target relation:
-
-`same validated canonical structure + same ruleset version -> same independently verified output`
-
-This stronger verification layer is not part of the current public demos.
-
----
-
-## ⚡ **Suggested One-Minute Demo**
-
-1. Open `demo/orl_demo_v3.html`.
-2. Click **Reset**.
-3. Observe the three different local fragment views.
-4. Click **Run Full Demo**.
-5. Observe fragments becoming jointly visible.
-6. Confirm `ORL100` and `ORL200` resolve.
-7. Confirm `ORL300` remains incomplete.
-8. Confirm `ORL400` and `ORL500` abstain.
-9. Confirm the final summary is `R:2 I:1 A:2`.
-10. Confirm every node shows the same final demonstrated snapshot.
-
-Correct interpretation:
-
-`same deduplicated supported evidence + same resolver rules -> same bounded resolution`
+ORL v2.0.0 should be evaluated as a bounded deterministic structural-reconciliation reference implementation.
 
 ---
 
 ## ⭐ **One-Line Summary**
 
-ORL is a public deterministic reference model in which independent nodes can begin with different supported transaction fragments and, after receiving the same deduplicated fragment set, produce the same bounded resolver output without using timestamps, fragment arrival order, GPS, NTP, or coordinator state as the classification authority — while preserving explicit `INCOMPLETE` and demonstrated `ABSTAIN` outcomes and keeping authorization, consensus, settlement, and immutable finality outside the current implementation.
+ORL v2.0.0 validates and canonicalizes supported transaction fragments, absorbs exact duplicates, classifies accepted structure deterministically, produces reproducible receipts and structural projections, and can separately verify exact bounded closure — while keeping authorization, consensus, settlement, and production financial authority outside the implementation.
