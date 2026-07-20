@@ -65,6 +65,8 @@ The narrower architectural statement is:
 
 `operational sequence != structural resolution authority`
 
+[![ORL Structural Overview](docs/ORL-Structural-Overview.png)](docs/ORL-Structural-Overview.png)
+
 ---
 
 ## 🧭 **Architecture at a Glance**
