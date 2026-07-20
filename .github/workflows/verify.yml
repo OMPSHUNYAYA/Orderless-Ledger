@@ -3,19 +3,158 @@ name: ORL Deterministic Verification
 on:
   push:
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   verify:
+    name: Verify ORL v2.0.0
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.11"
 
-      - name: Run ORL reference demo
-        run: python demo/orl_demo_reference.py
+      - name: Run ORL reference kernel
+        run: |
+          python demo/ORL_Reference_Kernel_v2_0_0.py | tee orl_reference_output.txt
+          grep -Fq "Validation       : ACCEPTED" orl_reference_output.txt
+          grep -Fq "Closure          : SEALED" orl_reference_output.txt
+          grep -Fq "State Summary    : R:2 I:1 A:2" orl_reference_output.txt
+          grep -Fq "Node Equality    : True" orl_reference_output.txt
+
+      - name: Run ORL Python full audit
+        run: |
+          python demo/ORL_Reference_Kernel_v2_0_0.py --audit | tee orl_python_audit.txt
+          grep -Fq "TOTAL 272/272 PASS" orl_python_audit.txt
+
+      - name: Verify frozen demo SHA-256 values
+        shell: python
+        run: |
+          import hashlib
+          import pathlib
+          import re
+          import sys
+
+          freeze_path = pathlib.Path("verify/FREEZE_DEMO_SHA256.txt")
+          freeze_text = freeze_path.read_text(encoding="utf-8")
+
+          files = [
+              pathlib.Path("demo/ORL_Reference_Kernel_v2_0_0.py"),
+              pathlib.Path("demo/ORL_Structural_Lab_v2_0_0.html"),
+          ]
+
+          failed = False
+
+          for path in files:
+              pattern = rf"{re.escape(path.name)}:\s*([0-9a-fA-F]{{64}})"
+              match = re.search(pattern, freeze_text)
+
+              if not match:
+                  print(f"FAIL: No frozen SHA-256 found for {path.name}")
+                  failed = True
+                  continue
+
+              expected = match.group(1).lower()
+              actual = hashlib.sha256(path.read_bytes()).hexdigest()
+
+              if actual != expected:
+                  print(f"FAIL: {path.name}")
+                  print(f"  expected: {expected}")
+                  print(f"  actual:   {actual}")
+                  failed = True
+              else:
+                  print(f"PASS: {path.name}")
+                  print(f"  SHA-256: {actual}")
+
+          if failed:
+              sys.exit(1)
+
+          print("FROZEN DEMO SHA-256: PASS")
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      - name: Install Chromium test runtime
+        run: |
+          npm install --no-save --no-package-lock playwright@1.61.1
+          npx playwright install chromium --with-deps
+
+      - name: Run ORL browser full audit
+        run: |
+          cat > /tmp/orl_browser_audit.mjs <<'EOF'
+          import { chromium } from "playwright";
+          import { pathToFileURL } from "node:url";
+          import path from "node:path";
+
+          const htmlPath = path.resolve(
+            "demo/ORL_Structural_Lab_v2_0_0.html"
+          );
+
+          const browser = await chromium.launch({
+            headless: true
+          });
+
+          try {
+            const page = await browser.newPage();
+
+            page.on("console", message => {
+              console.log(`[browser] ${message.text()}`);
+            });
+
+            page.on("pageerror", error => {
+              console.error(`[browser error] ${error.message}`);
+            });
+
+            await page.goto(pathToFileURL(htmlPath).href, {
+              waitUntil: "load"
+            });
+
+            await page.waitForFunction(
+              () => typeof window.ORL_AUDIT !== "undefined"
+            );
+
+            const result = await page.evaluate(async () => {
+              return await window.ORL_AUDIT.runAll();
+            });
+
+            console.log(
+              `ORL BROWSER AUDIT RESULT: ${result.passed}/${result.total} ${result.status}`
+            );
+
+            if (
+              result.status !== "PASS" ||
+              result.passed !== 286 ||
+              result.total !== 286
+            ) {
+              throw new Error(
+                `Expected ORL browser audit 286/286 PASS, received ${result.passed}/${result.total} ${result.status}`
+              );
+            }
+
+            console.log("ORL BROWSER FULL AUDIT: PASS");
+          } finally {
+            await browser.close();
+          }
+          EOF
+
+          node /tmp/orl_browser_audit.mjs
+
+      - name: Verification summary
+        run: |
+          echo "ORL v2.0.0 VERIFICATION PASS"
+          echo "Python reference scenario: PASS"
+          echo "Python audit: 272/272 PASS"
+          echo "Browser audit: 286/286 PASS"
+          echo "Frozen cross-engine checks: included in browser audit"
+          echo "Frozen demo SHA-256: PASS"
