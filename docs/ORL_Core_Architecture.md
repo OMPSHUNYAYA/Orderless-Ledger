@@ -60,9 +60,9 @@ The ORL v2.0.0 pipeline is:
 
 `-> project resolved effects`
 
-`-> create transaction receipts`
-
 `-> evaluate declared closure boundary`
+
+`-> create transaction receipts`
 
 `-> create bounded resolution bundle`
 
@@ -536,7 +536,7 @@ The current precedence is:
 
 `> UNIT_MISMATCH`
 
-`> RESOLVED`
+`> COMPATIBLE_PAIR`
 
 The first applicable condition governs the result.
 
@@ -799,7 +799,7 @@ For an accepted fragment collection `E`, a permutation `P(E)`, and the fixed cur
 
 The current reference implementation tests 120 permutations in both Python and browser audit paths.
 
-The invariant applies to the bounded ORL resolver output for the same accepted fragment multiset after exact duplicate absorption.
+The invariant applies to the bounded ORL resolver output for the same accepted canonical fragment set after exact duplicate absorption.
 
 It does not claim that:
 
@@ -1446,9 +1446,9 @@ ORL v2.0.0 can be expressed as:
 
 `-> resolved-only exact projection`
 
-`-> deterministic transaction receipts`
-
 `-> OPEN | SEALED bounded closure`
+
+`-> deterministic transaction receipts`
 
 `-> deterministic bundle identity`
 
