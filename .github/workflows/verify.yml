@@ -92,7 +92,7 @@ jobs:
 
       - name: Run ORL browser full audit
         run: |
-          cat > /tmp/orl_browser_audit.mjs <<'EOF'
+          cat > orl_browser_audit.mjs <<'EOF'
           import { chromium } from "playwright";
           import { pathToFileURL } from "node:url";
           import path from "node:path";
@@ -148,7 +148,8 @@ jobs:
           }
           EOF
 
-          node /tmp/orl_browser_audit.mjs
+          node ./orl_browser_audit.mjs
+          rm -f orl_browser_audit.mjs
 
       - name: Verification summary
         run: |
@@ -156,5 +157,5 @@ jobs:
           echo "Python reference scenario: PASS"
           echo "Python audit: 272/272 PASS"
           echo "Browser audit: 286/286 PASS"
-          echo "Frozen cross-engine checks: included in browser audit"
+          echo "Frozen cross-engine checks: 6/6 PASS within browser audit"
           echo "Frozen demo SHA-256: PASS"
