@@ -1,9 +1,0 @@
-ORL Demo Freeze (SHA256)
-
-Scope: demo folder only (deterministic behavior layer)
-
-orl_demo_reference.py:
-176d9b9bd396a731d896de79f80b1b2868526186c0a720e4647512fccb684d20
-
-orl_demo_v3.html:
-900f2677a990b89a8d1731d23b29d3373d2735b787d494bf669c6bc4f5ac5d19
