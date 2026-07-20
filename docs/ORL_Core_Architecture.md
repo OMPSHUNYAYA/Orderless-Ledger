@@ -16,7 +16,7 @@ It separates the classification of declared transaction structure from fragment 
 
 The central implementation relation is:
 
-`same validated canonical fragment set + same ruleset -> same bounded resolution bundle`
+`same validated canonical fragment set + same ruleset + same declared boundary context -> same bounded resolution bundle`
 
 The architecture is designed around explicit boundaries:
 
@@ -828,9 +828,11 @@ After nodes possess the same validated canonical fragment set and use the same r
 
 `D(E_i) = D(E_j) AND ruleset_i = ruleset_j`
 
-the deterministic relation is:
+the deterministic structural relation is:
 
 `R(E_i) = R(E_j)`
+
+For equality of the complete bounded bundle, the declared boundary context must also match.
 
 The reference demonstration verifies equality of final bounded bundle identity after each node receives the same reference evidence set under the same boundary state.
 
@@ -1380,7 +1382,7 @@ ORL v2.0.0 does not claim:
 
 The bounded implemented claim is:
 
-`same validated canonical fragment set + same ruleset -> same bounded resolution bundle`
+`same validated canonical fragment set + same ruleset + same declared boundary context -> same bounded resolution bundle`
 
 subject to the declared ORL v2.0.0 profiles and implementation boundary.
 
@@ -1482,6 +1484,6 @@ They do not provide the domain authorities that ORL explicitly leaves outside th
 
 ## ⭐ Final Architectural Relation
 
-`same validated canonical fragment set + same ruleset -> same bounded resolution bundle`
+`same validated canonical fragment set + same ruleset + same declared boundary context -> same bounded resolution bundle`
 
 ORL v2.0.0 implements this relation as a bounded, inspectable, cross-engine structural-reconciliation reference architecture with explicit validation, explicit incompleteness, conflict abstention, deterministic evidence identities, transaction receipts, exact projection, and separately declared bounded closure.
