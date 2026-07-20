@@ -541,9 +541,11 @@ Compare the reported values with:
 verify\FREEZE_DEMO_SHA256.txt
 ```
 
-A matching SHA-256 value establishes byte identity for the checked artifact.
+A matching SHA-256 value confirms that the checked artifact reproduces the recorded release digest.
 
-`artifact identity != behavioral proof`
+It does not by itself establish behavioral correctness.
+
+`artifact digest agreement != behavioral proof`
 
 Run the audits as well.
 
