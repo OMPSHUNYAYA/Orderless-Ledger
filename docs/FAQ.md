@@ -1,14 +1,24 @@
 # ⭐ **FAQ — ORL (Orderless Ledger)**
 
-**Deterministic Structural Reconciliation Reference Model**
+**Validated Canonical Evidence • Deterministic Structural Resolution • Reproducible Receipts • Bounded Closure**
 
-**Order-Independent • Clock-Independent Resolution • Explicit Incompleteness • Demonstrated Conflict Abstention**
+**ORL v2.0.0**
 
 ---
 
-**No timestamp authority • No arrival-order authority • No coordinator-state authority**
+`same validated canonical fragment set + same ruleset -> same bounded resolution bundle`
 
-**No GPS • No NTP • No Internet Required to Run the Reference Demos**
+ORL is a bounded structural-reconciliation reference implementation developed within the Shunyaya Framework.
+
+It separates:
+
+`validation != resolution`
+
+`resolution != closure`
+
+`closure != authorization`
+
+`projection != settlement`
 
 ---
 
@@ -16,658 +26,1020 @@
 
 ### **A1. What is ORL?**
 
-ORL, or Orderless Ledger, is a bounded structural ledger-reconciliation reference model.
+ORL, or Orderless Ledger, is a deterministic reference implementation for bounded structural reconciliation.
 
-Instead of classifying the supported example transactions from:
+It accepts a declared supported fragment schema, validates the complete input batch, canonicalizes valid evidence, absorbs exact canonical duplicates, classifies transaction structure, computes a resolved-only structural projection, issues deterministic receipts, and optionally checks the current evidence set against an explicitly declared exact boundary.
 
-- fragment arrival order  
-- timestamps  
-- synchronized clocks  
-- a coordinator's declared result  
+The processing path is:
 
-ORL classifies the supported fragment set through deterministic resolver rules.
+`raw fragments -> validate -> canonicalize -> deduplicate -> resolve -> project -> receipt -> optional boundary check`
 
-The core relation is:
-
-`bounded_resolution = resolve(supported_fragment_set, resolver_rules)`
-
-The current repository demonstrates this idea through Python and browser examples. It is not a complete financial, banking, accounting, payment, settlement, or consensus system.
+ORL is not a complete financial ledger, payment network, settlement system, consensus protocol, or banking platform.
 
 ---
 
 ### **A2. What problem does ORL explore?**
 
-Distributed and intermittently connected systems often receive:
+Distributed and intermittently connected systems can receive:
 
-- partial records  
-- delayed fragments  
-- duplicate entries  
+- partial declarations  
+- delayed declarations  
+- exact duplicates  
 - differently ordered inputs  
-- conflicting declarations  
+- incompatible declarations  
+- malformed or unsupported inputs  
 
-A sequence-authoritative design may allow arrival order or replay history to influence which result becomes visible.
+ORL explores whether a bounded supported evidence set can be classified deterministically without using fragment arrival order or clock metadata as the authority over the classification result.
 
-ORL explores a narrower alternative:
-
-> Can a supported transaction structure be classified from the fragments presently available, without using their arrival order or clock metadata as the authority over the result?
-
-For the declared examples, ORL demonstrates that it can.
+The current implementation demonstrates that behavior for its declared schema, ruleset, canonicalization model, and committed test vectors.
 
 ---
 
-### **A3. What does “orderless” mean?**
+### **A3. What does "orderless" mean in ORL?**
 
-In ORL, “orderless” means that the resolver does not consult fragment arrival position when classifying the supported example transactions.
+It means fragment arrival position is not an input to the current structural classification rules.
 
-For a supported fragment collection `E`, a supported permutation `P(E)`, and a fixed resolver version `v`:
+For a validated supported fragment collection `E`, a supported permutation `P(E)`, and the same fixed ruleset:
 
-`R_v(P(E)) = R_v(E)`
+`R(P(E)) = R(E)`
 
-Order may still exist operationally in:
+The committed audit checks all:
 
-- logs  
-- queues  
+`5! = 120`
+
+permutations of a frozen conformance vector.
+
+Operational order may still exist in transport, logs, queues, replay, history, execution, auditing, or settlement workflows.
+
+ORL does not claim that every real system can eliminate sequence.
+
+---
+
+### **A4. Is ORL anti-time?**
+
+No.
+
+The current resolver does not use timestamps, synchronized clocks, GPS time, NTP state, or wall-clock values as classification inputs.
+
+Time may still be required for:
+
+- history  
+- monitoring  
+- reporting  
+- legal sequencing  
+- expiration  
 - transport  
-- display history  
-- auditing  
-- recovery  
-- settlement workflows  
+- operations  
 
-ORL does not claim that sequence disappears from every ledger system.
+The precise statement is:
 
-It claims that arrival order is not the resolution authority in the declared model.
+`clock metadata is not structural resolution authority in the declared ORL resolver`
 
 ---
 
-### **A4. Is ORL saying time does not exist?**
+### **A5. Is ORL anti-coordination?**
 
 No.
 
-ORL does not deny time and does not replace civil time, duration, scheduling, or historical records.
+The resolver does not accept a coordinator's declared result as its structural classification authority.
 
-The current resolver does not use:
-
-- timestamps  
-- wall-clock time  
-- synchronized clocks  
-- GPS time  
-- NTP state  
-
-when classifying the supported example transactions.
-
-Time may still remain useful or necessary outside the resolver.
+A real deployment may still require coordination for transport, replication, access control, governance, recovery, execution, or settlement.
 
 ---
 
-### **A5. What is the core idea in one line?**
+### **A6. What is the core idea in one line?**
 
-`same deduplicated supported fragment set + same resolver rules -> same bounded resolution`
+`same validated canonical fragment set + same ruleset -> same bounded resolution bundle`
 
 ---
 
-### **A6. Is ORL a banking system?**
+### **A7. Is ORL a banking or accounting system?**
 
 No.
 
-ORL is not:
+ORL does not provide:
 
-- a banking platform  
-- an accounting system  
-- a payment engine  
-- a settlement system  
-- a custody system  
-- a posting engine  
-- a compliance system  
+- banking  
+- bookkeeping authority  
+- payment execution  
+- settlement  
+- account posting  
+- custody  
+- authorization  
+- regulatory compliance  
 
-It is a public reference implementation for bounded structural reconciliation.
+It is a bounded structural-reconciliation reference implementation.
 
 ---
 
-### **A7. Is ORL only relevant to finance?**
+### **A8. Is ORL only relevant to finance?**
 
 No.
 
-The general pattern may be useful wherever a result depends on several related declarations becoming sufficiently complete and compatible.
+The reusable architectural pattern is broader:
 
-Possible research directions include:
+`validate evidence -> identify canonical structure -> classify complete or conflicting structure -> preserve explicit unresolved states -> issue reproducible evidence`
 
-- reconciliation  
-- offline record comparison  
-- partial-state recovery  
-- replicated evidence comparison  
-- audit-oriented classification  
-- telecom or device-state reconciliation  
-- deterministic structural-resolution experiments  
+Possible research domains include reconciliation, disconnected records, replicated evidence comparison, device state, audit-oriented classification, recovery tooling, and other bounded structural-resolution problems.
 
-Each domain requires its own validated schema, rules, security controls, and claim boundary.
+Each domain requires its own schema, rules, security model, and authority boundary.
 
 ---
 
-### **A8. Does ORL preserve ordinary debit and credit arithmetic?**
+### **A9. Is ORL production ready?**
 
-Within the declared examples, yes.
+No production-readiness claim is made.
 
-ORL does not redefine debit and credit arithmetic.
+The current implementation is suitable as a reference model, executable specification, research prototype, conformance target, and structural-reconciliation demonstration.
 
-For one supported debit and one supported credit with matching amount values:
-
-`declared_debit_amount = declared_credit_amount -> RESOLVED`
-
-Only transactions classified as `RESOLVED` contribute to the demonstrated balance projection.
-
-This does not establish that a resolved example is:
-
-- authorized  
-- legitimate  
-- funded  
-- final  
-- legally valid  
-- safe for real-world settlement  
+Production use would require additional domain-specific controls including authentication, authorization, durable storage, recovery, operational security, governance, and independent review.
 
 ---
 
-### **A9. Is ORL safe to adopt directly in existing systems?**
+## **SECTION B — Architecture and State Separation**
 
-Not as a production ledger or financial authority.
+### **B1. What are the three main state lanes?**
 
-The current repository may be studied or used as:
+ORL keeps three state categories separate:
 
-- a reference model  
-- an educational demonstration  
-- a reconciliation experiment  
-- a prototype resolution layer  
-- a basis for further conformance work  
+`validation_state = ACCEPTED | REFUSED`
 
-Production use would require independent validation, authenticated inputs, authorization, durable storage, fault handling, domain controls, and explicit activation boundaries.
+`resolution_state = RESOLVED | INCOMPLETE | ABSTAIN`
 
----
+`closure_state = OPEN | SEALED`
 
-## **SECTION B — Structural Transaction Model**
-
-### **B1. What is a transaction in the current ORL demos?**
-
-A transaction is represented by declared fragments associated with a transaction identifier.
-
-Example:
-
-`ORL100 = {debit(Alice,500), credit(Bob,500)}`
-
-The resolver examines which supported fragments are present under that identifier.
-
-It does not use which fragment arrived first as the classification authority.
+These states answer different questions.
 
 ---
 
-### **B2. When does a supported example transaction resolve?**
+### **B2. What does validation answer?**
 
-In the current demonstrations, a transaction resolves when there is:
+Validation asks:
 
-- one declared debit  
-- one declared credit  
-- a matching declared amount  
+`is this input batch admitted into the resolver?`
 
-The demonstrated relation is:
+A malformed or unsupported batch is:
 
-`one debit + one credit + matching amount -> RESOLVED`
+`REFUSED`
+
+A fully valid supported batch is:
+
+`ACCEPTED`
 
 ---
 
-### **B3. What happens if a required counterpart is missing?**
+### **B3. What does resolution answer?**
 
-The transaction is classified as:
+Resolution asks:
 
-`INCOMPLETE`
+`what does the currently admitted transaction structure classify as under the fixed ruleset?`
+
+The result is one of:
+
+- `RESOLVED`  
+- `INCOMPLETE`  
+- `ABSTAIN`  
+
+---
+
+### **B4. What does closure answer?**
+
+Closure asks:
+
+`does the current canonical fragment-ID set exactly match an explicitly declared evidence boundary?`
+
+The result is:
+
+- `OPEN`  
+- `SEALED`  
+
+Closure does not determine authorization or settlement.
+
+---
+
+### **B5. Why are these states separated?**
+
+Because these statements are not equivalent:
+
+`input is valid`
+
+`transaction structure resolves`
+
+`declared evidence boundary is satisfied`
+
+`transaction is authorized`
+
+`transaction is settled`
+
+ORL intentionally refuses to collapse them into one status.
+
+---
+
+## **SECTION C — Supported Fragment Contract and Validation**
+
+### **C1. What is the current fragment schema?**
+
+The active fragment schema is:
+
+`ORL-FRAGMENT-2-D01`
+
+Each fragment contains exactly:
+
+- `schema`  
+- `tx`  
+- `side`  
+- `account`  
+- `amount_minor`  
+- `unit`  
+
+---
+
+### **C2. What side values are supported?**
+
+The current schema supports:
+
+`debit`
+
+`credit`
+
+Unsupported side values are refused before resolution.
+
+---
+
+### **C3. What is the batch validation policy?**
+
+The current policy is strict:
+
+`any invalid fragment -> REFUSE_WHOLE_BATCH`
+
+A refused batch does not enter the transaction resolver.
+
+---
+
+### **C4. Why refuse the whole batch?**
+
+Because silently ignoring malformed structure can create a false picture of what evidence was actually submitted.
+
+For example, an unsupported third declaration must not disappear while the remaining fragments are treated as a clean resolved pair.
+
+The strict policy makes invalid structure explicit.
+
+---
+
+### **C5. What invalid inputs are covered by the audit?**
+
+The current audit includes checks for:
+
+- non-array batches  
+- non-object fragments  
+- missing required fields  
+- unknown fields  
+- unsupported schema identifiers  
+- unsupported sides  
+- non-string amounts  
+- zero amounts  
+- negative amounts  
+- decimal amounts  
+- leading zeros  
+- amounts longer than 78 digits  
+- empty identifiers  
+- edge whitespace  
+- control characters  
+- lowercase units  
+- invalid unit separators  
+
+---
+
+### **C6. Does ORL validate authorization, ownership, or funds?**
+
+No.
+
+Structural validation is not financial authorization.
+
+The current validator does not establish:
+
+- identity  
+- source authenticity  
+- account ownership  
+- signature validity  
+- available funds  
+- legal permission  
+- fraud absence  
+
+---
+
+## **SECTION D — Canonicalization and Evidence Identity**
+
+### **D1. What is canonicalization?**
+
+Canonicalization converts supported valid structure into a deterministic byte representation before identity is computed.
+
+The active canonicalization profile is:
+
+`ORL-CANON-1-D01`
+
+---
+
+### **D2. Why does ORL use explicit length framing?**
+
+To avoid ambiguous delimiter-based serialization.
+
+Values containing characters such as `|` or `:` remain safe because field identity does not depend on splitting an ad hoc concatenated string.
+
+---
+
+### **D3. Does field insertion order affect fragment identity?**
+
+No.
+
+Canonical construction uses the declared schema field order rather than object insertion order.
+
+The browser audit explicitly checks this behavior.
+
+---
+
+### **D4. How is Unicode handled?**
+
+Supported text is normalized using Unicode NFC before canonical identity is computed.
+
+The audit verifies that canonically equivalent NFC and NFD text collapse to the same canonical fragment identity.
+
+---
+
+### **D5. What identities does ORL compute?**
+
+The current implementation computes deterministic SHA-256 identities for:
+
+- canonical fragments  
+- canonical deduplicated fragment sets  
+- per-transaction evidence sets  
+- structural projections  
+- resolution receipts  
+- declared boundaries  
+- complete resolution bundles  
+
+---
+
+### **D6. What does a content identity prove?**
+
+It identifies canonical content under the declared profile.
+
+It does not prove:
+
+- who created the content  
+- whether it was authorized  
+- whether it is truthful  
+- whether it is legally valid  
+
+`content identity != external authenticity`
+
+---
+
+## **SECTION E — Deduplication and Set Algebra**
+
+### **E1. What counts as an exact duplicate?**
+
+Two supported fragments are exact canonical duplicates when they produce the same canonical fragment identity.
+
+Under the current schema, repeated canonically identical fragments under the same `tx` are treated as the same declaration.
+
+`same canonical declaration repeated under the same tx -> exact duplicate`
+
+---
+
+### **E2. What happens to exact duplicates?**
+
+They are absorbed.
+
+The implemented policy is:
+
+`ABSORB_EXACT_CANONICAL_DUPLICATES`
+
+An exact duplicate does not create a false multiplicity conflict.
+
+ORL does not infer that two canonically identical fragments were intended to represent separate real-world movements. Distinct real-world transfers must therefore use distinct `tx` identifiers.
+
+A future schema that needs to preserve multiple otherwise identical declarations within one transaction would require an additional distinguishing field.
+
+---
+
+### **E3. What set-algebra properties are tested?**
+
+The committed audits check:
+
+`D(A union B) = D(B union A)`
+
+`D(E union E) = D(E)`
+
+`D((A union B) union C) = D(A union (B union C))`
+
+These are implementation invariants for the declared canonical-fragment model.
+
+---
+
+## **SECTION F — Resolution Rules**
+
+### **F1. What is the active ruleset profile?**
+
+`ORL-RESOLUTION-2-D01`
+
+---
+
+### **F2. When does a transaction resolve?**
+
+A transaction resolves when the deduplicated supported structure contains:
+
+- exactly one debit  
+- exactly one credit  
+- different declared accounts  
+- matching exact `amount_minor` values  
+- matching declared units  
+
+The reason code is:
+
+`COMPATIBLE_PAIR`
+
+---
+
+### **F3. What produces `INCOMPLETE`?**
+
+The current reasons are:
+
+`MISSING_DEBIT`
+
+`MISSING_CREDIT`
 
 The resolver does not invent the missing counterpart.
 
 ---
 
-### **B4. What happens when the demonstrated declarations conflict?**
+### **F4. What produces `ABSTAIN`?**
 
-For the conflict forms included in the current demonstrations:
+The current reasons are:
 
-`debit_credit_mismatch OR demonstrated_same_transaction_multiplicity_conflict -> ABSTAIN`
+`MULTIPLE_DEBITS_AND_CREDITS`
 
-Other malformed, unsupported, or untested conflict forms remain outside the current conformance claim.
+`MULTIPLE_DEBITS`
+
+`MULTIPLE_CREDITS`
+
+`SELF_TRANSFER_UNSUPPORTED`
+
+`AMOUNT_MISMATCH`
+
+`UNIT_MISMATCH`
 
 ---
 
-### **B5. What does `RESOLVED` mean?**
+### **F5. Why is conflict precedence explicit?**
 
-Within the current reference model, `RESOLVED` means that the demonstrated required declarations are present and compatible under the current resolver rules.
+Because the same fragment group can satisfy more than one broad description such as "missing counterpart" and "multiple declarations."
+
+An explicit precedence prevents implementation ambiguity.
+
+---
+
+### **F6. Is `RESOLVED` the same as authorized or settled?**
+
+No.
+
+`RESOLVED` means only that the admitted supported transaction structure is compatible under the active structural rules.
 
 It does not mean:
 
-- globally complete  
+- authenticated  
 - authorized  
 - funded  
+- executed  
+- posted  
 - settled  
-- immutable  
 - legally final  
-- free from undisclosed conflicting evidence  
 
 ---
 
-### **B6. Why does ORL preserve an incomplete state?**
+## **SECTION G — Exact Amounts and Units**
 
-Because missing evidence should not automatically become a positive result.
+### **G1. How are amounts represented?**
 
-The design preference is:
+The canonical representation is:
 
-`missing supported structure -> INCOMPLETE`
+`amount_minor = positive decimal integer string`
 
-rather than guessing a counterpart or using arrival order to infer one.
-
----
-
-### **B7. Why does ORL abstain instead of silently choosing?**
-
-When the demonstrated structure contains incompatible alternatives, selecting one without an additional rule would conceal disagreement.
-
-The current reference model therefore exposes:
-
-`demonstrated conflict -> ABSTAIN`
-
-for the conflict forms included in the supplied scenarios.
+The current profile supports 1 to 78 digits.
 
 ---
 
-### **B8. Does the current resolver validate every possible input?**
+### **G2. Does ORL use floating-point arithmetic for supported amounts?**
 
 No.
 
-The current demonstrations assume well-formed example inputs.
+Python uses arbitrary-precision integer arithmetic.
 
-They do not yet provide a complete validation layer for:
-
-- malformed identifiers  
-- unsupported side values  
-- invalid amount types  
-- amount ranges  
-- self-transfer policy  
-- cryptographic authenticity  
-- account ownership  
-- available funds  
-
-These remain part of the future technical hardening work.
+The browser uses `BigInt` for projection arithmetic.
 
 ---
 
-## **SECTION C — Multi-Node Behavior**
+### **G3. Why is this important?**
 
-### **C1. Why are multiple nodes used?**
+It avoids binary floating-point rounding differences for the supported exact amount domain.
 
-The nodes represent independent local views with partial visibility.
+The audit includes:
 
-Each node begins with a different subset of the demonstrated fragments.
+- an amount above the JavaScript safe-integer boundary  
+- a 78-digit exact amount  
 
 ---
 
-### **C2. Do nodes need identical starting data?**
+### **G4. Does `amount_minor` imply a specific currency?**
 
 No.
 
-The current examples intentionally begin with different local fragment sets.
-
-However, the demonstrated convergence occurs only after the nodes receive the same merged fragment set.
+The meaning is determined by the declared `unit` and any domain-specific profile built above the ORL core.
 
 ---
 
-### **C3. Do nodes need synchronized clocks?**
+## **SECTION H — Structural Projection**
 
-No clock value is used by the resolver.
+### **H1. Which transactions affect the projection?**
 
-Clock synchronization may still be used operationally by a real system for monitoring, transport, history, or reporting.
+Only `RESOLVED` transactions.
 
----
+`RESOLVED -> projection contribution`
 
-### **C4. What happens during the sharing phase?**
-
-The demonstration distributes the union of the example fragments to each node.
-
-After sharing:
-
-- matching supported structures resolve  
-- the demonstrated missing structure remains `INCOMPLETE`  
-- the demonstrated conflicts produce `ABSTAIN`  
-- every node produces the same demonstrated snapshot  
-
-The sharing script is a test mechanism. It is not a consensus or reliable-broadcast protocol.
+`INCOMPLETE OR ABSTAIN -> no projection contribution`
 
 ---
 
-### **C5. Why do the nodes converge?**
+### **H2. What happens if a resolved transaction later becomes conflicting?**
 
-Because every node eventually receives the same deduplicated supported fragment set and uses the same resolver rules.
+The current projection is recomputed from the current admitted evidence set.
 
-`D(E_i) = D(E_j) -> R_v(E_i) = R_v(E_j)`
-
-ORL does not claim convergence when nodes permanently hold materially different evidence.
-
----
-
-### **C6. Is continuous communication required?**
-
-The reference demos do not require continuous connectivity.
-
-They use delayed, scripted sharing.
-
-A real deployment would still require some mechanism for:
-
-- transport  
-- storage  
-- authentication  
-- recovery  
-- evidence exchange  
-
----
-
-### **C7. Is a central coordinator required?**
-
-The resolver does not accept a coordinator's result as an input to classification.
-
-However, the demonstration uses centrally written code to distribute fragments among the nodes.
-
-Therefore, the precise claim is:
-
-`coordinator state is not resolution authority`
-
-The current repository does not implement coordinator-free networking or distributed consensus.
-
----
-
-## **SECTION D — Resolution States**
-
-### **D1. What are the current resolution states?**
-
-- `RESOLVED` — the demonstrated required declarations are present and compatible  
-- `INCOMPLETE` — a required demonstrated counterpart is missing  
-- `ABSTAIN` — a demonstrated mismatch or multiplicity conflict is present  
-
-These are resolver states, not legal, accounting, regulatory, or settlement conclusions.
-
----
-
-### **D2. Why is `INCOMPLETE` useful?**
-
-It preserves the difference between:
-
-- enough supported structure to resolve  
-- insufficient supported structure to resolve  
-
-This avoids false certainty.
-
----
-
-### **D3. Why is `ABSTAIN` useful?**
-
-It keeps demonstrated disagreement visible rather than silently selecting one conflicting alternative.
-
-Within the current examples:
-
-`INCOMPLETE OR ABSTAIN -> no demonstrated balance effect`
-
----
-
-### **D4. Can resolution states change?**
-
-Yes, if the available evidence set changes.
-
-Examples include:
-
-`INCOMPLETE -> RESOLVED`
-
-when a compatible missing counterpart becomes available.
-
-A previously resolved transaction can also become conflicting if a new incompatible fragment is introduced:
+Therefore:
 
 `RESOLVED -> ABSTAIN`
+
+removes the earlier transaction contribution from the newly computed structural projection.
+
+This does not claim that an executed payment was reversed.
+
+---
+
+### **H3. Is the projection a ledger balance or settlement result?**
+
+No.
+
+It is a bounded deterministic structural projection over the currently resolved subset.
+
+---
+
+## **SECTION I — Deterministic Receipts**
+
+### **I1. What is an ORL receipt?**
+
+A deterministic receipt binds a transaction result to the current declared structural context.
+
+The active receipt profile is:
+
+`ORL-RECEIPT-1-D01`
+
+---
+
+### **I2. What does a receipt include?**
+
+The current receipt binds fields including:
+
+- schema profile  
+- ruleset profile  
+- ruleset identity  
+- transaction identifier  
+- transaction evidence identity  
+- state  
+- reason code  
+- resolved endpoints and amount when applicable  
+- closure state  
+- closure reason  
+- boundary identity when applicable  
+
+---
+
+### **I3. Can receipts be verified?**
+
+Yes, against the declared deterministic receipt construction.
+
+The audit verifies all five reference receipts and rejects a tampered receipt.
+
+---
+
+### **I4. Do open and sealed states produce the same receipt identity?**
+
+No.
+
+Closure information is receipt-bound.
+
+The audit confirms that open and sealed receipt identities differ.
+
+---
+
+### **I5. Does a valid ORL receipt prove external authenticity?**
+
+No.
+
+It proves deterministic agreement with the declared receipt construction, not identity, authorization, source authenticity, or legal validity.
+
+---
+
+## **SECTION J — Bounded Structural Closure**
+
+### **J1. What is structural closure in ORL?**
+
+Closure is a separate lane that compares the current canonical fragment-ID set with an explicitly declared exact boundary.
+
+The active boundary profile is:
+
+`ORL-BOUNDARY-1-D01`
+
+---
+
+### **J2. When is closure `OPEN`?**
+
+Closure is `OPEN` when:
+
+- no boundary is declared  
+- the declared boundary is invalid  
+- the current canonical set does not exactly match the declared expected set  
+
+---
+
+### **J3. When is closure `SEALED`?**
+
+Closure is `SEALED` only when:
+
+`current canonical fragment IDs = declared expected fragment IDs`
+
+---
+
+### **J4. Does `SEALED` mean no other evidence exists anywhere?**
+
+No.
+
+The precise meaning is:
+
+`SEALED = declared exact boundary satisfied`
+
+It is not a proof of universal completeness.
+
+---
+
+### **J5. Can a subset or superset satisfy the wrong boundary?**
+
+No under the declared exact-set policy.
+
+The audit checks that:
+
+- a subset does not seal against a larger boundary  
+- a superset does not seal against a smaller boundary  
+
+---
+
+## **SECTION K — Evidence-Growth State Model**
+
+### **K1. Can transaction states change as valid evidence grows?**
+
+Yes.
+
+Under the current append-only valid-evidence model:
+
+`INCOMPLETE -> INCOMPLETE | RESOLVED | ABSTAIN`
+
+`RESOLVED -> RESOLVED | ABSTAIN`
+
+`ABSTAIN -> ABSTAIN`
+
+---
+
+### **K2. Why can `RESOLVED` become `ABSTAIN`?**
+
+Because additional valid evidence can reveal an incompatible declaration that was not previously present.
 
 Therefore:
 
 `currently RESOLVED != permanently final`
 
-The current public demos do not implement structural closure, immutable finality, or conflict-remediation workflows.
+---
+
+### **K3. Why is `ABSTAIN` absorbing in the current append-only profile?**
+
+Because once incompatible canonical evidence is present, merely adding more evidence does not remove the already admitted conflict.
+
+Changing that outcome would require a separate removal, revocation, supersession, or remediation model, which the current ORL core does not implement.
 
 ---
 
-### **D5. Can `ABSTAIN` become `RESOLVED`?**
+### **K4. How extensively is this tested?**
 
-Only if the governing evidence set or remediation rules change in a defined way.
+Both Python and browser audits include:
 
-The current demonstrations do not implement removal, revocation, supersession, or conflict resolution.
-
-Adding more fragments alone does not necessarily repair a conflict.
-
----
-
-## **SECTION E — Demonstrated Behavior**
-
-### **E1. What do the current demos demonstrate?**
-
-For the declared examples, they exhibit:
-
-- three independent starting views  
-- no timestamp input to the resolver  
-- no use of fragment arrival position by the resolver  
-- exact duplicate absorption  
-- explicit `RESOLVED`, `INCOMPLETE`, and `ABSTAIN` outcomes  
-- identical output after every node receives the same merged fragment set  
+- 3 direct evidence-growth checks  
+- 65 exhaustive subset-to-superset transition checks over the frozen growth corpus  
 
 ---
 
-### **E2. What is the current demo result?**
+## **SECTION L — Multi-Node Demonstration**
+
+### **L1. Why are three nodes used?**
+
+They demonstrate different local evidence views.
+
+Before sharing, local outputs may differ because the evidence sets differ.
+
+---
+
+### **L2. When do the nodes match?**
+
+After every node receives the same deduplicated canonical fragment set and uses the same ruleset.
+
+`same canonical evidence + same ruleset -> same open bundle`
+
+If the same exact declared boundary is also satisfied:
+
+`same canonical evidence + same ruleset + same boundary -> same sealed bundle`
+
+---
+
+### **L3. Is the sharing mechanism consensus?**
+
+No.
+
+It is a demonstration harness.
+
+The repository does not implement:
+
+- consensus  
+- reliable broadcast  
+- leader election  
+- Byzantine agreement  
+- network finality  
+
+---
+
+## **SECTION M — Reference Scenario**
+
+### **M1. What is the frozen reference result?**
 
 `R:2 I:1 A:2`
 
 ---
 
-### **E3. What does the result mean?**
+### **M2. What are the five transaction results?**
 
-- 2 transactions are `RESOLVED`  
-- 1 transaction is `INCOMPLETE`  
-- 2 transactions are `ABSTAIN`  
-
-The demonstrated transactions are:
-
-- `ORL100` — matching debit and credit become jointly visible  
-- `ORL200` — differently distributed matching fragments become jointly visible  
-- `ORL300` — the counterpart remains missing  
-- `ORL400` — debit and credit amounts differ  
-- `ORL500` — one transaction identifier contains incompatible multiple-credit structure  
-
-`ORL500` is not a complete demonstration of general double-spend prevention.
+- `ORL100 -> RESOLVED / COMPATIBLE_PAIR`  
+- `ORL200 -> RESOLVED / COMPATIBLE_PAIR`  
+- `ORL300 -> INCOMPLETE / MISSING_DEBIT`  
+- `ORL400 -> ABSTAIN / AMOUNT_MISMATCH`  
+- `ORL500 -> ABSTAIN / MULTIPLE_CREDITS`  
 
 ---
 
-### **E4. Does the demo prove universal order independence?**
+### **M3. What is the reference structural projection?**
+
+```text
+UNIT
+  Alice  -500
+  Bob    +200
+  Dina   +300
+```
+
+`ORL300`, `ORL400`, and `ORL500` do not contribute.
+
+---
+
+## **SECTION N — Structural Laboratory**
+
+### **N1. What is the browser Structural Laboratory?**
+
+It is an interactive browser implementation of the ORL v2.0.0 core contract.
+
+It lets a user modify the evidence set and observe invariants, state changes, refusal, projection changes, and bounded closure.
+
+---
+
+### **N2. What does Shuffle Evidence demonstrate?**
+
+`permutation -> same canonical bundle`
+
+when the evidence set is unchanged.
+
+---
+
+### **N3. What does Add Exact Duplicate demonstrate?**
+
+`exact duplicate -> absorbed`
+
+The raw input count increases while the canonical unique evidence set remains unchanged.
+
+---
+
+### **N4. What does Complete ORL300 demonstrate?**
+
+`INCOMPLETE -> RESOLVED`
+
+when the compatible missing counterpart is added.
+
+---
+
+### **N5. What does Conflict ORL100 demonstrate?**
+
+`RESOLVED -> ABSTAIN`
+
+and the previous ORL100 contribution disappears from the recomputed current projection.
+
+---
+
+### **N6. What does Add Evidence After Conflict demonstrate?**
+
+`ABSTAIN -> ABSTAIN`
+
+under the current append-only valid-evidence profile.
+
+---
+
+### **N7. What does Inject Malformed Fragment demonstrate?**
+
+`invalid fragment -> REFUSED`
+
+The strict batch policy prevents the resolver from silently ignoring unsupported structure.
+
+---
+
+### **N8. What does Declare + Seal Current Set demonstrate?**
+
+`OPEN -> SEALED`
+
+when the exact current valid canonical fragment set is explicitly declared as the boundary.
+
+The evidence identity itself does not change merely because a matching boundary is declared.
+
+---
+
+## **SECTION O — Python and Browser Contract**
+
+### **O1. Are the Python and browser implementations intended to match?**
+
+Yes.
+
+They implement the same declared:
+
+- fragment schema  
+- canonical framing  
+- normalization rule  
+- exact amount domain  
+- duplicate policy  
+- conflict precedence  
+- projection construction  
+- receipt construction  
+- boundary construction  
+- bundle construction  
+
+---
+
+### **O2. What cross-engine checks are committed?**
+
+The browser audit compares six frozen identities with the Python reference outputs.
+
+Current result:
+
+`CROSS_ENGINE_FROZEN 6/6 PASS`
+
+---
+
+### **O3. Does that count as independent third-party verification?**
 
 No.
 
-It demonstrates order-independent resolver behavior for the declared model and supplied examples.
+It is frozen cross-engine conformance between the two committed reference implementations.
 
-A stronger verification release would require:
-
-- assertion-based expected outputs  
-- a permutation corpus  
-- malformed-input vectors  
-- canonical serialization  
-- Python and browser cross-engine conformance  
-- independent reconstruction  
+A separately implemented independent verifier is not claimed by the current ORL v2.0.0 core release unless one is explicitly added and documented.
 
 ---
 
-## **SECTION F — Practical Meaning**
+## **SECTION P — Audits and Verification**
 
-### **F1. What changes conceptually?**
+### **P1. What is the Python audit result?**
 
-The current reference model shifts the classification question from:
-
-**Which supported fragment arrived first?**
-
-to:
-
-**What compatible supported fragments are present now?**
-
-This is a change in resolution authority, not a claim that operational order disappears.
+`TOTAL 272/272 PASS`
 
 ---
 
-### **F2. What potential benefits are being explored?**
+### **P2. What is the browser audit result?**
 
-- deterministic reconciliation  
-- explicit partial-state handling  
-- visible conflict states  
-- tolerance of delayed fragment exchange  
-- duplicate absorption  
-- same-evidence convergence  
-- reduced dependence on arrival chronology for bounded classification  
-
-These are research and reference-model benefits, not proven production guarantees.
+`ORL AUDIT TOTAL 286/286 PASS`
 
 ---
 
-## **SECTION G — Core Shift**
+### **P3. What does the Python audit cover?**
 
-From:
+It covers:
 
-`arrival sequence -> selected result`
-
-To:
-
-`present supported structure -> bounded classification`
-
----
-
-## **SECTION H — Structural Progression**
-
-- **SSUM-Time** — temporal continuity explored through structure  
-- **STOCRS** — deterministic computation explored through complete compatible structure  
-- **ORL** — bounded ledger reconciliation explored through complete compatible declarations  
-
-Each project has its own implementation boundary.
+- validation  
+- canonicalization  
+- exact amounts  
+- resolution  
+- deduplication  
+- reference scenario  
+- 120 permutation checks  
+- set algebra  
+- evidence growth  
+- 65 exhaustive growth checks  
+- closure  
+- receipts  
+- known regressions  
 
 ---
 
-## **SECTION I — Adoption**
+### **P4. What additional coverage does the browser include?**
 
-### **Immediate Reference Uses**
+The browser adds:
 
-- reconciliation experiments  
-- order-invariance testing  
-- duplicate-absorption demonstrations  
-- partial-state classification  
-- audit-oriented evidence comparison  
-- disconnected-node education and research  
+`INTERACTIVE_FLOWS 8/8 PASS`
 
-### **Possible Integration Research**
-
-- offline record reconciliation  
-- distributed recovery tooling  
-- replicated evidence comparison  
-- telecom or device-state reconciliation  
-- financial-state observation layers kept separate from settlement  
-
-### **Not Yet Appropriate**
-
-- direct payment execution  
-- custody or account posting  
-- core banking finality  
-- regulated settlement  
-- fraud authorization  
-- production consensus  
-- safety-critical financial activation  
+`CROSS_ENGINE_FROZEN 6/6 PASS`
 
 ---
 
-## **SECTION J — Determinism and Trust**
+### **P5. What are the permanent known regressions?**
 
-### **J1. Is ORL deterministic?**
+They verify that:
 
-For the supplied examples and current resolver rules, the same deduplicated supported fragment set produces the same demonstrated output.
-
-`same supported evidence + same resolver -> same output`
-
----
-
-### **J2. Is ORL probabilistic?**
-
-No.
-
-The current resolver is rule-based and non-probabilistic.
+- unsupported sides cannot be silently ignored  
+- multiple debits without a credit abstain  
+- multiple credits without a debit abstain  
+- separator-bearing account identifiers remain safe under canonical framing  
 
 ---
 
-### **J3. What should trust come from?**
+### **P6. What does a passing audit prove?**
 
-Trust should come from:
+It shows that the tested implementation behavior matched the declared assertions and committed vectors during that run.
 
-- explicit supported-input rules  
-- frozen resolver versions  
-- assertion-based tests  
-- canonical serialization  
-- cross-engine agreement  
-- versioned receipts  
-- independent verification  
-
-The current repository provides demonstrations and artifact hashes, but not all of these stronger layers yet.
+It does not prove universal ledger correctness, production safety, authorization, consensus, settlement, or regulatory suitability.
 
 ---
 
-### **J4. What does a demo hash prove?**
+### **P7. What does a SHA-256 file hash prove?**
 
-A SHA-256 hash proves artifact identity:
+`same bytes -> same SHA-256 hash`
 
-`same bytes -> same hash`
-
-It does not by itself prove behavioral correctness:
+A matching recorded hash establishes artifact identity for the checked bytes.
 
 `artifact identity != behavioral proof`
 
 ---
 
-## **SECTION K — Safety Boundary**
+## **SECTION Q — ORL Family Direction**
 
-### **K1. What protective behavior is currently demonstrated?**
+### **Q1. How does this core relate to ORL-Money, ORL-Chat, and ORL-AI?**
 
-- a missing counterpart remains `INCOMPLETE`  
-- the demonstrated mismatches and multiplicity conflict produce `ABSTAIN`  
-- `INCOMPLETE` and `ABSTAIN` transactions do not affect the demonstrated balance projection  
+ORL v2.0.0 is designed as a reusable structural foundation.
+
+Domain-specific ORL-family systems can build their own schemas and rules above the same broader discipline:
+
+`validate -> canonicalize -> resolve -> preserve explicit unresolved states -> produce inspectable evidence`
+
+They should not silently inherit financial semantics from the ORL core when their domain is different.
 
 ---
 
-### **K2. What does ORL not verify?**
+### **Q2. Will every ORL-family project use identical rules?**
 
-The current model does not verify:
+No.
+
+Each domain should define its own supported structure, state semantics, conflict rules, and authority boundary.
+
+The reusable part is the structural discipline, not one universal domain resolver.
+
+---
+
+## **SECTION R — Safety and Claim Boundary**
+
+### **R1. What does ORL not verify?**
+
+The current core does not verify:
 
 - identity  
+- authentication  
 - signatures  
 - authorization  
 - account ownership  
 - available funds  
 - fraud absence  
-- regulatory compliance  
 - legal validity  
+- regulatory compliance  
 - settlement completion  
-- global evidence completeness  
+- universal evidence completeness  
 
 ---
 
-### **K3. Does ORL guarantee no silent corruption?**
-
-No universal guarantee is claimed.
-
-The bounded demonstrated behavior is:
-
-`demonstrated missing or conflicting state -> no demonstrated balance effect`
-
-Other malformed, unsupported, undisclosed, or externally conflicting conditions remain outside the current claim.
-
----
-
-## **SECTION L — Comparison Boundary**
-
-### **L1. Is ORL a blockchain replacement?**
+### **R2. Is ORL a blockchain replacement?**
 
 No.
 
@@ -677,146 +1049,116 @@ ORL does not implement:
 - block production  
 - replicated finality  
 - Byzantine fault tolerance  
-- permissioning  
-- token economics  
 - network dissemination  
-
-It should be evaluated as a bounded structural reconciliation reference model.
-
----
-
-### **L2. Is blockchain always order-dependent while ORL is not?**
-
-That comparison is too broad.
-
-Blockchain systems and traditional ledgers contain many different architectures and use sequence for different purposes.
-
-The accurate ORL statement is narrower:
-
-`fragment arrival order is not the classification authority in the declared ORL model`
+- token economics  
 
 ---
 
-## **SECTION M — Boundaries**
+### **R3. Does ORL solve double spending?**
 
-ORL does not claim:
+No general double-spend-prevention claim is made.
 
-- universal ledger correctness  
-- elimination of every ordering mechanism  
-- elimination of communication  
-- elimination of coordination  
-- general double-spend prevention  
-- authorization or fraud control  
-- immutable finality  
-- settlement execution  
-- production readiness  
-- recognition as a formal technical standard  
+The current resolver can expose declared multiplicity conflicts within its bounded supported evidence set.
+
+That is not equivalent to a complete system-wide double-spend solution.
 
 ---
 
-## **SECTION N — Why This Matters**
-
-ORL challenges one narrow but important assumption:
-
-`arrival order must always decide bounded reconciliation`
-
-The reference model shows that, for declared supported structure, classification can instead be based on the compatible fragments presently available.
-
-Operational sequence may remain.
-
-Structural resolution authority can still be separated from it.
-
----
-
-## **SECTION O — Skeptic Questions**
-
-### **O1. Is order still useful?**
-
-Yes.
-
-Order may be necessary for:
-
-- execution  
-- history  
-- transport  
-- causality  
-- replay  
-- legal sequencing  
-- settlement  
-- auditing  
-
-ORL only shows that arrival order need not govern every bounded reconciliation result.
-
----
-
-### **O2. Is ORL ignoring real-world complexity?**
+### **R4. Does `SEALED` mean immutable financial finality?**
 
 No.
 
-The documentation explicitly separates the small reference resolver from the larger requirements of a real system.
-
-Those requirements include:
-
-- validation  
-- authentication  
-- authorization  
-- networking  
-- durable storage  
-- fault recovery  
-- governance  
-- settlement  
-- finality  
+`SEALED` means only that the current canonical fragment-ID set exactly satisfies a declared boundary under the current profile.
 
 ---
 
-### **O3. Is ORL just “wait for all data”?**
+### **R5. Does ORL guarantee no silent corruption?**
 
-No global completeness detector is implemented.
+No universal guarantee is claimed.
 
-The resolver classifies the structure presently available as:
+The implementation provides explicit behavior for its declared supported and invalid inputs, including strict refusal and tested conflict handling.
+
+Unknown external conditions remain outside the bounded claim.
+
+---
+
+## **SECTION S — Skeptic Questions**
+
+### **S1. Is ORL just "wait until all data arrives"?**
+
+No universal completeness detector is assumed.
+
+The resolver classifies the currently admitted evidence as:
 
 - `RESOLVED`  
 - `INCOMPLETE`  
 - `ABSTAIN`  
 
-A currently resolved state may still change if new incompatible evidence appears.
+A separate declared-boundary mechanism can mark the exact current set as `SEALED` within that boundary.
 
 ---
 
-### **O4. Is ORL anti-time or anti-order?**
+### **S2. If a transaction is resolved and later conflicts, was the earlier result wrong?**
 
-No.
+It was the deterministic result for the earlier admitted evidence set.
 
-ORL distinguishes operational mechanisms from resolution authority.
-
-`operational sequence may remain`
-
-`clock metadata may remain`
-
-`neither must be the classification authority in the declared model`
+ORL makes the evidence boundary visible rather than treating a current resolution as permanent global truth.
 
 ---
 
-### **O5. Does ORL provide final truth?**
+### **S3. Why not silently pick one conflicting declaration?**
 
-No.
+Because selection without an additional declared authority rule would hide structural disagreement.
 
-The current repository provides bounded resolver snapshots.
+The current ORL profile chooses explicit abstention instead.
 
-It does not implement global truth, immutable finality, or a closed evidence boundary.
+---
 
-A future structural-closure direction may distinguish:
+### **S4. Why not ignore malformed fragments?**
 
-`resolution_state = RESOLVED | INCOMPLETE | ABSTAIN`
+Because silent omission can change the apparent structure of the submitted batch.
 
-from:
+The current policy makes invalid input explicit through refusal.
 
-`closure_state = OPEN | SEALED`
+---
 
-That future direction is not implemented by the current public demos.
+### **S5. Is order still useful?**
+
+Yes.
+
+Order can remain essential for execution, history, causality, replay, transport, legal sequence, and settlement.
+
+ORL separates those roles from the bounded structural classification authority used by its current resolver.
+
+---
+
+### **S6. Does ORL provide final truth?**
+
+No universal truth claim is made.
+
+ORL produces deterministic bounded results tied to canonical evidence, fixed rules, and optional declared closure boundaries.
+
+---
+
+## **SECTION T — Current Profiles**
+
+| Purpose | Profile |
+|---|---|
+| Architecture version | `2.0.0` |
+| Fragment schema | `ORL-FRAGMENT-2-D01` |
+| Resolution rules | `ORL-RESOLUTION-2-D01` |
+| Canonicalization | `ORL-CANON-1-D01` |
+| Fragment-set identity | `ORL-FRAGMENT-SET-1-D01` |
+| Transaction evidence | `ORL-TX-EVIDENCE-1-D01` |
+| Resolution receipt | `ORL-RECEIPT-1-D01` |
+| Structural projection | `ORL-PROJECTION-1-D01` |
+| Resolution bundle | `ORL-BUNDLE-1-D01` |
+| Declared boundary | `ORL-BOUNDARY-1-D01` |
+| Validation refusal | `ORL-REFUSAL-1-D01` |
+| Audit profile | `ORL-AUDIT-1-D01` |
 
 ---
 
 ## ⭐ **Final One-Line Summary**
 
-ORL is a public deterministic reference model in which independent nodes can begin with different supported transaction fragments and, after receiving the same deduplicated fragment set, produce the same bounded resolution without using timestamps, fragment arrival order, GPS, NTP, or coordinator state as the classification authority — while preserving explicit `INCOMPLETE` and demonstrated `ABSTAIN` outcomes and keeping authorization, consensus, settlement, and immutable finality outside the current implementation.
+ORL v2.0.0 is a bounded deterministic structural-reconciliation reference implementation in which supported input is strictly validated and canonically identified, exact duplicates are absorbed, transaction structure resolves to explicit `RESOLVED`, `INCOMPLETE`, or `ABSTAIN` states, results receive reproducible receipts, and an exact declared evidence boundary can separately produce bounded `SEALED` closure without treating arrival order, clock metadata, or coordinator state as the structural classification authority.
