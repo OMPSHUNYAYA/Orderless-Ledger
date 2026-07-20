@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORL Structural Laboratory v2.0.0</title>
+<style>
+:root{
+  --bg:#07101d;
+  --panel:#0e192a;
+  --panel2:#132238;
+  --panel3:#0a1423;
+  --text:#eef4ff;
+  --muted:#9fb0cc;
+  --line:#253957;
+  --accent:#75a9ff;
+  --good:#46d69b;
+  --warn:#ffc15a;
+  --bad:#ff7b91;
+  --violet:#b995ff;
+  --radius:18px;
+  --shadow:0 18px 44px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(117,169,255,.14),transparent 28%),
+    radial-gradient(circle at 92% 16%,rgba(185,149,255,.09),transparent 24%),
+    linear-gradient(180deg,#050b14 0%,var(--bg) 100%);
+  color:var(--text);
+  line-height:1.48;
+}
+button,input,select{font:inherit}
+.wrap{max-width:1500px;margin:0 auto;padding:10px 18px 18px}
+.card{
+  background:linear-gradient(180deg,rgba(19,34,56,.96),rgba(14,25,42,.96));
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  padding:7px 12px;
+  margin-bottom:10px;
+  border-radius:12px;
+  box-shadow:none;
+}
+.brandline{display:flex;align-items:center;gap:10px;min-width:0}
+.eyebrow{
+  color:var(--accent);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.top-title{font-size:12px;font-weight:850;color:var(--muted);white-space:nowrap}
+.profile-line{
+  max-width:58vw;
+  text-align:right;
+  color:var(--muted);
+  font-size:9px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.hero{
+  display:grid;
+  grid-template-columns:1.18fr .82fr;
+  gap:12px;
+  margin-bottom:12px;
+}
+.panel{padding:17px}
+h1,h2,h3{margin:0}
+h1{font-size:clamp(27px,3.2vw,42px);line-height:1.04;letter-spacing:-.035em;max-width:900px}
+h2{font-size:22px}
+h3{font-size:17px}
+.lead{color:var(--muted);font-size:14px;max-width:930px;margin:10px 0 0}
+.formula{
+  margin-top:12px;
+  padding:9px 11px;
+  border:1px solid rgba(117,169,255,.32);
+  background:rgba(117,169,255,.07);
+  border-radius:14px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color:#dce9ff;
+  overflow:auto;
+  white-space:nowrap;
+}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.badge{
+  padding:5px 8px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(255,255,255,.035);
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+}
+.principles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.principle{
+  padding:10px 11px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(255,255,255,.025);
+}
+.principle strong{display:block;margin-bottom:4px}
+.principle span{color:var(--muted);font-size:12px}
+.sticky{
+  position:sticky;
+  top:6px;
+  z-index:20;
+  margin-bottom:12px;
+  padding:8px 10px;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  background:rgba(7,16,29,.91);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(117,169,255,.26);
+  border-radius:16px;
+  box-shadow:0 12px 28px rgba(0,0,0,.26);
+}
+.status{
+  min-width:0;
+  padding:7px 9px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(255,255,255,.025);
+}
+.label{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.value{margin-top:2px;font-weight:900;overflow-wrap:anywhere}
+.value.mono{font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:14px}
+button{
+  border:1px solid #315683;
+  border-radius:12px;
+  padding:11px 12px;
+  color:var(--text);
+  background:linear-gradient(180deg,#17385d,#102a48);
+  font-weight:850;
+  cursor:pointer;
+  box-shadow:0 4px 0 #091729;
+  transform:translateY(0);
+  transition:transform .07s ease,box-shadow .07s ease,border-color .15s ease,filter .15s ease;
+}
+button:hover{filter:brightness(1.08);border-color:#5689c7}
+button:active,.pressed{
+  transform:translateY(3px);
+  box-shadow:0 1px 0 #091729;
+}
+button:focus-visible{outline:3px solid rgba(117,169,255,.55);outline-offset:2px}
+button.good{background:linear-gradient(180deg,#176344,#104c36);border-color:#2b976a;box-shadow:0 4px 0 #092a1e}
+button.warn{background:linear-gradient(180deg,#6d4e16,#553c10);border-color:#a97a22;box-shadow:0 4px 0 #2c1e08}
+button.bad{background:linear-gradient(180deg,#713143,#552433);border-color:#a84a63;box-shadow:0 4px 0 #2d1018}
+button.violet{background:linear-gradient(180deg,#4a376f,#382858);border-color:#7054a3;box-shadow:0 4px 0 #1d142f}
+button.secondary{background:#0b1728;border-color:var(--line);box-shadow:0 4px 0 #050b13}
+.stage{
+  margin-top:14px;
+  padding:15px;
+  border:1px solid rgba(117,169,255,.32);
+  border-radius:15px;
+  background:linear-gradient(180deg,rgba(117,169,255,.08),rgba(117,169,255,.035));
+}
+.stage-kicker{color:var(--accent);font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.stage-title{font-size:21px;font-weight:900;margin-top:4px}
+.stage-body{color:var(--muted);font-size:13px;margin-top:5px}
+.node{
+  padding:14px;
+  min-height:380px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:rgba(255,255,255,.024);
+}
+.node.active{border-color:rgba(117,169,255,.55);box-shadow:0 0 0 1px rgba(117,169,255,.15)}
+.node-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.node-name{font-size:18px;font-weight:900}
+.pill{
+  padding:6px 8px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  font-size:11px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.pill.good{color:#bff5df;background:rgba(70,214,155,.1);border-color:rgba(70,214,155,.35)}
+.pill.warn{color:#ffe1a8;background:rgba(255,193,90,.1);border-color:rgba(255,193,90,.35)}
+.pill.bad{color:#ffd0d9;background:rgba(255,123,145,.1);border-color:rgba(255,123,145,.35)}
+.pill.violet{color:#e0d2ff;background:rgba(185,149,255,.1);border-color:rgba(185,149,255,.35)}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.entries{display:grid;gap:7px;margin-top:11px}
+.entry{
+  padding:8px 9px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--panel3);
+  font-size:11px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  overflow-wrap:anywhere;
+}
+.summary-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+.table-wrap{overflow:auto;margin-top:13px}
+table{width:100%;border-collapse:collapse;min-width:820px}
+th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+td{font-size:13px}
+.hash{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;word-break:break-all}
+.projection{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
+.proj{
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel3);
+}
+.proj .amount{font-size:22px;font-weight:900;margin-top:3px}
+.lab-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:12px;margin-bottom:12px}
+.action-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:13px}
+.log{
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+  max-height:370px;
+  overflow:auto;
+}
+.log-item{
+  padding:10px 11px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:rgba(255,255,255,.024);
+}
+.log-title{font-weight:850;font-size:13px}
+.log-body{color:var(--muted);font-size:12px;margin-top:3px}
+.identity-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.identity{
+  padding:11px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--panel3);
+  min-width:0;
+}
+.identity .hash{margin-top:5px}
+.audit-head{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.progress-track{
+  height:12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#07101d;
+  overflow:hidden;
+  margin-top:13px;
+}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--violet));transition:width .12s ease}
+.audit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
+.audit-group{
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:rgba(255,255,255,.024);
+}
+.audit-group strong{display:block}
+
+.workspace{
+  scroll-margin-top:96px;
+  transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+.workspace.active-workspace{
+  border-color:rgba(117,169,255,.62);
+  box-shadow:0 0 0 1px rgba(117,169,255,.16),var(--shadow);
+}
+.effect-card{
+  margin-top:12px;
+  padding:12px;
+  border:1px solid rgba(117,169,255,.32);
+  border-radius:14px;
+  background:linear-gradient(180deg,rgba(117,169,255,.075),rgba(117,169,255,.025));
+}
+.effect-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.effect-title{font-size:13px;font-weight:900}
+.effect-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.effect-metric{padding:9px 10px;border:1px solid var(--line);border-radius:11px;background:var(--panel3);min-width:0}
+.effect-value{margin-top:3px;font-size:12px;font-weight:850;overflow-wrap:anywhere}
+.effect-detail{margin-top:9px;color:var(--muted);font-size:12px;line-height:1.45}
+.framework-note{opacity:.76}
+button:disabled{cursor:not-allowed;opacity:.46;filter:none;transform:none;box-shadow:0 1px 0 #091729}
+
+.footer{
+  padding:14px 16px;
+  color:var(--muted);
+  font-size:12px;
+  margin-top:14px;
+}
+@media(max-width:1120px){
+  .hero,.grid2,.lab-grid{grid-template-columns:1fr}
+  .sticky{grid-template-columns:1fr 1fr}
+  .principles{grid-template-columns:1fr 1fr}
+}
+@media(max-width:820px){
+  .grid3,.controls,.projection,.audit-grid{grid-template-columns:1fr}
+  .action-grid,.identity-grid,.effect-grid,.principles{grid-template-columns:1fr}
+  .profile-line{display:none}
+}
+@media(max-width:540px){
+  .wrap{padding:8px 10px 10px}
+  .topbar{padding:6px 9px}
+  .top-title{display:none}
+  .sticky{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="card topbar">
+    <div class="brandline">
+      <div class="eyebrow">Orderless Ledger · ORL v2.0.0</div>
+      <div class="top-title">Structural Resolution Laboratory</div>
+    </div>
+    <div class="profile-line" id="profileLine"></div>
+  </section>
+
+  <section class="hero">
+    <div class="card panel">
+      <h1>Evidence Has Identity. Resolution Has Receipts. Closure Is Separate.</h1>
+      <p class="lead">A bounded structural ledger-reconciliation reference model. Validated fragments are canonicalized, exact duplicates are absorbed, transaction structure is classified deterministically, and every result receives a reproducible receipt. A declared evidence boundary may separately mark the current set as sealed within that boundary.</p>
+      <div class="formula">same validated canonical fragment set + same ruleset -> same bounded resolution bundle</div>
+      <div class="badges">
+        <span class="badge">Exact integer amounts</span>
+        <span class="badge">Canonical fragment identities</span>
+        <span class="badge">Order-independent set identity</span>
+        <span class="badge">Explicit refusal</span>
+        <span class="badge">Resolution receipts</span>
+        <span class="badge">Bounded closure</span>
+      </div>
+    </div>
+    <div class="card panel">
+      <h2>Authority Separation</h2>
+      <div class="principles">
+        <div class="principle"><strong>Validation is not resolution.</strong><span>Malformed or unsupported fragments are refused before entering the resolver.</span></div>
+        <div class="principle"><strong>Resolution is not finality.</strong><span>A currently resolved transaction can later become conflicting when additional valid evidence appears.</span></div>
+        <div class="principle"><strong>Closure is bounded.</strong><span>SEALED means only that the current canonical fragment set matches a declared evidence boundary.</span></div>
+        <div class="principle"><strong>Projection is not settlement.</strong><span>Only resolved transactions contribute to the displayed structural projection. No payment or posting is executed.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sticky">
+    <div class="status"><div class="label">Validation</div><div class="value" id="hudValidation">ACCEPTED</div></div>
+    <div class="status"><div class="label">Closure</div><div class="value" id="hudClosure">OPEN</div></div>
+    <div class="status"><div class="label">State Summary</div><div class="value" id="hudSummary">R:0 I:0 A:0</div></div>
+    <div class="status"><div class="label">Bundle ID</div><div class="value mono" id="hudBundle">—</div></div>
+  </section>
+
+  <section class="grid2">
+    <div class="card panel">
+      <h2>Three-Node Reference Story</h2>
+      <p class="lead">The story begins with different local evidence. Sharing makes the same canonical fragment set visible. A separately declared boundary then seals that exact set without claiming universal completeness.</p>
+      <div class="controls">
+        <button id="nextBtn">Next Stage</button>
+        <button class="good" id="runBtn">Run Full Story</button>
+        <button class="secondary" id="resetStoryBtn">Reset Story</button>
+      </div>
+      <div class="stage">
+        <div class="stage-kicker">Current Stage</div>
+        <div class="stage-title" id="stageTitle">Local Views</div>
+        <div class="stage-body" id="stageBody" aria-live="polite">Each node holds a different valid fragment subset and therefore may produce a different bounded local snapshot.</div>
+      </div>
+    </div>
+    <div class="card panel">
+      <h2>Frozen Cross-Engine Contract</h2>
+      <p class="lead">The Python kernel and this browser implementation use the same canonical byte framing, ruleset manifest, fragment identities, boundary semantics, and receipt construction.</p>
+      <div class="identity-grid">
+        <div class="identity"><div class="label">Ruleset ID</div><div class="hash" id="rulesetId"></div></div>
+        <div class="identity"><div class="label">Reference Set ID</div><div class="hash" id="referenceSetId"></div></div>
+        <div class="identity"><div class="label">Boundary ID</div><div class="hash" id="referenceBoundaryId"></div></div>
+        <div class="identity"><div class="label">Sealed Bundle ID</div><div class="hash" id="referenceBundleId"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card panel workspace active-workspace" id="nodesSection">
+    <div class="audit-head">
+      <div>
+        <h2>Node Views</h2>
+        <div class="muted small" id="nodeEquality" aria-live="polite">Local node outputs are not required to match while evidence differs.</div>
+      </div>
+      <span class="pill violet" id="stagePill">LOCAL</span>
+    </div>
+    <div class="grid3" id="nodeGrid" style="margin-top:13px"></div>
+  </section>
+
+  <section class="card panel workspace" id="receiptSection" style="margin-top:12px">
+    <div class="audit-head">
+      <div>
+        <h2>Current Transaction Receipts</h2>
+        <div class="muted small">Stable reason codes remain separate from the three user-facing resolution states.</div>
+      </div>
+      <span class="pill" id="receiptCount">0 RECEIPTS</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Transaction</th><th>State</th><th>Reason</th><th>Evidence ID</th><th>Receipt ID</th></tr></thead>
+        <tbody id="receiptBody"></tbody>
+      </table>
+    </div>
+    <h3 style="margin-top:16px">Resolved-Only Structural Projection</h3>
+    <div class="projection" id="projectionGrid"></div>
+  </section>
+
+  <section class="lab-grid workspace" id="labSection" style="margin-top:12px">
+    <div class="card panel">
+      <h2>Structural Laboratory</h2>
+      <p class="lead">Modify the evidence set and observe which properties remain invariant and which states legitimately change.</p>
+      <div class="action-grid">
+        <button id="shuffleBtn">Shuffle Evidence</button>
+        <button id="duplicateBtn">Add Exact Duplicate</button>
+        <button class="good" id="completeBtn">Complete ORL300</button>
+        <button class="bad" id="conflictBtn">Conflict ORL100</button>
+        <button class="bad" id="moreConflictBtn">Add Evidence After Conflict</button>
+        <button class="warn" id="malformedBtn">Inject Malformed Fragment</button>
+        <button class="violet" id="sealBtn">Declare + Seal Current Set</button>
+        <button class="secondary" id="resetLabBtn">Reset Laboratory</button>
+      </div>
+      <div class="effect-card" id="labEffect" aria-live="polite">
+        <div class="effect-head">
+          <div><div class="label">Latest Structural Effect</div><div class="effect-title" id="effectAction">Reference Baseline</div></div>
+          <span class="pill violet" id="effectKind">BASELINE</span>
+        </div>
+        <div class="effect-grid">
+          <div class="effect-metric"><div class="label">State Effect</div><div class="effect-value mono" id="effectState">R:2 I:1 A:2</div></div>
+          <div class="effect-metric"><div class="label">Evidence Set</div><div class="effect-value mono" id="effectSet">REFERENCE</div></div>
+          <div class="effect-metric"><div class="label">Projection</div><div class="effect-value mono" id="effectProjection">REFERENCE</div></div>
+          <div class="effect-metric"><div class="label">Closure</div><div class="effect-value mono" id="effectClosure">OPEN</div></div>
+        </div>
+        <div class="effect-detail" id="effectDetail">Use a laboratory action to see exactly which structural properties change and which remain invariant.</div>
+      </div>
+      <div class="formula" id="labFormula">INCOMPLETE -> RESOLVED -> ABSTAIN; under append-only valid evidence, ABSTAIN remains ABSTAIN</div>
+    </div>
+    <div class="card panel">
+      <div class="audit-head">
+        <div>
+          <h2>Laboratory Evidence Log</h2>
+          <div class="muted small" id="labStatus" aria-live="polite">Reference union loaded with an open closure state.</div>
+        </div>
+        <span class="pill violet" id="labCount">0 FRAGMENTS</span>
+      </div>
+      <div class="log" id="labLog"></div>
+    </div>
+  </section>
+
+  <section class="card panel workspace" id="auditSection">
+    <div class="audit-head">
+      <div>
+        <h2>Executable ORL Audit</h2>
+        <div class="muted small">Runs validation, canonicalization, exact-value, resolution, permutation, set-algebra, state-transition, closure, receipt, regression, and frozen cross-engine checks.</div>
+      </div>
+      <button class="good" id="auditBtn" style="max-width:240px">Run Full Audit</button>
+    </div>
+    <div class="progress-track"><div class="progress-bar" id="auditProgress"></div></div>
+    <div class="muted small" id="auditStatus" aria-live="polite" style="margin-top:8px">Not run.</div>
+    <div class="audit-grid" id="auditGrid"></div>
+    <div class="formula">Console: await ORL_AUDIT.runAll() · ORL_AUDIT.last() · ORLCore.referenceScenario(true)</div>
+  </section>
+
+  <section class="card footer">
+    ORL v2.0.0 is a bounded structural-reconciliation reference implementation. It does not provide authorization, identity, signatures, available-funds checks, consensus, reliable broadcast, settlement, account posting, immutable finality, regulatory compliance, or production financial authority. <span class="framework-note">Structural concepts developed within the Shunyaya Framework.</span>
+  </section>
+</div>
+
+<script id="orl-core">
+(() => {
+  const ARCHITECTURE_VERSION = "2.0.0";
+  const SCHEMA_PROFILE = "ORL-FRAGMENT-2-D01";
+  const RULESET_PROFILE = "ORL-RESOLUTION-2-D01";
+  const CANONICAL_PROFILE = "ORL-CANON-1-D01";
+  const FRAGMENT_SET_PROFILE = "ORL-FRAGMENT-SET-1-D01";
+  const TX_EVIDENCE_PROFILE = "ORL-TX-EVIDENCE-1-D01";
+  const RECEIPT_PROFILE = "ORL-RECEIPT-1-D01";
+  const PROJECTION_PROFILE = "ORL-PROJECTION-1-D01";
+  const BUNDLE_PROFILE = "ORL-BUNDLE-1-D01";
+  const BOUNDARY_PROFILE = "ORL-BOUNDARY-1-D01";
+  const REFUSAL_PROFILE = "ORL-REFUSAL-1-D01";
+  const AUDIT_PROFILE = "ORL-AUDIT-1-D01";
+  const EXACT_FIELDS = ["schema","tx","side","account","amount_minor","unit"];
+  const SIDES = ["debit","credit"];
+  const UNIT_PATTERN = /^[A-Z][A-Z0-9._:-]{0,31}$/;
+  const AMOUNT_PATTERN = /^[1-9][0-9]{0,77}$/;
+  const encoder = new TextEncoder();
+
+  const RULESET_FIELDS = [
+    ["schema_profile", SCHEMA_PROFILE],
+    ["canonical_profile", CANONICAL_PROFILE],
+    ["exact_fields", EXACT_FIELDS.join(",")],
+    ["supported_sides", SIDES.join(",")],
+    ["text_normalization", "NFC"],
+    ["amount_domain", "positive_decimal_integer_string_1_to_78_digits"],
+    ["unit_domain", "uppercase_ascii_identifier_1_to_32"],
+    ["unknown_fields", "REFUSE"],
+    ["invalid_batch_policy", "REFUSE_WHOLE_BATCH"],
+    ["duplicate_policy", "ABSORB_EXACT_CANONICAL_DUPLICATES"],
+    ["conflict_precedence", "MULTIPLE_BOTH>MULTIPLE_DEBITS>MULTIPLE_CREDITS>MISSING_DEBIT>MISSING_CREDIT>SELF_TRANSFER_UNSUPPORTED>AMOUNT_MISMATCH>UNIT_MISMATCH>RESOLVED"],
+    ["projection_policy", "RESOLVED_ONLY"],
+    ["closure_policy", "EXACT_DECLARED_FRAGMENT_ID_SET"]
+  ];
+
+  function utf8(value){ return encoder.encode(value); }
+
+  function concatBytes(parts){
+    const total = parts.reduce((sum, part) => sum + part.length, 0);
+    const out = new Uint8Array(total);
+    let offset = 0;
+    for(const part of parts){ out.set(part, offset); offset += part.length; }
+    return out;
+  }
+
+  function frame(label, value){
+    const lb = utf8(label);
+    const vb = utf8(value);
+    return concatBytes([
+      utf8(String(lb.length)), utf8(":"), lb,
+      utf8(String(vb.length)), utf8(":"), vb
+    ]);
+  }
+
+  function canonicalRecord(profile, fields){
+    const parts = [frame("profile", profile)];
+    for(const [label, value] of fields) parts.push(frame(label, value));
+    return concatBytes(parts);
+  }
+
+  function sha256Hex(bytes){
+    const K = [
+      0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+      0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+      0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+      0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+      0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+      0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+      0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+      0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+    ];
+    const H = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+    const bitLength = bytes.length * 8;
+    const withOne = bytes.length + 1;
+    const padLength = (64 - ((withOne + 8) % 64)) % 64;
+    const data = new Uint8Array(withOne + padLength + 8);
+    data.set(bytes,0);
+    data[bytes.length] = 0x80;
+    const hi = Math.floor(bitLength / 0x100000000);
+    const lo = bitLength >>> 0;
+    const p = data.length - 8;
+    data[p] = (hi >>> 24) & 255;
+    data[p+1] = (hi >>> 16) & 255;
+    data[p+2] = (hi >>> 8) & 255;
+    data[p+3] = hi & 255;
+    data[p+4] = (lo >>> 24) & 255;
+    data[p+5] = (lo >>> 16) & 255;
+    data[p+6] = (lo >>> 8) & 255;
+    data[p+7] = lo & 255;
+    const rotr = (x,n) => (x >>> n) | (x << (32-n));
+    for(let offset=0; offset<data.length; offset+=64){
+      const w = new Uint32Array(64);
+      for(let i=0;i<16;i++){
+        const j = offset + i*4;
+        w[i] = ((data[j]<<24) | (data[j+1]<<16) | (data[j+2]<<8) | data[j+3]) >>> 0;
+      }
+      for(let i=16;i<64;i++){
+        const s0 = (rotr(w[i-15],7) ^ rotr(w[i-15],18) ^ (w[i-15]>>>3)) >>> 0;
+        const s1 = (rotr(w[i-2],17) ^ rotr(w[i-2],19) ^ (w[i-2]>>>10)) >>> 0;
+        w[i] = (w[i-16] + s0 + w[i-7] + s1) >>> 0;
+      }
+      let [a,b,c,d,e,f,g,h] = H;
+      for(let i=0;i<64;i++){
+        const S1 = (rotr(e,6) ^ rotr(e,11) ^ rotr(e,25)) >>> 0;
+        const ch = ((e & f) ^ (~e & g)) >>> 0;
+        const t1 = (h + S1 + ch + K[i] + w[i]) >>> 0;
+        const S0 = (rotr(a,2) ^ rotr(a,13) ^ rotr(a,22)) >>> 0;
+        const maj = ((a & b) ^ (a & c) ^ (b & c)) >>> 0;
+        const t2 = (S0 + maj) >>> 0;
+        h=g; g=f; f=e; e=(d+t1)>>>0; d=c; c=b; b=a; a=(t1+t2)>>>0;
+      }
+      H[0]=(H[0]+a)>>>0; H[1]=(H[1]+b)>>>0; H[2]=(H[2]+c)>>>0; H[3]=(H[3]+d)>>>0;
+      H[4]=(H[4]+e)>>>0; H[5]=(H[5]+f)>>>0; H[6]=(H[6]+g)>>>0; H[7]=(H[7]+h)>>>0;
+    }
+    return H.map(v => v.toString(16).padStart(8,"0")).join("");
+  }
+
+  function compareUtf8(a,b){
+    const aa=utf8(a), bb=utf8(b), n=Math.min(aa.length,bb.length);
+    for(let i=0;i<n;i++){ if(aa[i]!==bb[i]) return aa[i]-bb[i]; }
+    return aa.length-bb.length;
+  }
+
+  function normalizeText(value){ return value.normalize("NFC"); }
+
+  function hasForbiddenControl(value){
+    for(const char of value){
+      const code=char.codePointAt(0);
+      if(code<32 || code===127 || (code>=0xD800 && code<=0xDFFF)) return true;
+    }
+    return false;
+  }
+
+  function refusal(index,code,field="",detail=""){
+    const item={profile:REFUSAL_PROFILE,index:String(index),code,field,detail};
+    item.refusal_id=sha256Hex(canonicalRecord(REFUSAL_PROFILE,[
+      ["index",item.index],["code",code],["field",field],["detail",detail]
+    ]));
+    return item;
+  }
+
+  function validateFragment(raw,index=0){
+    const errors=[];
+    if(raw===null || typeof raw!=="object" || Array.isArray(raw)) return [null,[refusal(index,"FRAGMENT_NOT_OBJECT")]];
+    const keys=Object.keys(raw);
+    const missing=EXACT_FIELDS.filter(k=>!keys.includes(k)).sort();
+    const extra=keys.filter(k=>!EXACT_FIELDS.includes(k)).sort();
+    for(const field of missing) errors.push(refusal(index,"MISSING_REQUIRED_FIELD",field));
+    for(const field of extra) errors.push(refusal(index,"UNKNOWN_FIELD",String(field)));
+    if(errors.length) return [null,errors];
+    for(const field of EXACT_FIELDS) if(typeof raw[field]!=="string") errors.push(refusal(index,"FIELD_NOT_STRING",field));
+    if(errors.length) return [null,errors];
+    const item={};
+    for(const field of EXACT_FIELDS) item[field]=normalizeText(raw[field]);
+    if(item.schema!==SCHEMA_PROFILE) errors.push(refusal(index,"UNSUPPORTED_SCHEMA","schema",item.schema));
+    for(const field of ["tx","account","unit"]){
+      const value=item[field];
+      if(value==="") errors.push(refusal(index,"EMPTY_FIELD",field));
+      if(value!==value.trim()) errors.push(refusal(index,"EDGE_WHITESPACE",field));
+      if(hasForbiddenControl(value)) errors.push(refusal(index,"CONTROL_CHARACTER",field));
+    }
+    if(utf8(item.tx).length>128) errors.push(refusal(index,"FIELD_TOO_LONG","tx"));
+    if(utf8(item.account).length>256) errors.push(refusal(index,"FIELD_TOO_LONG","account"));
+    if(!SIDES.includes(item.side)) errors.push(refusal(index,"UNSUPPORTED_SIDE","side",item.side));
+    if(!AMOUNT_PATTERN.test(item.amount_minor)) errors.push(refusal(index,"INVALID_AMOUNT_MINOR","amount_minor",item.amount_minor));
+    if(!UNIT_PATTERN.test(item.unit)) errors.push(refusal(index,"INVALID_UNIT","unit",item.unit));
+    return errors.length ? [null,errors] : [item,[]];
+  }
+
+  function validateBatch(rawFragments){
+    if(!Array.isArray(rawFragments)) return {validation_state:"REFUSED",accepted:[],refusals:[refusal(0,"BATCH_NOT_ARRAY")]};
+    const accepted=[],refusals=[];
+    rawFragments.forEach((raw,index)=>{
+      const [item,errors]=validateFragment(raw,index);
+      if(errors.length) refusals.push(...errors); else accepted.push(item);
+    });
+    if(refusals.length){
+      refusals.sort((a,b)=>Number(a.index)-Number(b.index) || a.code.localeCompare(b.code) || a.field.localeCompare(b.field));
+      return {validation_state:"REFUSED",accepted:[],refusals};
+    }
+    return {validation_state:"ACCEPTED",accepted,refusals:[]};
+  }
+
+  function canonicalFragmentBytes(fragment){
+    return canonicalRecord(SCHEMA_PROFILE,[
+      ["tx",fragment.tx],["side",fragment.side],["account",fragment.account],
+      ["amount_minor",fragment.amount_minor],["unit",fragment.unit]
+    ]);
+  }
+
+  function fragmentId(fragment){ return sha256Hex(canonicalFragmentBytes(fragment)); }
+
+  function deduplicateValidated(fragments){
+    const map=new Map();
+    for(const item of fragments) map.set(fragmentId(item),item);
+    return [...map.keys()].sort().map(id=>map.get(id));
+  }
+
+  function deduplicate(rawFragments){
+    const validated=validateBatch(rawFragments);
+    if(validated.validation_state==="REFUSED") return validated;
+    return {validation_state:"ACCEPTED",accepted:deduplicateValidated(validated.accepted),refusals:[]};
+  }
+
+  function boundedUnion(...collections){
+    const merged=[];
+    collections.forEach(c=>merged.push(...c));
+    return deduplicate(merged);
+  }
+
+  function fragmentSetIdFromIds(ids){
+    return sha256Hex(canonicalRecord(FRAGMENT_SET_PROFILE,[...ids].sort().map(id=>["fragment_id",id])));
+  }
+
+  function transactionEvidenceId(tx,ids){
+    return sha256Hex(canonicalRecord(TX_EVIDENCE_PROFILE,[["tx",tx],...[...ids].sort().map(id=>["fragment_id",id])]));
+  }
+
+  function canonicalProjectionBytes(projection){
+    const fields=[];
+    for(const unit of Object.keys(projection).sort(compareUtf8)){
+      fields.push(["unit",unit]);
+      for(const account of Object.keys(projection[unit]).sort(compareUtf8)){
+        fields.push(["account",account],["delta_minor",projection[unit][account]]);
+      }
+    }
+    return canonicalRecord(PROJECTION_PROFILE,fields);
+  }
+
+  function projectionId(projection){ return sha256Hex(canonicalProjectionBytes(projection)); }
+
+  function canonicalBoundaryBytes(expectedIds){
+    const ids=[...expectedIds].sort();
+    return canonicalRecord(BOUNDARY_PROFILE,[
+      ["schema_profile",SCHEMA_PROFILE],
+      ["ruleset_id",RULESET_ID],
+      ["expected_count",String(ids.length)],
+      ...ids.map(id=>["fragment_id",id])
+    ]);
+  }
+
+  function boundaryId(expectedIds){ return sha256Hex(canonicalBoundaryBytes(expectedIds)); }
+
+  function declareBoundary(rawFragments){
+    const validated=validateBatch(rawFragments);
+    if(validated.validation_state==="REFUSED") return {boundary_state:"REFUSED",refusals:validated.refusals};
+    const unique=deduplicateValidated(validated.accepted);
+    const ids=unique.map(fragmentId).sort();
+    return {
+      profile:BOUNDARY_PROFILE,
+      schema_profile:SCHEMA_PROFILE,
+      ruleset_id:RULESET_ID,
+      expected_fragment_ids:ids,
+      expected_fragment_set_id:fragmentSetIdFromIds(ids),
+      expected_count:String(ids.length),
+      boundary_id:boundaryId(ids)
+    };
+  }
+
+  function validateBoundary(boundary){
+    if(boundary===null || typeof boundary!=="object" || Array.isArray(boundary)) return [false,"BOUNDARY_NOT_OBJECT"];
+    const required=["profile","schema_profile","ruleset_id","expected_fragment_ids","expected_fragment_set_id","expected_count","boundary_id"].sort();
+    if(JSON.stringify(Object.keys(boundary).sort())!==JSON.stringify(required)) return [false,"BOUNDARY_FIELDS_INVALID"];
+    if(boundary.profile!==BOUNDARY_PROFILE) return [false,"BOUNDARY_PROFILE_INVALID"];
+    if(boundary.schema_profile!==SCHEMA_PROFILE) return [false,"BOUNDARY_SCHEMA_INVALID"];
+    if(boundary.ruleset_id!==RULESET_ID) return [false,"BOUNDARY_RULESET_INVALID"];
+    if(!Array.isArray(boundary.expected_fragment_ids)) return [false,"BOUNDARY_IDS_INVALID"];
+    if(boundary.expected_fragment_ids.some(id=>typeof id!=="string" || !/^[0-9a-f]{64}$/.test(id))) return [false,"BOUNDARY_IDS_INVALID"];
+    const ids=[...new Set(boundary.expected_fragment_ids)].sort();
+    if(JSON.stringify(ids)!==JSON.stringify(boundary.expected_fragment_ids)) return [false,"BOUNDARY_IDS_NOT_CANONICAL"];
+    if(boundary.expected_count!==String(ids.length)) return [false,"BOUNDARY_COUNT_MISMATCH"];
+    if(boundary.expected_fragment_set_id!==fragmentSetIdFromIds(ids)) return [false,"BOUNDARY_SET_ID_MISMATCH"];
+    if(boundary.boundary_id!==boundaryId(ids)) return [false,"BOUNDARY_ID_MISMATCH"];
+    return [true,"BOUNDARY_VALID"];
+  }
+
+  function closureFor(fragmentIds,boundary){
+    if(boundary==null) return {state:"OPEN",reason:"NO_BOUNDARY",boundary_id:""};
+    const [valid,reason]=validateBoundary(boundary);
+    if(!valid) return {state:"OPEN",reason,boundary_id:""};
+    const current=[...fragmentIds].sort();
+    if(JSON.stringify(current)===JSON.stringify(boundary.expected_fragment_ids)){
+      return {state:"SEALED",reason:"DECLARED_BOUNDARY_SATISFIED",boundary_id:boundary.boundary_id};
+    }
+    return {state:"OPEN",reason:"DECLARED_BOUNDARY_NOT_SATISFIED",boundary_id:boundary.boundary_id};
+  }
+
+  function classifyTransaction(group){
+    const debits=group.filter(item=>item.side==="debit");
+    const credits=group.filter(item=>item.side==="credit");
+    if(debits.length>1 && credits.length>1) return {state:"ABSTAIN",reason:"MULTIPLE_DEBITS_AND_CREDITS"};
+    if(debits.length>1) return {state:"ABSTAIN",reason:"MULTIPLE_DEBITS"};
+    if(credits.length>1) return {state:"ABSTAIN",reason:"MULTIPLE_CREDITS"};
+    if(!debits.length) return {state:"INCOMPLETE",reason:"MISSING_DEBIT"};
+    if(!credits.length) return {state:"INCOMPLETE",reason:"MISSING_CREDIT"};
+    const debit=debits[0],credit=credits[0];
+    if(debit.account===credit.account) return {state:"ABSTAIN",reason:"SELF_TRANSFER_UNSUPPORTED"};
+    if(debit.amount_minor!==credit.amount_minor) return {state:"ABSTAIN",reason:"AMOUNT_MISMATCH"};
+    if(debit.unit!==credit.unit) return {state:"ABSTAIN",reason:"UNIT_MISMATCH"};
+    return {state:"RESOLVED",reason:"COMPATIBLE_PAIR",from:debit.account,to:credit.account,amount_minor:debit.amount_minor,unit:debit.unit};
+  }
+
+  function makeReceipt(tx,txIds,classification,closure){
+    const receipt={
+      profile:RECEIPT_PROFILE,
+      schema_profile:SCHEMA_PROFILE,
+      ruleset_profile:RULESET_PROFILE,
+      ruleset_id:RULESET_ID,
+      transaction_id:tx,
+      transaction_evidence_id:transactionEvidenceId(tx,txIds),
+      state:classification.state,
+      reason:classification.reason,
+      from_account:classification.from||"",
+      to_account:classification.to||"",
+      amount_minor:classification.amount_minor||"",
+      unit:classification.unit||"",
+      closure_state:closure.state,
+      closure_reason:closure.reason,
+      boundary_id:closure.boundary_id
+    };
+    receipt.receipt_id=sha256Hex(canonicalRecord(RECEIPT_PROFILE,[
+      ["schema_profile",receipt.schema_profile],["ruleset_profile",receipt.ruleset_profile],
+      ["ruleset_id",receipt.ruleset_id],["transaction_id",receipt.transaction_id],
+      ["transaction_evidence_id",receipt.transaction_evidence_id],["state",receipt.state],
+      ["reason",receipt.reason],["from_account",receipt.from_account],["to_account",receipt.to_account],
+      ["amount_minor",receipt.amount_minor],["unit",receipt.unit],["closure_state",receipt.closure_state],
+      ["closure_reason",receipt.closure_reason],["boundary_id",receipt.boundary_id]
+    ]));
+    return receipt;
+  }
+
+  function verifyReceipt(receipt){
+    if(receipt===null || typeof receipt!=="object" || Array.isArray(receipt)) return false;
+    const required=["profile","schema_profile","ruleset_profile","ruleset_id","transaction_id","transaction_evidence_id","state","reason","from_account","to_account","amount_minor","unit","closure_state","closure_reason","boundary_id","receipt_id"].sort();
+    if(JSON.stringify(Object.keys(receipt).sort())!==JSON.stringify(required)) return false;
+    if(receipt.profile!==RECEIPT_PROFILE || receipt.schema_profile!==SCHEMA_PROFILE || receipt.ruleset_profile!==RULESET_PROFILE || receipt.ruleset_id!==RULESET_ID) return false;
+    const expected=sha256Hex(canonicalRecord(RECEIPT_PROFILE,[
+      ["schema_profile",receipt.schema_profile],["ruleset_profile",receipt.ruleset_profile],
+      ["ruleset_id",receipt.ruleset_id],["transaction_id",receipt.transaction_id],
+      ["transaction_evidence_id",receipt.transaction_evidence_id],["state",receipt.state],
+      ["reason",receipt.reason],["from_account",receipt.from_account],["to_account",receipt.to_account],
+      ["amount_minor",receipt.amount_minor],["unit",receipt.unit],["closure_state",receipt.closure_state],
+      ["closure_reason",receipt.closure_reason],["boundary_id",receipt.boundary_id]
+    ]));
+    return expected===receipt.receipt_id;
+  }
+
+  function project(receipts){
+    const values=new Map();
+    function add(unit,account,delta){
+      if(!values.has(unit)) values.set(unit,new Map());
+      const accounts=values.get(unit);
+      accounts.set(account,(accounts.get(account)||0n)+delta);
+    }
+    receipts.forEach(receipt=>{
+      if(receipt.state!=="RESOLVED") return;
+      const amount=BigInt(receipt.amount_minor);
+      add(receipt.unit,receipt.from_account,-amount);
+      add(receipt.unit,receipt.to_account,amount);
+    });
+    const output={};
+    for(const unit of [...values.keys()].sort(compareUtf8)){
+      const accounts={};
+      for(const account of [...values.get(unit).keys()].sort(compareUtf8)){
+        const value=values.get(unit).get(account);
+        if(value!==0n) accounts[account]=value.toString();
+      }
+      if(Object.keys(accounts).length) output[unit]=accounts;
+    }
+    return output;
+  }
+
+  function stateSummary(receipts){
+    const counts={RESOLVED:0,INCOMPLETE:0,ABSTAIN:0};
+    receipts.forEach(receipt=>counts[receipt.state]++);
+    return counts;
+  }
+
+  function makeBundleId(fragmentSetId,closure,receipts,projectionHash){
+    const fields=[
+      ["architecture_version",ARCHITECTURE_VERSION],["schema_profile",SCHEMA_PROFILE],
+      ["ruleset_profile",RULESET_PROFILE],["ruleset_id",RULESET_ID],
+      ["fragment_set_id",fragmentSetId],["closure_state",closure.state],
+      ["closure_reason",closure.reason],["boundary_id",closure.boundary_id],
+      ["projection_id",projectionHash]
+    ];
+    [...receipts].map(r=>r.receipt_id).sort().forEach(id=>fields.push(["receipt_id",id]));
+    return sha256Hex(canonicalRecord(BUNDLE_PROFILE,fields));
+  }
+
+  function resolve(rawFragments,boundary=null){
+    const validated=validateBatch(rawFragments);
+    if(validated.validation_state==="REFUSED"){
+      return {
+        architecture_version:ARCHITECTURE_VERSION,schema_profile:SCHEMA_PROFILE,
+        ruleset_profile:RULESET_PROFILE,ruleset_id:RULESET_ID,validation_state:"REFUSED",
+        refusals:validated.refusals,fragment_count_input:Array.isArray(rawFragments)?rawFragments.length:0,
+        fragment_count_unique:0,fragment_set_id:"",closure:{state:"OPEN",reason:"VALIDATION_REFUSED",boundary_id:""},
+        transactions:{},projection:{},projection_id:projectionId({}),
+        state_summary:{RESOLVED:0,INCOMPLETE:0,ABSTAIN:0},bundle_id:""
+      };
+    }
+    const unique=deduplicateValidated(validated.accepted);
+    const ids=unique.map(fragmentId);
+    const setId=fragmentSetIdFromIds(ids);
+    const closure=closureFor(ids,boundary);
+    const grouped=new Map();
+    unique.forEach(item=>{
+      if(!grouped.has(item.tx)) grouped.set(item.tx,[]);
+      grouped.get(item.tx).push([fragmentId(item),item]);
+    });
+    const transactions={},receipts=[];
+    for(const tx of [...grouped.keys()].sort(compareUtf8)){
+      const pairs=grouped.get(tx);
+      const txIds=pairs.map(pair=>pair[0]);
+      const group=pairs.map(pair=>pair[1]);
+      const classification=classifyTransaction(group);
+      const receipt=makeReceipt(tx,txIds,classification,closure);
+      transactions[tx]=receipt;
+      receipts.push(receipt);
+    }
+    const projection=project(receipts);
+    const projectionHash=projectionId(projection);
+    const summary=stateSummary(receipts);
+    return {
+      architecture_version:ARCHITECTURE_VERSION,schema_profile:SCHEMA_PROFILE,
+      ruleset_profile:RULESET_PROFILE,ruleset_id:RULESET_ID,validation_state:"ACCEPTED",
+      refusals:[],fragment_count_input:rawFragments.length,fragment_count_unique:unique.length,
+      fragment_set_id:setId,closure,transactions,projection,projection_id:projectionHash,
+      state_summary:summary,bundle_id:makeBundleId(setId,closure,receipts,projectionHash)
+    };
+  }
+
+  function fragment(tx,side,account,amount_minor,unit="UNIT"){
+    return {schema:SCHEMA_PROFILE,tx,side,account,amount_minor,unit};
+  }
+
+  function referenceNodes(){
+    return [
+      [
+        fragment("ORL100","debit","Alice","500"),
+        fragment("ORL300","credit","Cara","200"),
+        fragment("ORL500","debit","Evan","600")
+      ],
+      [
+        fragment("ORL100","credit","Bob","500"),
+        fragment("ORL200","debit","Bob","300"),
+        fragment("ORL500","debit","Evan","600")
+      ],
+      [
+        fragment("ORL200","credit","Dina","300"),
+        fragment("ORL400","debit","Alice","700"),
+        fragment("ORL400","credit","Faye","900"),
+        fragment("ORL500","credit","Gina","600"),
+        fragment("ORL500","credit","Hank","600"),
+        fragment("ORL100","credit","Bob","500")
+      ]
+    ];
+  }
+
+  function referenceUnion(){
+    const result=boundedUnion(...referenceNodes());
+    if(result.validation_state!=="ACCEPTED") throw new Error("reference scenario validation failed");
+    return result.accepted;
+  }
+
+  function referenceScenario(sealed=true){
+    const nodes=referenceNodes();
+    const before=nodes.map(node=>resolve(node));
+    const merged=referenceUnion();
+    const boundary=sealed?declareBoundary(merged):null;
+    const after=nodes.map(()=>resolve(merged,boundary));
+    return {
+      nodes_before:before,shared_fragment_count:merged.length,boundary,nodes_after:after,
+      all_nodes_match_after_sharing:new Set(after.map(item=>item.bundle_id)).size===1,
+      final:after[0]
+    };
+  }
+
+  function growthScenario(){
+    const stages=[
+      [fragment("ORL600","debit","Iris","125")],
+      [fragment("ORL600","debit","Iris","125"),fragment("ORL600","credit","Juno","125")],
+      [fragment("ORL600","debit","Iris","125"),fragment("ORL600","credit","Juno","125"),fragment("ORL600","credit","Kora","125")],
+      [fragment("ORL600","debit","Iris","125"),fragment("ORL600","credit","Juno","125"),fragment("ORL600","credit","Kora","125"),fragment("ORL600","debit","Liam","125")]
+    ];
+    return stages.map(stage=>resolve(stage));
+  }
+
+  function permutations(items){
+    if(items.length<=1) return [items.slice()];
+    const out=[];
+    items.forEach((item,index)=>{
+      const rest=items.slice(0,index).concat(items.slice(index+1));
+      for(const perm of permutations(rest)) out.push([item,...perm]);
+    });
+    return out;
+  }
+
+  const RULESET_ID=sha256Hex(canonicalRecord(RULESET_PROFILE,RULESET_FIELDS));
+
+  const FROZEN_EXPECTED={
+    ruleset_id:"389eb1062a4cf7668450c475fd84c7611c3ab6c7c402f9e34ac37698fea09909",
+    fragment_set_id:"7a37a07d4a83a0235199b2846da6a68d045d7dde458520fdf91c9504943b6a6f",
+    open_bundle_id:"046d1de963dcb4b4ab05aeb4e7e81afaca56b9a8fceb6bb50f22d8c087c2d973",
+    boundary_id:"ba855c228a92ea9414bc3b4ad354aba92f92e62c767b9f2535a0db3d2188806b",
+    sealed_bundle_id:"857564e4e9f24a77ef1a9550e385d203c5e41e55b8fae624f37b82ee684c39f5",
+    projection_id:"9c714030a7a333a4018fc610a6e086e3b64a106a2cbc957b6b58a8253653c3ff"
+  };
+
+  window.ORLCore={
+    ARCHITECTURE_VERSION,SCHEMA_PROFILE,RULESET_PROFILE,CANONICAL_PROFILE,FRAGMENT_SET_PROFILE,
+    TX_EVIDENCE_PROFILE,RECEIPT_PROFILE,PROJECTION_PROFILE,BUNDLE_PROFILE,BOUNDARY_PROFILE,
+    REFUSAL_PROFILE,AUDIT_PROFILE,RULESET_ID,FROZEN_EXPECTED,EXACT_FIELDS,
+    canonicalRecord,sha256Hex,validateFragment,validateBatch,fragmentId,deduplicate,
+    deduplicateValidated,boundedUnion,fragmentSetIdFromIds,transactionEvidenceId,
+    projectionId,declareBoundary,validateBoundary,resolve,verifyReceipt,fragment,
+    referenceNodes,referenceUnion,referenceScenario,growthScenario,permutations,compareUtf8
+  };
+})();
+</script>
+
+<script>
+(() => {
+  const C=window.ORLCore;
+  const $=id=>document.getElementById(id);
+  const frozen=C.FROZEN_EXPECTED;
+  let storyStage=0;
+  let storyTimer=null;
+  let labEntries=C.referenceUnion().map(item=>({...item}));
+  let labBoundary=null;
+  let labEvents=[{title:"Reference evidence loaded",body:"The deduplicated shared fragment set is present. Closure remains OPEN until a boundary is explicitly declared."}];
+  let labResult=C.resolve(labEntries);
+  let labEffect={
+    action:"Reference Baseline",kind:"BASELINE",state:"R:2 I:1 A:2",set:"REFERENCE",projection:"REFERENCE",closure:"OPEN",
+    detail:"Use a laboratory action to see exactly which structural properties change and which remain invariant."
+  };
+
+  $("profileLine").textContent=`${C.SCHEMA_PROFILE} · ${C.RULESET_PROFILE} · ${C.CANONICAL_PROFILE} · ${C.AUDIT_PROFILE}`;
+  $("profileLine").title=$("profileLine").textContent;
+  $("rulesetId").textContent=C.RULESET_ID;
+  $("referenceSetId").textContent=frozen.fragment_set_id;
+  $("referenceBoundaryId").textContent=frozen.boundary_id;
+  $("referenceBundleId").textContent=frozen.sealed_bundle_id;
+
+  function shortHash(value){ return value ? value.slice(0,12)+"…"+value.slice(-8) : "—"; }
+
+  function pillClass(state){
+    if(state==="RESOLVED" || state==="ACCEPTED" || state==="SEALED") return "pill good";
+    if(state==="INCOMPLETE" || state==="OPEN") return "pill warn";
+    if(state==="ABSTAIN" || state==="REFUSED") return "pill bad";
+    return "pill violet";
+  }
+
+  function summaryText(result){
+    const s=result.state_summary;
+    return `R:${s.RESOLVED} I:${s.INCOMPLETE} A:${s.ABSTAIN}`;
+  }
+
+  function entryText(item){
+    return `${item.tx} · ${item.side} · ${item.account} · ${item.amount_minor} ${item.unit}`;
+  }
+
+  function updateHud(result){
+    $("hudValidation").textContent=result.validation_state;
+    $("hudClosure").textContent=result.closure.state;
+    $("hudSummary").textContent=summaryText(result);
+    $("hudBundle").textContent=shortHash(result.bundle_id);
+  }
+
+  function activateWorkspace(id){
+    document.querySelectorAll(".workspace").forEach(section=>section.classList.remove("active-workspace"));
+    const target=$(id);
+    if(target) target.classList.add("active-workspace");
+  }
+
+  function txState(result,tx){
+    return result && result.transactions && result.transactions[tx] ? result.transactions[tx].state : "—";
+  }
+
+  function sameOrChanged(beforeValue,afterValue){
+    if(!beforeValue || !afterValue) return "UNAVAILABLE";
+    return beforeValue===afterValue ? "UNCHANGED" : "CHANGED";
+  }
+
+  function setLabEffect({action,kind="EFFECT",before=null,after=null,tx="",detail=""}){
+    let state;
+    if(before && after && before.validation_state!==after.validation_state){
+      state=`BATCH: ${before.validation_state} -> ${after.validation_state}`;
+    }else if(tx && before && after){
+      state=`${tx}: ${txState(before,tx)} -> ${txState(after,tx)}`;
+    }else if(before && after){
+      state=`${summaryText(before)} -> ${summaryText(after)}`;
+    }else{
+      state=labEffect.state;
+    }
+    labEffect={
+      action,kind,state,
+      set:before&&after?sameOrChanged(before.fragment_set_id,after.fragment_set_id):labEffect.set,
+      projection:before&&after?sameOrChanged(before.projection_id,after.projection_id):labEffect.projection,
+      closure:before&&after?`${before.closure.state} -> ${after.closure.state}`:labEffect.closure,
+      detail
+    };
+  }
+
+  function renderLabEffect(){
+    $("effectAction").textContent=labEffect.action;
+    $("effectKind").textContent=labEffect.kind;
+    $("effectState").textContent=labEffect.state;
+    $("effectSet").textContent=labEffect.set;
+    $("effectProjection").textContent=labEffect.projection;
+    $("effectClosure").textContent=labEffect.closure;
+    $("effectDetail").textContent=labEffect.detail;
+  }
+
+  function hasCanonicalFragment(candidate){
+    const id=C.fragmentId(candidate);
+    return labEntries.some(item=>{
+      const validated=C.validateBatch([item]);
+      return validated.validation_state==="ACCEPTED" && C.fragmentId(validated.accepted[0])===id;
+    });
+  }
+
+  function syncLabControls(){
+    const refused=labResult.validation_state==="REFUSED";
+    $("completeBtn").disabled=refused || hasCanonicalFragment(C.fragment("ORL300","debit","Nora","200"));
+    $("conflictBtn").disabled=refused || hasCanonicalFragment(C.fragment("ORL100","credit","Zara","500"));
+    $("moreConflictBtn").disabled=refused || hasCanonicalFragment(C.fragment("ORL100","debit","Yuki","500"));
+    $("malformedBtn").disabled=refused;
+    $("sealBtn").disabled=refused || labResult.closure.state==="SEALED";
+    $("shuffleBtn").disabled=refused;
+    $("duplicateBtn").disabled=refused;
+  }
+
+  function renderReceipts(result){
+    const body=$("receiptBody");
+    body.innerHTML="";
+    const entries=Object.entries(result.transactions);
+    $("receiptCount").textContent=`${entries.length} RECEIPTS`;
+    if(!entries.length){
+      const tr=document.createElement("tr");
+      tr.innerHTML=`<td colspan="5" class="muted">${result.validation_state==="REFUSED" ? "Resolver not entered because validation refused the batch." : "No transaction receipts."}</td>`;
+      body.appendChild(tr);
+    }else{
+      entries.forEach(([tx,r])=>{
+        const tr=document.createElement("tr");
+        tr.innerHTML=`
+          <td><strong>${tx}</strong></td>
+          <td><span class="${pillClass(r.state)}">${r.state}</span></td>
+          <td class="mono">${r.reason}</td>
+          <td class="hash">${r.transaction_evidence_id}</td>
+          <td class="hash">${r.receipt_id}</td>`;
+        body.appendChild(tr);
+      });
+    }
+    const grid=$("projectionGrid");
+    grid.innerHTML="";
+    const projectionEntries=[];
+    Object.entries(result.projection).forEach(([unit,accounts])=>{
+      Object.entries(accounts).forEach(([account,amount])=>projectionEntries.push([unit,account,amount]));
+    });
+    if(!projectionEntries.length){
+      const div=document.createElement("div");
+      div.className="proj";
+      div.innerHTML=`<div class="muted">No resolved projection is available.</div>`;
+      grid.appendChild(div);
+    }else{
+      projectionEntries.forEach(([unit,account,amount])=>{
+        const div=document.createElement("div");
+        div.className="proj";
+        const sign=amount.startsWith("-")?"":"+";
+        div.innerHTML=`<div class="label">${unit}</div><strong>${account}</strong><div class="amount mono">${sign}${amount}</div>`;
+        grid.appendChild(div);
+      });
+    }
+  }
+
+  function renderStory(){
+    const nodes=C.referenceNodes();
+    const merged=C.referenceUnion();
+    const boundary=C.declareBoundary(merged);
+    let title,body,mode,views,resultForHud,equality;
+    if(storyStage===0){
+      title="Local Views";
+      body="Each node holds a different valid fragment subset and therefore may produce a different bounded local snapshot.";
+      mode="LOCAL";
+      views=nodes.map(node=>({entries:node,result:C.resolve(node)}));
+      resultForHud=views[0].result;
+      equality="Local node outputs are not required to match while evidence differs.";
+    }else if(storyStage===1){
+      title="Same Evidence, Open Closure";
+      body="Every node now holds the same deduplicated canonical fragment set. Their resolver bundles match, while closure remains OPEN because no evidence boundary has been declared.";
+      mode="SHARED";
+      views=nodes.map(()=>({entries:merged,result:C.resolve(merged)}));
+      resultForHud=views[0].result;
+      equality="All nodes hold the same canonical fragment set and produce the same open bundle.";
+    }else{
+      title="Same Evidence, Declared Boundary Satisfied";
+      body="The same canonical fragment set now matches an explicit declared boundary. Closure becomes SEALED within that boundary; no claim is made about undisclosed evidence outside it.";
+      mode="SEALED";
+      views=nodes.map(()=>({entries:merged,result:C.resolve(merged,boundary)}));
+      resultForHud=views[0].result;
+      equality="All nodes produce the same sealed bundle under the same declared boundary.";
+    }
+    $("stageTitle").textContent=title;
+    $("stageBody").textContent=body;
+    $("stagePill").textContent=mode;
+    $("nodeEquality").textContent=equality;
+    const grid=$("nodeGrid");
+    grid.innerHTML="";
+    views.forEach((view,index)=>{
+      const div=document.createElement("div");
+      div.className="node"+(storyStage>0?" active":"");
+      const r=view.result;
+      const txValues=Object.values(r.transactions);
+      div.innerHTML=`
+        <div class="node-head">
+          <div><div class="node-name">Node-${index+1}</div><div class="muted small">${view.entries.length} visible input fragments · ${r.fragment_count_unique} canonical unique</div></div>
+          <span class="${pillClass(r.closure.state)}">${r.closure.state}</span>
+        </div>
+        <div class="summary-row">
+          <span class="pill good">R:${r.state_summary.RESOLVED}</span>
+          <span class="pill warn">I:${r.state_summary.INCOMPLETE}</span>
+          <span class="pill bad">A:${r.state_summary.ABSTAIN}</span>
+        </div>
+        <div class="entries">${view.entries.map(item=>`<div class="entry">${entryText(item)}</div>`).join("")}</div>
+        <div class="hash" style="margin-top:12px">${r.fragment_set_id || "validation refused"}</div>`;
+      grid.appendChild(div);
+    });
+    updateHud(resultForHud);
+    renderReceipts(resultForHud);
+  }
+
+  function renderLab(){
+    labResult=C.resolve(labEntries,labBoundary);
+    $("labCount").textContent=`${labEntries.length} INPUT FRAGMENTS`;
+    const status=labResult.validation_state==="REFUSED"
+      ? `Validation REFUSED the batch with ${labResult.refusals.length} refusal witness${labResult.refusals.length===1?"":"es"}. Reset the laboratory to return to accepted input.`
+      : `${labResult.fragment_count_unique} canonical unique fragments · ${summaryText(labResult)} · closure ${labResult.closure.state}.`;
+    $("labStatus").textContent=status;
+    $("labLog").innerHTML=labEvents.slice().reverse().map(event=>`
+      <div class="log-item"><div class="log-title">${event.title}</div><div class="log-body">${event.body}</div></div>
+    `).join("");
+    updateHud(labResult);
+    renderReceipts(labResult);
+    renderLabEffect();
+    syncLabControls();
+  }
+
+  function logEvent(title,body){
+    labEvents.push({title,body});
+    renderLab();
+  }
+
+  function pressFeedback(button){
+    button.classList.add("pressed");
+    setTimeout(()=>button.classList.remove("pressed"),110);
+  }
+
+  document.querySelectorAll("button").forEach(button=>{
+    button.addEventListener("click",()=>pressFeedback(button));
+  });
+
+  $("nextBtn").addEventListener("click",()=>{
+    storyStage=Math.min(2,storyStage+1);
+    renderStory();
+    activateWorkspace("nodesSection");
+    $("nodesSection").scrollIntoView({behavior:"smooth",block:"start"});
+  });
+
+  $("runBtn").addEventListener("click",()=>{
+    if(storyTimer) clearInterval(storyTimer);
+    storyStage=0;
+    renderStory();
+    let step=0;
+    storyTimer=setInterval(()=>{
+      step++;
+      storyStage=Math.min(2,step);
+      renderStory();
+      if(step>=2){ clearInterval(storyTimer); storyTimer=null; }
+    },800);
+    activateWorkspace("nodesSection");
+    $("nodesSection").scrollIntoView({behavior:"smooth",block:"start"});
+  });
+
+  $("resetStoryBtn").addEventListener("click",()=>{
+    if(storyTimer) clearInterval(storyTimer);
+    storyTimer=null;
+    storyStage=0;
+    renderStory();
+    activateWorkspace("nodesSection");
+  });
+
+  $("shuffleBtn").addEventListener("click",()=>{
+    const before=C.resolve(labEntries,labBoundary);
+    for(let i=labEntries.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [labEntries[i],labEntries[j]]=[labEntries[j],labEntries[i]];
+    }
+    const after=C.resolve(labEntries,labBoundary);
+    setLabEffect({action:"Shuffle Evidence",kind:"INVARIANT",before,after,detail:"Input order changed, while the canonical evidence identity, projection, and bounded result remain unchanged."});
+    activateWorkspace("labSection");
+    logEvent("Evidence order shuffled","The input sequence changed without changing the canonical evidence set or structural result.");
+  });
+
+  $("duplicateBtn").addEventListener("click",()=>{
+    if(!labEntries.length) return;
+    const before=C.resolve(labEntries,labBoundary);
+    labEntries.push({...labEntries[0]});
+    const after=C.resolve(labEntries,labBoundary);
+    setLabEffect({action:"Add Exact Duplicate",kind:"IDEMPOTENT",before,after,detail:"The raw input count increased, but exact canonical duplicate absorption preserved the unique evidence set and resolution bundle."});
+    activateWorkspace("labSection");
+    logEvent("Exact duplicate added","The raw input count increased while the canonical unique evidence set remained unchanged.");
+  });
+
+  $("completeBtn").addEventListener("click",()=>{
+    const before=C.resolve(labEntries,labBoundary);
+    labEntries.push(C.fragment("ORL300","debit","Nora","200"));
+    labBoundary=null;
+    const after=C.resolve(labEntries,labBoundary);
+    setLabEffect({action:"Complete ORL300",kind:"STATE CHANGE",before,after,tx:"ORL300",detail:"The missing debit counterpart became available, so ORL300 moved from INCOMPLETE to RESOLVED and entered the current structural projection."});
+    activateWorkspace("labSection");
+    logEvent("ORL300 counterpart added","The missing debit counterpart is now present. ORL300 moves from INCOMPLETE to RESOLVED under the current rules.");
+  });
+
+  $("conflictBtn").addEventListener("click",()=>{
+    const before=C.resolve(labEntries,labBoundary);
+    labEntries.push(C.fragment("ORL100","credit","Zara","500"));
+    labBoundary=null;
+    const after=C.resolve(labEntries,labBoundary);
+    setLabEffect({action:"Conflict ORL100",kind:"SAFE ABSTENTION",before,after,tx:"ORL100",detail:"A second distinct credit declaration creates multiplicity conflict. ORL100 moves from RESOLVED to ABSTAIN and its earlier projection contribution is removed."});
+    activateWorkspace("labSection");
+    logEvent("ORL100 conflicting credit added","A second distinct credit declaration is present. ORL100 now abstains instead of allowing one declaration to win by arrival order.");
+  });
+
+  $("moreConflictBtn").addEventListener("click",()=>{
+    const before=C.resolve(labEntries,labBoundary);
+    labEntries.push(C.fragment("ORL100","debit","Yuki","500"));
+    labBoundary=null;
+    const after=C.resolve(labEntries,labBoundary);
+    setLabEffect({action:"Add Evidence After Conflict",kind:"ABSORBING STATE",before,after,tx:"ORL100",detail:"The evidence set changed again, but under append-only valid evidence a transaction already in ABSTAIN remains in ABSTAIN. The projection remains protected from the conflicting transaction."});
+    activateWorkspace("labSection");
+    logEvent("Additional evidence added after conflict","Another distinct declaration was added. ORL100 remains in ABSTAIN under this append-only resolver profile.");
+  });
+
+  $("malformedBtn").addEventListener("click",()=>{
+    const before=C.resolve(labEntries,labBoundary);
+    labEntries.push({schema:C.SCHEMA_PROFILE,tx:"BAD900",side:"unsupported",account:"Mallory",amount_minor:"10",unit:"UNIT"});
+    labBoundary=null;
+    const after=C.resolve(labEntries,labBoundary);
+    setLabEffect({action:"Inject Malformed Fragment",kind:"REFUSAL",before,after,detail:"The strict batch policy refuses the resolver input. Unsupported structure is not silently ignored and is not misclassified as legitimate incompleteness."});
+    activateWorkspace("labSection");
+    logEvent("Malformed fragment injected","Validation refuses the entire batch before resolution. Reset the laboratory to continue with accepted input.");
+  });
+
+  $("sealBtn").addEventListener("click",()=>{
+    const before=C.resolve(labEntries,labBoundary);
+    const boundary=C.declareBoundary(labEntries);
+    if(boundary.boundary_state==="REFUSED"){
+      labBoundary=null;
+      const after=C.resolve(labEntries,labBoundary);
+      setLabEffect({action:"Declare + Seal Current Set",kind:"REFUSAL",before,after,detail:"A declared boundary cannot be constructed from a batch that fails strict fragment validation."});
+      activateWorkspace("labSection");
+      logEvent("Boundary declaration refused","The current batch is not eligible for a declared evidence boundary because validation failed.");
+    }else{
+      labBoundary=boundary;
+      const after=C.resolve(labEntries,labBoundary);
+      setLabEffect({action:"Declare + Seal Current Set",kind:"BOUNDED CLOSURE",before,after,detail:"The evidence set and projection are unchanged. Only closure changes from OPEN to SEALED because the exact current canonical fragment ID set satisfies the newly declared boundary."});
+      activateWorkspace("labSection");
+      logEvent("Current canonical set declared as the boundary","The exact current canonical fragment ID set satisfies the declared boundary. Closure becomes SEALED within that boundary only.");
+    }
+  });
+
+  $("resetLabBtn").addEventListener("click",()=>{
+    const before=C.resolve(labEntries,labBoundary);
+    labEntries=C.referenceUnion().map(item=>({...item}));
+    labBoundary=null;
+    const after=C.resolve(labEntries,labBoundary);
+    setLabEffect({action:"Reset Laboratory",kind:"RESET",before,after,detail:"The reference canonical evidence set is restored with OPEN closure and no declared boundary."});
+    labEvents=[{title:"Laboratory reset",body:"The reference union is restored with OPEN closure and no declared boundary."}];
+    activateWorkspace("labSection");
+    renderLab();
+  });
+
+  function createAudit(){
+    const groups={};
+    let totalPlanned=0;
+    function check(group,name,condition,detail=""){
+      if(!groups[group]) groups[group]=[];
+      groups[group].push({name,pass:Boolean(condition),detail});
+    }
+    function countPlan(n=1){ totalPlanned+=n; }
+    return {groups,check,countPlan,getTotalPlanned:()=>totalPlanned};
+  }
+
+  async function runAudit(progressCallback=()=>{}){
+    const audit=createAudit();
+    const {check,countPlan}=audit;
+    countPlan(20+8+5+18+3+10+120+3+3+65+6+7+4+8+6);
+    let done=0;
+    const mark=(group,name,condition,detail="")=>{
+      check(group,name,condition,detail);
+      done++;
+      progressCallback(done,audit.getTotalPlanned(),group,name);
+    };
+    const valid=C.fragment("T1","debit","Alice","1");
+    const validationCases=[
+      ["valid fragment accepted",[valid],"ACCEPTED"],
+      ["batch object refused",{x:1},"REFUSED"],
+      ["fragment non-object refused",["x"],"REFUSED"],
+      ["missing field refused",[{schema:valid.schema,tx:valid.tx,side:valid.side,account:valid.account,amount_minor:valid.amount_minor}],"REFUSED"],
+      ["unknown field refused",[{...valid,extra:"x"}],"REFUSED"],
+      ["wrong schema refused",[{...valid,schema:"OLD"}],"REFUSED"],
+      ["unsupported side refused",[{...valid,side:"hold"}],"REFUSED"],
+      ["boolean amount refused",[{...valid,amount_minor:true}],"REFUSED"],
+      ["integer amount refused",[{...valid,amount_minor:1}],"REFUSED"],
+      ["zero amount refused",[{...valid,amount_minor:"0"}],"REFUSED"],
+      ["negative amount refused",[{...valid,amount_minor:"-1"}],"REFUSED"],
+      ["decimal amount refused",[{...valid,amount_minor:"1.0"}],"REFUSED"],
+      ["leading zero refused",[{...valid,amount_minor:"01"}],"REFUSED"],
+      ["79 digit amount refused",[{...valid,amount_minor:"9".repeat(79)}],"REFUSED"],
+      ["empty tx refused",[{...valid,tx:""}],"REFUSED"],
+      ["empty account refused",[{...valid,account:""}],"REFUSED"],
+      ["edge whitespace refused",[{...valid,account:" Alice"}],"REFUSED"],
+      ["control character refused",[{...valid,account:"Ali\nce"}],"REFUSED"],
+      ["lowercase unit refused",[{...valid,unit:"usd"}],"REFUSED"],
+      ["invalid unit separator refused",[{...valid,unit:"US D"}],"REFUSED"]
+    ];
+    validationCases.forEach(([name,value,expected])=>mark("VALIDATION",name,C.validateBatch(value).validation_state===expected));
+
+    const nfc=C.fragment("N1","debit","Café","5");
+    const nfd=C.fragment("N1","debit","Cafe\u0301","5");
+    const nfcResult=C.deduplicate([nfc,nfd]);
+    mark("CANONICALIZATION","NFC and NFD collapse to one canonical fragment",nfcResult.validation_state==="ACCEPTED" && nfcResult.accepted.length===1);
+    mark("CANONICALIZATION","separator text remains safe",C.validateBatch([C.fragment("N2","debit","A|B:42","5")]).validation_state==="ACCEPTED");
+    const baseId=C.fragmentId(valid);
+    [["tx","T2"],["side","credit"],["account","Bob"],["amount_minor","2"],["unit","ALT"]].forEach(([field,value])=>{
+      mark("CANONICALIZATION","identity changes with "+field,C.fragmentId({...valid,[field]:value})!==baseId);
+    });
+    const reordered={unit:valid.unit,amount_minor:valid.amount_minor,account:valid.account,side:valid.side,tx:valid.tx,schema:valid.schema};
+    mark("CANONICALIZATION","dictionary field insertion order does not affect identity",C.fragmentId(reordered)===baseId);
+
+    const huge="9".repeat(78);
+    const hugeResult=C.resolve([C.fragment("BIG","debit","A",huge),C.fragment("BIG","credit","B",huge)]);
+    mark("EXACT_AMOUNTS","78 digit amount resolves exactly",hugeResult.transactions.BIG.state==="RESOLVED");
+    mark("EXACT_AMOUNTS","78 digit projection exact debit",hugeResult.projection.UNIT.A==="-"+huge);
+    mark("EXACT_AMOUNTS","78 digit projection exact credit",hugeResult.projection.UNIT.B===huge);
+    const jsBoundaryAmount="9007199254740993";
+    const exactResult=C.resolve([C.fragment("SAFE","debit","A",jsBoundaryAmount),C.fragment("SAFE","credit","B",jsBoundaryAmount)]);
+    mark("EXACT_AMOUNTS","above JavaScript safe integer resolves exactly",exactResult.transactions.SAFE.amount_minor===jsBoundaryAmount);
+    mark("EXACT_AMOUNTS","above JavaScript safe integer projection exact",exactResult.projection.UNIT.B===jsBoundaryAmount);
+
+    const cases={
+      resolved:[C.fragment("R","debit","A","10"),C.fragment("R","credit","B","10")],
+      missing_debit:[C.fragment("MD","credit","B","10")],
+      missing_credit:[C.fragment("MC","debit","A","10")],
+      amount_mismatch:[C.fragment("AM","debit","A","10"),C.fragment("AM","credit","B","11")],
+      unit_mismatch:[C.fragment("UM","debit","A","10","USD"),C.fragment("UM","credit","B","10","EUR")],
+      multiple_debits:[C.fragment("MDE","debit","A","10"),C.fragment("MDE","debit","C","10")],
+      multiple_credits:[C.fragment("MCR","credit","B","10"),C.fragment("MCR","credit","C","10")],
+      multiple_both:[C.fragment("MB","debit","A","10"),C.fragment("MB","debit","C","10"),C.fragment("MB","credit","B","10"),C.fragment("MB","credit","D","10")],
+      self_transfer:[C.fragment("SELF","debit","A","10"),C.fragment("SELF","credit","A","10")]
+    };
+    const expected={
+      resolved:["RESOLVED","COMPATIBLE_PAIR"],missing_debit:["INCOMPLETE","MISSING_DEBIT"],
+      missing_credit:["INCOMPLETE","MISSING_CREDIT"],amount_mismatch:["ABSTAIN","AMOUNT_MISMATCH"],
+      unit_mismatch:["ABSTAIN","UNIT_MISMATCH"],multiple_debits:["ABSTAIN","MULTIPLE_DEBITS"],
+      multiple_credits:["ABSTAIN","MULTIPLE_CREDITS"],multiple_both:["ABSTAIN","MULTIPLE_DEBITS_AND_CREDITS"],
+      self_transfer:["ABSTAIN","SELF_TRANSFER_UNSUPPORTED"]
+    };
+    Object.entries(cases).forEach(([name,items])=>{
+      const result=C.resolve(items);
+      const tx=Object.values(result.transactions)[0];
+      mark("RESOLUTION",name+" state",tx.state===expected[name][0]);
+      mark("RESOLUTION",name+" reason",tx.reason===expected[name][1]);
+    });
+
+    const duplicateResult=C.resolve([C.fragment("DUP","debit","A","10"),C.fragment("DUP","debit","A","10"),C.fragment("DUP","credit","B","10")]);
+    mark("DEDUPLICATION","exact duplicate does not create multiplicity conflict",duplicateResult.transactions.DUP.state==="RESOLVED");
+    mark("DEDUPLICATION","input count preserved",duplicateResult.fragment_count_input===3);
+    mark("DEDUPLICATION","unique count reduced",duplicateResult.fragment_count_unique===2);
+
+    const ref=C.referenceScenario(false).final;
+    mark("REFERENCE_SCENARIO","reference validation accepted",ref.validation_state==="ACCEPTED");
+    mark("REFERENCE_SCENARIO","two resolved",ref.state_summary.RESOLVED===2);
+    mark("REFERENCE_SCENARIO","one incomplete",ref.state_summary.INCOMPLETE===1);
+    mark("REFERENCE_SCENARIO","two abstain",ref.state_summary.ABSTAIN===2);
+    mark("REFERENCE_SCENARIO","Alice projection exact",ref.projection.UNIT.Alice==="-500");
+    mark("REFERENCE_SCENARIO","Bob projection exact",ref.projection.UNIT.Bob==="200");
+    mark("REFERENCE_SCENARIO","Dina projection exact",ref.projection.UNIT.Dina==="300");
+    mark("REFERENCE_SCENARIO","ORL300 excluded from projection",!("Cara" in ref.projection.UNIT));
+    mark("REFERENCE_SCENARIO","ORL400 excluded from projection",!("Faye" in ref.projection.UNIT));
+    mark("REFERENCE_SCENARIO","ORL500 excluded from projection",!("Evan" in ref.projection.UNIT));
+
+    const permutationVector=[
+      C.fragment("P1","debit","A","10"),C.fragment("P1","credit","B","10"),
+      C.fragment("P2","debit","B","4"),C.fragment("P2","credit","C","4"),
+      C.fragment("P3","debit","D","7")
+    ];
+    const baseline=C.resolve(permutationVector);
+    C.permutations(permutationVector).forEach((perm,index)=>{
+      mark("PERMUTATION_INVARIANCE","permutation "+(index+1),C.resolve(perm).bundle_id===baseline.bundle_id);
+    });
+
+    const a=[C.fragment("U1","debit","A","10"),C.fragment("U1","credit","B","10")];
+    const b=[C.fragment("U2","debit","C","3"),C.fragment("U1","credit","B","10")];
+    const c=[C.fragment("U2","credit","D","3")];
+    const unionAB=C.boundedUnion(a,b),unionBA=C.boundedUnion(b,a);
+    const setId=x=>C.fragmentSetIdFromIds(x.accepted.map(C.fragmentId));
+    mark("SET_ALGEBRA","union commutative identity",setId(unionAB)===setId(unionBA));
+    mark("SET_ALGEBRA","union idempotent identity",setId(C.boundedUnion(a,a))===setId(C.boundedUnion(a)));
+    mark("SET_ALGEBRA","union associative identity",setId(C.boundedUnion(unionAB.accepted,c))===setId(C.boundedUnion(a,C.boundedUnion(b,c).accepted)));
+
+    const growth=C.growthScenario().map(stage=>stage.transactions.ORL600.state);
+    mark("EVIDENCE_GROWTH","incomplete to resolved",JSON.stringify(growth.slice(0,2))===JSON.stringify(["INCOMPLETE","RESOLVED"]));
+    mark("EVIDENCE_GROWTH","resolved to abstain",JSON.stringify(growth.slice(1,3))===JSON.stringify(["RESOLVED","ABSTAIN"]));
+    mark("EVIDENCE_GROWTH","abstain remains abstain",JSON.stringify(growth.slice(2,4))===JSON.stringify(["ABSTAIN","ABSTAIN"]));
+
+    const universe=[
+      C.fragment("GX","debit","A","10"),C.fragment("GX","credit","B","10"),
+      C.fragment("GX","credit","C","10"),C.fragment("GX","debit","D","11")
+    ];
+    const allowed={INCOMPLETE:new Set(["INCOMPLETE","RESOLVED","ABSTAIN"]),RESOLVED:new Set(["RESOLVED","ABSTAIN"]),ABSTAIN:new Set(["ABSTAIN"])};
+    const subsetStates={};
+    for(let mask=1;mask<(1<<universe.length);mask++){
+      const subset=universe.filter((_,i)=>mask&(1<<i));
+      subsetStates[mask]=C.resolve(subset).transactions.GX.state;
+    }
+    Object.keys(subsetStates).map(Number).sort((x,y)=>x-y).forEach(left=>{
+      Object.keys(subsetStates).map(Number).sort((x,y)=>x-y).forEach(right=>{
+        if((left&right)===left) mark("EVIDENCE_GROWTH_EXHAUSTIVE",`subset ${left} to ${right}`,allowed[subsetStates[left]].has(subsetStates[right]));
+      });
+    });
+
+    const merged=C.referenceUnion(),openResult=C.resolve(merged),boundary=C.declareBoundary(merged),sealedResult=C.resolve(merged,boundary);
+    mark("CLOSURE","no boundary remains open",openResult.closure.state==="OPEN");
+    mark("CLOSURE","exact declared boundary seals",sealedResult.closure.state==="SEALED");
+    mark("CLOSURE","sealed reason explicit",sealedResult.closure.reason==="DECLARED_BOUNDARY_SATISFIED");
+    mark("CLOSURE","boundary stable under permutation",C.declareBoundary([...merged].reverse()).boundary_id===boundary.boundary_id);
+    mark("CLOSURE","subset does not seal against larger boundary",C.resolve(merged.slice(0,-1),boundary).closure.state==="OPEN");
+    mark("CLOSURE","superset does not seal against smaller boundary",C.resolve([...merged,C.fragment("EXTRA","debit","X","1")],boundary).closure.state==="OPEN");
+
+    Object.entries(sealedResult.transactions).forEach(([tx,receipt])=>mark("RECEIPTS",tx+" receipt verifies",C.verifyReceipt(receipt)));
+    const tampered={...sealedResult.transactions.ORL100,amount_minor:"501"};
+    mark("RECEIPTS","tampered receipt rejected",!C.verifyReceipt(tampered));
+    mark("RECEIPTS","open and sealed receipt identities differ",openResult.transactions.ORL100.receipt_id!==sealedResult.transactions.ORL100.receipt_id);
+
+    const malformed=[C.fragment("BAD","debit","A","10"),C.fragment("BAD","credit","B","10"),{...C.fragment("BAD","credit","C","10"),side:"unsupported"}];
+    mark("KNOWN_REGRESSIONS","unsupported side cannot be silently ignored",C.resolve(malformed).validation_state==="REFUSED");
+    mark("KNOWN_REGRESSIONS","multiple debits without credit abstain",C.resolve([C.fragment("REG1","debit","A","10"),C.fragment("REG1","debit","B","10")]).transactions.REG1.reason==="MULTIPLE_DEBITS");
+    mark("KNOWN_REGRESSIONS","multiple credits without debit abstain",C.resolve([C.fragment("REG2","credit","A","10"),C.fragment("REG2","credit","B","10")]).transactions.REG2.reason==="MULTIPLE_CREDITS");
+    mark("KNOWN_REGRESSIONS","separator-bearing account resolves safely",C.resolve([C.fragment("REG3","debit","A|B:1","10"),C.fragment("REG3","credit","C","10")]).transactions.REG3.state==="RESOLVED");
+
+    const interactiveBase=C.referenceUnion();
+    const shuffledInteractive=[...interactiveBase].reverse();
+    mark("INTERACTIVE_FLOWS","shuffle preserves canonical bundle",C.resolve(shuffledInteractive).bundle_id===C.resolve(interactiveBase).bundle_id);
+    mark("INTERACTIVE_FLOWS","exact duplicate preserves canonical bundle",C.resolve([...interactiveBase,{...interactiveBase[0]}]).bundle_id===C.resolve(interactiveBase).bundle_id);
+    const completedInteractive=C.resolve([...interactiveBase,C.fragment("ORL300","debit","Nora","200")]);
+    mark("INTERACTIVE_FLOWS","complete ORL300 resolves",completedInteractive.transactions.ORL300.state==="RESOLVED");
+    const conflictedInteractive=C.resolve([...interactiveBase,C.fragment("ORL100","credit","Zara","500")]);
+    mark("INTERACTIVE_FLOWS","conflict ORL100 abstains",conflictedInteractive.transactions.ORL100.state==="ABSTAIN");
+    mark("INTERACTIVE_FLOWS","conflict removes ORL100 projection contribution",conflictedInteractive.projection.UNIT.Alice===undefined && conflictedInteractive.projection.UNIT.Bob==="-300");
+    const furtherConflict=C.resolve([...interactiveBase,C.fragment("ORL100","credit","Zara","500"),C.fragment("ORL100","debit","Yuki","500")]);
+    mark("INTERACTIVE_FLOWS","additional evidence preserves abstention",furtherConflict.transactions.ORL100.state==="ABSTAIN");
+    const malformedInteractive=C.resolve([...interactiveBase,{schema:C.SCHEMA_PROFILE,tx:"BAD900",side:"unsupported",account:"Mallory",amount_minor:"10",unit:"UNIT"}]);
+    mark("INTERACTIVE_FLOWS","malformed laboratory input is refused",malformedInteractive.validation_state==="REFUSED");
+    const interactiveBoundary=C.declareBoundary(interactiveBase);
+    mark("INTERACTIVE_FLOWS","declared current set seals without changing evidence identity",C.resolve(interactiveBase,interactiveBoundary).closure.state==="SEALED" && C.resolve(interactiveBase,interactiveBoundary).fragment_set_id===C.resolve(interactiveBase).fragment_set_id);
+
+    mark("CROSS_ENGINE_FROZEN","ruleset id matches Python freeze",C.RULESET_ID===frozen.ruleset_id);
+    mark("CROSS_ENGINE_FROZEN","fragment set id matches Python freeze",openResult.fragment_set_id===frozen.fragment_set_id);
+    mark("CROSS_ENGINE_FROZEN","open bundle id matches Python freeze",openResult.bundle_id===frozen.open_bundle_id);
+    mark("CROSS_ENGINE_FROZEN","boundary id matches Python freeze",boundary.boundary_id===frozen.boundary_id);
+    mark("CROSS_ENGINE_FROZEN","sealed bundle id matches Python freeze",sealedResult.bundle_id===frozen.sealed_bundle_id);
+    mark("CROSS_ENGINE_FROZEN","projection id matches Python freeze",sealedResult.projection_id===frozen.projection_id);
+
+    const groups={};
+    let total=0,passed=0;
+    Object.entries(audit.groups).forEach(([group,checks])=>{
+      const groupPassed=checks.filter(item=>item.pass).length;
+      groups[group]={passed:groupPassed,total:checks.length,status:groupPassed===checks.length?"PASS":"FAIL",checks};
+      total+=checks.length;passed+=groupPassed;
+    });
+    return {profile:C.AUDIT_PROFILE,architecture_version:C.ARCHITECTURE_VERSION,passed,total,status:passed===total?"PASS":"FAIL",groups};
+  }
+
+  let lastAudit=null;
+  window.ORL_AUDIT={
+    async runAll(){
+      const result=await runAudit((done,total,group,name)=>{
+        console.log(`ORL AUDIT ${done}/${total} ${group} :: ${name}`);
+      });
+      lastAudit=result;
+      console.log(`ORL AUDIT TOTAL ${result.passed}/${result.total} ${result.status}`);
+      console.table(Object.fromEntries(Object.entries(result.groups).map(([k,v])=>[k,{passed:v.passed,total:v.total,status:v.status}])));
+      return result;
+    },
+    last(){return lastAudit}
+  };
+
+  $("auditBtn").addEventListener("click",async()=>{
+    $("auditBtn").disabled=true;
+    $("auditProgress").style.width="0%";
+    $("auditGrid").innerHTML="";
+    $("auditStatus").textContent="AUDIT STARTED";
+    activateWorkspace("auditSection");
+    await new Promise(resolve=>setTimeout(resolve,30));
+    const result=await runAudit((done,total,group)=>{
+      $("auditProgress").style.width=`${(done/total)*100}%`;
+      if(done===1 || done%10===0 || done===total) $("auditStatus").textContent=`AUDIT RUNNING (${done}/${total}) · ${group}`;
+    });
+    lastAudit=result;
+    $("auditStatus").textContent=`TOTAL ${result.passed}/${result.total} ${result.status}`;
+    $("auditGrid").innerHTML=Object.entries(result.groups).map(([group,info])=>`
+      <div class="audit-group"><strong>${group}</strong><div class="muted small">${info.passed}/${info.total} ${info.status}</div></div>
+    `).join("");
+    $("auditBtn").disabled=false;
+  });
+
+  const selfCheck=C.referenceScenario(true);
+  if(C.RULESET_ID!==frozen.ruleset_id || selfCheck.final.bundle_id!==frozen.sealed_bundle_id){
+    $("profileLine").textContent="CROSS-ENGINE FREEZE MISMATCH";
+    $("profileLine").style.color="var(--bad)";
+  }
+
+  renderStory();
+  renderLab();
+  activateWorkspace("nodesSection");
+})();
+</script>
+</body>
+</html>
