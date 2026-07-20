@@ -1,0 +1,9 @@
+ORL Demo Freeze (SHA256)
+
+Scope: demo folder only (deterministic behavior layer)
+
+ORL_Reference_Kernel_v2_0_0.py:
+c9fe03c56631d5751669c8635227f1e737e1c419add1bdc40138860210daf4c1
+
+ORL_Structural_Lab_v2_0_0.html:
+1f8918e8214385f63288003c4842cf600e7e95e1fa8431afe237768b57f406e1
