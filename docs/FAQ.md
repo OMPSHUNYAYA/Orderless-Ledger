@@ -6,7 +6,7 @@
 
 ---
 
-`same validated canonical fragment set + same ruleset -> same bounded resolution bundle`
+`same validated canonical fragment set + same ruleset + same declared boundary context -> same bounded resolution bundle`
 
 ORL is a bounded structural-reconciliation reference implementation developed within the Shunyaya Framework.
 
@@ -28,11 +28,11 @@ It separates:
 
 ORL, or Orderless Ledger, is a deterministic reference implementation for bounded structural reconciliation.
 
-It accepts a declared supported fragment schema, validates the complete input batch, canonicalizes valid evidence, absorbs exact canonical duplicates, classifies transaction structure, computes a resolved-only structural projection, issues deterministic receipts, and optionally checks the current evidence set against an explicitly declared exact boundary.
+It accepts a declared supported fragment schema, validates the complete input batch, canonicalizes valid evidence, absorbs exact canonical duplicates, classifies transaction structure, computes a resolved-only structural projection, evaluates the declared closure boundary, issues deterministic receipts, and produces a bounded resolution bundle.
 
 The processing path is:
 
-`raw fragments -> validate -> canonicalize -> deduplicate -> resolve -> project -> receipt -> optional boundary check`
+`raw fragments -> validate -> canonicalize -> deduplicate -> resolve -> project -> evaluate declared closure boundary -> receipt -> bundle`
 
 ORL is not a complete financial ledger, payment network, settlement system, consensus protocol, or banking platform.
 
@@ -109,7 +109,7 @@ A real deployment may still require coordination for transport, replication, acc
 
 ### **A6. What is the core idea in one line?**
 
-`same validated canonical fragment set + same ruleset -> same bounded resolution bundle`
+`same validated canonical fragment set + same ruleset + same declared boundary context -> same bounded resolution bundle`
 
 ---
 
@@ -756,9 +756,9 @@ Before sharing, local outputs may differ because the evidence sets differ.
 
 ### **L2. When do the nodes match?**
 
-After every node receives the same deduplicated canonical fragment set and uses the same ruleset.
+After every node receives the same deduplicated canonical fragment set, uses the same ruleset, and has no declared boundary:
 
-`same canonical evidence + same ruleset -> same open bundle`
+`same canonical evidence + same ruleset + same no-boundary context -> same open bundle`
 
 If the same exact declared boundary is also satisfied:
 
@@ -825,9 +825,9 @@ It lets a user modify the evidence set and observe invariants, state changes, re
 
 ### **N2. What does Shuffle Evidence demonstrate?**
 
-`permutation -> same canonical bundle`
+`same canonical evidence + unchanged ruleset and closure context -> same bundle`
 
-when the evidence set is unchanged.
+when only the input permutation changes.
 
 ---
 
@@ -985,13 +985,15 @@ It does not prove universal ledger correctness, production safety, authorization
 
 ---
 
-### **P7. What does a SHA-256 file hash prove?**
+### **P7. What does a SHA-256 file hash establish?**
 
 `same bytes -> same SHA-256 hash`
 
-A matching recorded hash establishes artifact identity for the checked bytes.
+A matching SHA-256 value confirms that the checked artifact reproduces the recorded release digest.
 
-`artifact identity != behavioral proof`
+It does not by itself establish behavioral correctness.
+
+`artifact digest agreement != behavioral proof`
 
 ---
 
