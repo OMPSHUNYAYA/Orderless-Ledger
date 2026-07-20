@@ -12,13 +12,15 @@
 ![Clock Metadata](https://img.shields.io/badge/Clock%20Metadata-Not%20Used-lightgrey)
 ![Reference Model](https://img.shields.io/badge/Implementation-Public%20Reference-orange)
 
+[![ORL Verification](https://github.com/OMPSHUNYAYA/Orderless-Ledger/actions/workflows/verify.yml/badge.svg)](https://github.com/OMPSHUNYAYA/Orderless-Ledger/actions/workflows/verify.yml)
+
 **No timestamp authority • No fragment-arrival-order authority • No coordinator-state authority**
 
 **No GPS • No NTP • No Internet Required to Run the Reference Implementations**
 
 ---
 
-`same validated canonical fragment set + same ruleset -> same bounded resolution bundle`
+`same validated canonical fragment set + same ruleset + same declared boundary context -> same bounded resolution bundle`
 
 ORL v2.0.0 is a bounded structural-reconciliation reference implementation developed within the Shunyaya Framework.
 
@@ -69,7 +71,7 @@ The narrower architectural statement is:
 
 The ORL v2.0.0 processing path is:
 
-`raw fragments -> validate -> canonicalize -> deduplicate -> resolve -> project -> receipt -> optional boundary check`
+`raw fragments -> validate -> canonicalize -> deduplicate -> resolve -> project -> evaluate declared closure boundary -> receipt -> bundle`
 
 The three principal state lanes remain separate:
 
@@ -220,7 +222,7 @@ The implemented policy is:
 
 Therefore an exact duplicate does not create a false multiplicity conflict.
 
-Exact duplicate absorption assumes that repeated canonically identical fragments under the same `tx` describe the same declaration. ORL does not infer that byte-identical fragments were intended to represent separate real-world movements.
+Exact duplicate absorption assumes that repeated canonically identical fragments under the same `tx` describe the same declaration. ORL does not infer that canonically identical fragments were intended to represent separate real-world movements.
 
 Therefore:
 
@@ -447,7 +449,9 @@ For a validated supported fragment collection `E`, a permutation `P(E)`, and the
 
 `R(P(E)) = R(E)`
 
-where equality is evaluated through the deterministic bounded bundle identity.
+for an unchanged declared boundary context.
+
+When complete bounded bundle identities are compared, the ruleset and boundary context are held fixed.
 
 The committed audit exhaustively checks all:
 
@@ -486,9 +490,9 @@ At that stage:
 
 The demonstration then gives every node the same deduplicated canonical fragment set.
 
-With the same ruleset:
+With the same ruleset and no declared boundary:
 
-`same canonical evidence + same ruleset -> same open bundle`
+`same canonical evidence + same ruleset + same no-boundary context -> same open bundle`
 
 The demonstration can then declare the exact current set as a boundary:
 
@@ -533,9 +537,9 @@ The browser implementation includes an interactive Structural Laboratory for obs
 
 ### **Shuffle Evidence**
 
-Changes input order while preserving the canonical result when the evidence set is unchanged.
+Changes input order while preserving the bounded result when the canonical evidence, ruleset, and closure context remain unchanged.
 
-`permutation -> same canonical bundle`
+`same canonical evidence + unchanged ruleset and closure context -> same bundle`
 
 ### **Add Exact Duplicate**
 
