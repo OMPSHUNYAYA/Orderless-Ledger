@@ -1012,11 +1012,15 @@ These boundaries are part of the design, not omissions to be concealed by the re
 
 ---
 
-## 📜 **License**
+# 📜 **License**
 
-See [LICENSE](LICENSE) for the repository's current licensing terms.
+See: [LICENSE](LICENSE)
 
-The repository does not claim recognition as a formal technical standard.
+The ORL reference implementation and associated verification artifacts are free to use, copy, modify, test, study, and redistribute without a license fee, subject to the license terms stated in the repository.
+
+Documentation, architecture materials, specifications, diagrams, and explanatory content are subject to the separate terms stated in the LICENSE.
+
+This repository does not claim recognition as a formal technical standard, security certification, production qualification, or third-party verification.
 
 ---
 
